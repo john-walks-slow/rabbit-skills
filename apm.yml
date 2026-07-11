@@ -1,0 +1,33 @@
+name: rabbit-skills
+version: 0.3.0
+description: 轻量、松弛的 Agent 配置套件。适合中等规模的 AI 原生项目。
+
+author:
+  name: john-walks-slow
+
+license: MIT
+
+keywords:
+  - ai-coding
+  - agent-rules
+  - coding-conventions
+  - workflow
+  - agent-skills
+
+type: hybrid
+
+targets:
+  - claude
+  - cursor
+  - opencode
+  - codex
+  - gemini
+  - windsurf
+
+includes: auto
+
+scripts:
+  compile: apm compile
+  pack: apm pack
+  install-global: apm install -g john-walks-slow/rabbit-skills
+  audit: apm audit --ci
