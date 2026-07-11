@@ -4,26 +4,25 @@
 
 我们维护以下文档文件：
 
-## {project_root}/AGENTS.md
+## AGENTS.md
 
 项目级指引。格式见 `update-project-instruction`。
 
-## {project_root}/{specific_module}/AGENTS.md
+## {specific_module}/AGENTS.md
 
 模块级指引。格式见 `update-module-instruction`。
 
-## {project_root}/docs/features/{feature_name}
-
-- {project_root}/docs/features/{feature_name}/yymmdd-{feature_name}.plan.md
-- {project_root}/docs/features/{feature_name}/yymmdd-{feature_name}.summary.md
-- {project_root}/docs/features/{feature_name}/yymmdd-{feature_name}.review.md
+## docs/features/{feature_name}/
+- yymmdd-{feature_name}.plan.md
+- yymmdd-{feature_name}.summary.md
+- features/{feature_name}/yymmdd-{feature_name}.review.md
 
 需求计划和实施状态记录。在计划、开发、检视阶段完成时及时更新。当需要回顾特定需求的策略和进展时查看。
 
-## {project_root}/docs/research/yymmdd-{topic}.research.md
+## docs/issues/{issue_name}/
 
-不归属于特定 feature 的调研结果报告。
+问题修复记录。
 
-## {project_root}/docs/ideas/yymmdd-{topic}.md
+## docs/freeform/yymmdd-{topic}.md
 
-计划与想法雏形。
+不归属于特定功能或问题的记录。

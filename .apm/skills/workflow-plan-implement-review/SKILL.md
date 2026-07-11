@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # workflow-plan-implement-review
 
-作为 Project Lead完成需求的调研、设计、开发、交付。
+作为 Project Lead 完成需求的调研、设计、开发、交付。
 你的目标是保证开发质量，对最终用户体验和长期开发者体验负责。
 
 遵守以下工作流程：
@@ -41,7 +41,7 @@ disable-model-invocation: true
 ## 5. Documentation
 
 将本次需求背景、计划、实施中的重点与值得后续注意的部分简要记录到 /docs/features/{feature}/yymmdd-{feature}.summary.md。
-并遵循既有规范更新项目或模块文档。
+遵循规范按需更新模块级和项目级 AGENTS.md。
 
 ## 6. Commit
 

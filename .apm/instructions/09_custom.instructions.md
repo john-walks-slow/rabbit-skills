@@ -3,18 +3,17 @@
 ## 多 Agent 协作
 
 本工程同时由多个 Agent 修改，总是假定有其他 Agent 在同时工作。不要处理你的改动范围之外的变化。
-**IMPORTANT：不要认为你可以通过 git reset、git checkout 撤销你所做的修改！**
+**IMPORTANT：永远不要认为 git reset、git checkout 能够撤销你所做的修改！**
 **你可能会把别人的未提交修改也撤销掉！进行此类 git 操作时保持极度谨慎！**
 
 ## Shell 使用规则
 
-不使用 powershell -Command 前缀，直接裸命令执行。
-不使用 &&，必须用 ; (Powershell 5.X 语法)。
-禁止使用 2>$null 吞掉错误消息。
+不使用 powershell -Command 等前缀，直接裸命令执行。
+不使用 2>$null 吞掉错误消息。
 
 ## Git 使用规则
 
-使用任何 git reset、git checkout 命令前必须先用 git diff 确认回退范围。
+未经用户书面同意，禁止使用 git reset、git checkout。
 禁止使用 git stash pop（没有任何收益，可能遗失有用的历史）。
 
 ## 默认测试范围

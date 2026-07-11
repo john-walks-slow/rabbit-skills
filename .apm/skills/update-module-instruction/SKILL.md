@@ -1,6 +1,6 @@
 ---
 name: update-module-instruction
-description: 创建或更新模块级 AGENTS.md 时使用
+description: 模块级 AGENTS.md 更新规范。当新建模块；新需求开发结束；模块内容重构结束；记录对后续开发有明确收益的经验时使用。
 user-invocable: true
 disable-model-invocation: true
 ---
@@ -8,8 +8,8 @@ disable-model-invocation: true
 # update-module-instruction
 
 创建或更新 `{project_root}/{specific_module}/AGENTS.md`。
-有且仅有快速熟悉模块开发必须的 essential 信息。
-简洁、直入主题。不超过 300 行。
+仅包括快速熟悉模块开发必须的信息。
+极简、直入主题。不超过 300 行。
 
 格式参考：
 
@@ -26,9 +26,9 @@ disable-model-invocation: true
 
 ## 核心设计
 
-所有同事必须了解的架构决策、设计约束、核心概念。请勿事无巨细复述代码逻辑。
+同事必须了解的架构决策、设计约束、核心概念。请勿事无巨细复述代码逻辑。
 
 ## Pitfalls
 
-常见坑。只有反复遇到且通用的坑才记在这。
+常见坑和经验。只有反复遇到且通用的坑才记在这。
 ```
