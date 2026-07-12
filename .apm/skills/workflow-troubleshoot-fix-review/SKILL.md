@@ -21,9 +21,10 @@ disable-model-invocation: true
 
 如果感到问题较难分析，不要假装你已经明白了原因然后盲目修复！那只会让问题扩大！
 你可以用以下方式辅助分析：
- * 请求 expert 子代理分析。
- * 执行网络搜素或使用 /spawn-deep-research 深度调研。
- * **（万能）** 添加详细调测日志，请用户帮助复现问题再抓取日志。
+
+- 请求 expert 子代理分析。
+- 执行网络搜素或使用 /spawn-deep-research 深度调研。
+- **（万能）** 添加详细调测日志，请用户帮助复现问题再抓取日志。
 
 ## 2. 实施修复
 
@@ -37,28 +38,29 @@ disable-model-invocation: true
 
 如果你认为本问题属于更大范围的设计问题，最优雅的解决方法不是“贴狗皮膏药”而是改进设计（这在长远来看大有好处）。
 立刻向用户提出你的建议！询问用户是否进行重构型修复。
-如果用户同意，你们应该先商定一个计划（输出到 /docs/issues/{issue_name}/yymmdd-{refactor_description}.plan.md），然后按照计划执行修改（遵循最佳实践）。
+如果用户同意，你们应该先商定一个计划（输出到 /docs/issues/yymmdd-{issue_name}/yymmdd-{refactor_description}.plan.md），然后按照计划执行修改（遵循最佳实践）。
 
 ## 3. 请用户验证
 
 经过 2A 或 2B 的修改后，请用户验证问题是否已经彻底解决（或者是否引入了新问题？）。
- * 如果没有解决：**撤销所做的无效修改**，重新回到第一步再次分析。
- * 如果解决了：**得到用户明确反馈后**，进入下一步。
+
+- 如果没有解决：**撤销所做的无效修改**，重新回到第一步再次分析。
+- 如果解决了：**得到用户明确反馈后**，进入下一步。
 
 ## 4. 检视
 
-用户确认问题已解决之后，使用 /spawn-reviewer 检视本次修复的代码（而不是使用 bugbot 子代理），指定检视报告输出位置为 /docs/issues/{issue_name}/yymmdd-{issue_name}.review.md。
+用户确认问题已解决之后，使用 /spawn-reviewer 检视本次修复的代码（而不是使用 bugbot 子代理），指定检视报告输出位置为 /docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.review.md。
 若检视发现预留问题、次生风险、性能隐患或规范不符，则进行修改和优化。修改后再次将本次实施的全部代码提交检视。
 **直到拥有明确准入结论后才进入下一步。**
 
 ## 5. 文档化
 
-将本次问题的现象、根因分析过程、最终修复方案（特别是重构型修复的决策逻辑）简要记录到 /docs/issues/{issue_name}/yymmdd-{issue_name}.summary.md。
+将本次问题的现象、根因分析过程、最终修复方案（特别是重构型修复的决策逻辑）简要记录到 /docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.summary.md。
 遵循规范按需更新模块级和项目级 AGENTS.md。当且仅当有对后续开发有明确收益的通用经验时，记录到模块 pitfalls 部分。
 
 ## 6. 提交
 
-最后，在征得用户 *书面确认* 后提交本次修改的文件。遵循历史提交格式与 Commit 规范（如需关联 Github Issue，请注明 Fixes #xxx）。
+最后，在征得用户 _书面确认_ 后提交本次修改的文件。遵循历史提交格式与 Commit 规范（如需关联 Github Issue，请注明 Fixes #xxx）。
 
 **备注:**
 
