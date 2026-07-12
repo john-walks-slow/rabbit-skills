@@ -31,3 +31,4 @@ scripts:
   pack: apm pack
   install-global: apm install -g john-walks-slow/rabbit-skills
   audit: apm audit --ci
+  build-release: node scripts/build-release.mjs

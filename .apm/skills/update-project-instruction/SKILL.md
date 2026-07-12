@@ -14,7 +14,7 @@ disable-model-invocation: true
 格式参考：
 
 ```markdown
-# {project_name}
+# {project_name} AGENTS.md
 
 ## 目标
 

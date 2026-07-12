@@ -14,7 +14,7 @@ disable-model-invocation: true
 格式参考：
 
 ```markdown
-# {module_name}
+# {module_name} AGENTS.md
 
 ## 职责
 

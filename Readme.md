@@ -7,55 +7,51 @@
 - 简洁清晰、零学习成本。相对松弛的约束，不为模型捆手捆脚。
 - 通用需求开发工作流：在一次会话中完成计划到交付。Research → Plan → Implement → Review → Documentation → Commit。
 - 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Retest → Review → Documentation → Commit。
-- 基于子代理的调研、检视，显著减少幻觉并提高交付质量。
+- 基于子代理的调研、检视阶段，显著减少幻觉并提高交付质量。
 - 日常实用 Skill：`grilling` 盘问计划、`cross-check` 审视既有结论、`handoff` 会话交接、`try` 修改前备份。
 - 极简的文档规范，留存开发状态的同时避免历史文档-代码双向同步问题。
-- 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，适配主流 Agent CLI。
+- 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent CLI。
 
 ## 安装
 
-### 前置条件
+### A. 预构件安装
 
-安装 [APM CLI](https://microsoft.github.io/apm/getting-started/installation/)：
+将 `release/<tool>/` 粘贴到对应工具配置目录即可。
 
-```powershell
-# Windows
-irm https://aka.ms/apm-windows | iex
+| 工具 | 全局目录 |
+|------|---------|
+| **Claude Code** | `~/.claude/` |
+| **OpenCode** | `~/.config/opencode/` |
+| **Codex** | `~/.codex/` |
+| **Cursor** | `~/.cursor/` |
+| **Gemini CLI** | `~/.gemini/` |
+| **Windsurf** | `~/.windsurf/` |
 
-# macOS / Linux
-curl -sSL https://aka.ms/apm-unix | sh
-```
+### B. 通过 APM 安装
 
-### 全局安装
+先安装 [APM CLI](https://microsoft.github.io/apm/getting-started/installation/)。
 
 ```bash
 apm install -g john-walks-slow/rabbit-skills
-```
-
-对不支持 Instructions 的工具，还需编译全局指令（运行也没坏处，不清楚是否需要的话就运行）：
-
-```bash
 apm compile -g
 ```
 
-> **Cursor 用户注意**：Cursor 不支持读取 `~/.cursor/AGENTS.md`。请手动将 `~/.cursor/AGENTS.md` 的内容填入 _Cursor Settings → Rules → User_。
-> **Claude 用户注意**：当前使用 AGENTS.md 作为项目、模块级指引文件。在 CC 中无法自动注入，可能影响效果。
+> 注：APM 不会覆盖你原先手写的指令（AGENTS.md 等）。
+> 如果希望覆盖，请在备份后删除原有指令，再次执行 compile -g。
 
-### 验证安装
+### 自定义
 
-```bash
-apm audit
-```
+按需配置各个子代理使用的模型，建议你为 expert 子代理选择高级模型。
+本项目的提示词都是 self-explanatory 的。你可以任意编辑和选用。
 
 ## 使用
 
-开发新功能时使用 `/workflow-plan-implement-review` 工作流；
-修复 Bug 时使用 `/workflow-troubleshoot-fix-review` 工作流。
-
-如：
+开发新功能时调用 `/workflow-plan-implement-review` 工作流，如：
 ```
 /workflow-plan-implement-review 调研 Agent 记忆的 sota 方案，给我的 Agent 加上记忆功能。
 ```
+
+修复 Bug 时调用 `/workflow-troubleshoot-fix-review` 工作流。
 
 ## 内容物
 
@@ -96,3 +92,14 @@ apm audit
 | 文件                 | 说明                               |
 | -------------------- | ---------------------------------- |
 | `long-file-reminder` | 长文件提醒：超过行数阈值时提示拆分 |
+
+## FAQ
+
+### 为什么推荐全局安装？
+
+我们默认用全局指令设定全局风格，用项目级 AGENTS.md 记录项目指引。项目级安装时两者可能冲突。
+若希望项目级安装，建议手动更换 03_documentation，update-project-instruction 和 update-module-instruction 中指引文档的文件名，将 AGENTS.md 替换为其他文件名即可。
+
+### 项目指引写在 AGENTS.md 里，能兼容 Claude Code 吗？
+
+能。虽然 CC 不会自动注入 AGENTS.md，但文档规范中明确要求了：「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」。AGENTS.md 没有自动注入的情况下，Agent 会在工作前自主阅读，效果等价。

@@ -1,0 +1,30 @@
+name: Release
+on:
+  push:
+    tags: 'v*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install APM CLI
+        run: curl -sSL https://aka.ms/apm-unix | sudo sh
+      - name: Build release
+        run: apm run build-release
+      - name: Package per-tool tarballs
+        run: |
+          mkdir -p dist
+          for dir in release/*/; do
+            tool=$(basename "$dir")
+            tar -czf "dist/rabbit-skills-${tool}.tar.gz" -C release "$tool"
+          done
+      - name: Create GitHub release
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            dist/*.tar.gz \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
