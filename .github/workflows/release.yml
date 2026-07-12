@@ -13,17 +13,17 @@ jobs:
         run: curl -sSL https://aka.ms/apm-unix | sudo sh
       - name: Build release
         run: apm run build-release
-      - name: Package per-tool tarballs
+      - name: Package per-tool archives
         run: |
           mkdir -p dist
           for dir in release/*/; do
             tool=$(basename "$dir")
-            tar -czf "dist/rabbit-skills-${tool}.tar.gz" -C release "$tool"
+            (cd release && zip -r "../dist/rabbit-skills-${tool}.zip" "$tool")
           done
       - name: Create GitHub release
         run: |
           gh release create "${{ github.ref_name }}" \
-            dist/*.tar.gz \
+            dist/*.zip \
             --title "${{ github.ref_name }}" \
             --generate-notes
         env:
