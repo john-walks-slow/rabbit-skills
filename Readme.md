@@ -71,6 +71,7 @@ apm compile -g
 | `deep-researcher` | 网络调研     |
 | `reviewer`        | 代码检视     |
 | `expert`          | 通用困难任务 |
+| `auto-human`      | 自动决策（用于 full-auto 模式） |
 
 ### Skills & Commands（技能与命令）
 
@@ -84,6 +85,7 @@ apm compile -g
 | `grilling`                       | 用户或 AI | 向用户盘问设计方案                                                        |
 | `try`                            | 用户或 AI | 修改前先备份便于回滚                                                      |
 | `cross-check`                    | 用户或 AI | 使用独立子代理复核关键结论                                                |
+| `full-auto`                      | 仅用户    | 全自动模式：所有需要用户决策的地方自动由 auto-human 代理                  |
 | `update-project-instruction`     | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                         |
 | `update-module-instruction`      | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                  |
 
