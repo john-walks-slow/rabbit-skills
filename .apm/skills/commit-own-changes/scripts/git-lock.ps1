@@ -14,7 +14,6 @@ param(
 )
 
 $lockFile = Join-Path (git rev-parse --git-dir) "agent.lock"
-$pidFile = "$lockFile.$pid"
 
 function Acquire {
     $deadline = (Get-Date).AddSeconds($Timeout)
@@ -26,24 +25,28 @@ function Acquire {
                 $age = (Get-Date) - (Get-Date -UnixTimeSeconds $lockTs)
                 if ($age.TotalMinutes -gt 5) {
                     Remove-Item $lockFile -Force -ErrorAction SilentlyContinue
-                    Write-Warning "清理过期锁（${age}）"
+                    Write-Warning "Cleaned up expired lock (age: ${age})"
+                    continue
                 }
             }
         }
         try {
             $file = [System.IO.File]::Open($lockFile, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
-            $writer = [System.IO.StreamWriter]::new($file)
-            $writer.WriteLine("pid=$pid")
-            $writer.WriteLine("ts=$(Get-Date -UFormat %s)")
-            $writer.Close()
-            $file.Close()
+            try {
+                $writer = [System.IO.StreamWriter]::new($file)
+                $writer.WriteLine("pid=$pid")
+                $writer.WriteLine("ts=$(Get-Date -UFormat %s)")
+            } finally {
+                if ($writer) { $writer.Dispose() } else { $file.Dispose() }
+            }
             Write-Output "acquired:$pid"
             return
         } catch {
-            Start-Sleep -Milliseconds 300
+            Start-Sleep -Milliseconds (Get-Random -Minimum 200 -Maximum 400)
         }
     }
-    Write-Error "无法获取 git 锁（超时 ${Timeout}s），当前持有者 PID: $(Get-Content $lockFile -Raw)"
+    $owner = if (Test-Path $lockFile) { Get-Content $lockFile -Raw -ErrorAction SilentlyContinue } else { "unknown (lock released)" }
+    Write-Error "无法获取 git 锁（超时 ${Timeout}s），当前持有者: $owner"
     exit 1
 }
 
@@ -53,7 +56,8 @@ function Release {
         if ($content -match "pid=(\d+)") {
             if ([int]$matches[1] -eq $pid) {
                 Remove-Item $lockFile -Force -ErrorAction SilentlyContinue
-                Write-Output "released:$pid"
+                if ($?) { Write-Output "released:$pid" }
+                else { Write-Warning "释放锁文件失败: $lockFile" }
             } else {
                 Write-Warning "锁由其他进程持有 (PID $($matches[1]))，跳过释放"
             }
