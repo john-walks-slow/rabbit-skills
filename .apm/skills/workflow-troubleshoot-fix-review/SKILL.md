@@ -60,7 +60,7 @@ disable-model-invocation: true
 
 ## 6. 提交
 
-最后，在征得用户 _书面确认_ 后提交本次修改的文件。遵循历史提交格式与 Commit 规范（如需关联 Github Issue，请注明 Fixes #xxx）。
+最后，在征得用户 _书面确认_ 后提交本次修改的文档和文件。遵循项目提交规范。
 
 **备注:**
 
