@@ -10,19 +10,21 @@
 - 基于子代理的调研、检视阶段，显著减少幻觉并提高交付质量。
 - 日常实用 Skill：`grilling` 盘问计划、`cross-check` 审视既有结论、`handoff` 会话交接、`try` 修改前备份。
 - 极简的文档规范，留存开发状态的同时避免历史文档-代码双向同步问题。
-- 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent CLI。
+- 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
 
 ## 安装
 
 ### A. 预构件安装
 
-[![Release](https://img.shields.io/github/v/release/john-walks-slow/rabbit-skills?label=最新版)](https://github.com/john-walks-slow/rabbit-skills/releases/latest)
+[![Release](https://img.shields.io/github/v/release/john-walks-slow/rabbit-skills?label=release)](https://github.com/john-walks-slow/rabbit-skills/releases/latest)
 
-下载最新 release 的 `.zip`，将内容解压到对应工具配置目录即可。
+下载最新 release，将内容解压到对应工具配置目录即可。
 
 ### B. 通过 APM 安装
 
-先安装 [APM CLI](https://microsoft.github.io/apm/getting-started/installation/)。
+确保已安装 [APM CLI](https://microsoft.github.io/apm/getting-started/installation/)。
+
+全局安装到所有支持的工具：
 
 ```bash
 apm install -g john-walks-slow/rabbit-skills
@@ -31,11 +33,6 @@ apm compile -g
 
 > 注：APM 不会覆盖你原先手写的指令（AGENTS.md 等）。
 > 如果希望覆盖，请在备份后删除原有指令，再次执行 compile -g。
-
-### 自定义
-
-按需配置各个子代理使用的模型，建议你为 expert 子代理选择高级模型。
-本项目的提示词都是 self-explanatory 的。你可以任意编辑和选用。
 
 ## 使用
 
@@ -87,6 +84,11 @@ apm compile -g
 | 文件                 | 说明                               |
 | -------------------- | ---------------------------------- |
 | `long-file-reminder` | 长文件提醒：超过行数阈值时提示拆分 |
+
+## 自定义
+
+按需配置各个子代理使用的模型，建议你为 expert 子代理选择高级模型。
+本项目的提示词都是 self-explanatory 的。你可以任意编辑和选用。
 
 ## FAQ
 
