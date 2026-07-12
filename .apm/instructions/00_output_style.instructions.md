@@ -1,3 +1,7 @@
+---
+description: 输出风格：简洁执行、Research First
+---
+
 # 输出风格
 
 ## 简洁执行

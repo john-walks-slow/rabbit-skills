@@ -1,3 +1,7 @@
+---
+description: 约定与通例：多 Agent 协作、Shell/Git 使用规则、测试范围
+---
+
 # 约定与通例
 
 ## 多 Agent 协作

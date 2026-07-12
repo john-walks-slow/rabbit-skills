@@ -1,3 +1,7 @@
+---
+description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记录
+---
+
 # 文档规范
 
 采取极简文档策略：文档的目标是给新加入开发的成员一个 Quick Start、并将关键历史留作记录，而不是把代码逻辑在文档中重述一遍。
@@ -6,11 +10,15 @@
 
 ## AGENTS.md
 
-项目级指引。格式见 `update-project-instruction`。
+项目级指引。
+进行任何工作前，确保已了解其中内容。
+更新时见 `/update-project-instruction`。
 
 ## {specific_module}/AGENTS.md
 
-模块级指引。格式见 `update-module-instruction`。
+模块级指引。
+就某一模块进行任何工作前，确保已了解其中内容。
+更新时见 `/update-module-instruction`。
 
 ## docs/features/{feature_name}/
 - yymmdd-{feature_name}.plan.md
