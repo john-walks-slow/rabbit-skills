@@ -4,7 +4,7 @@ description: 对当前的想法、结论或计划进行批判性检查、调研�
 user-invocable: true
 ---
 
-# Cross-check
+# cross-check
 
 启动 `expert` 子代理对当前的想法、结论或计划进行对抗式检查。
 
