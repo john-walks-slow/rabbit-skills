@@ -2,7 +2,6 @@
 name: update-module-instruction
 description: 模块级 AGENTS.md 更新规范。当新建模块；新需求开发结束；模块内容重构结束；记录对后续开发有明确收益的经验时使用。
 user-invocable: true
-disable-model-invocation: true
 ---
 
 # update-module-instruction
