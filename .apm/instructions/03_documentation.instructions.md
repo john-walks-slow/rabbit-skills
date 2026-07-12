@@ -11,13 +11,13 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 ## AGENTS.md
 
 项目级指引。
-进行任何工作前，确保已了解其中内容。
+进行任何工作前，必须确保已了解其中内容。
 更新时见 `/update-project-instruction`。
 
 ## {specific_module}/AGENTS.md
 
 模块级指引。
-就某一模块进行任何工作前，确保已了解其中内容。
+就某一模块进行任何工作前，必须确保已了解其中内容。
 更新时见 `/update-module-instruction`。
 
 ## docs/features/yymmdd-{feature_name}/
