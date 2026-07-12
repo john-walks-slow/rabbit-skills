@@ -2,7 +2,6 @@
 name: update-project-instruction
 description: 项目级 AGENTS.md 更新规范。当新建项目；新建或重构模块；更新必须了解的工作流程、调测命令、开发规范时使用。
 user-invocable: true
-disable-model-invocation: true
 ---
 
 # update-project-instruction
