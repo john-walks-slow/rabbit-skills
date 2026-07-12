@@ -16,16 +16,9 @@
 
 ### A. 预构件安装
 
-将 `release/<tool>/` 粘贴到对应工具配置目录即可。
+[![Release](https://img.shields.io/github/v/release/john-walks-slow/rabbit-skills?label=最新版)](https://github.com/john-walks-slow/rabbit-skills/releases/latest)
 
-| 工具 | 全局目录 |
-|------|---------|
-| **Claude Code** | `~/.claude/` |
-| **OpenCode** | `~/.config/opencode/` |
-| **Codex** | `~/.codex/` |
-| **Cursor** | `~/.cursor/` |
-| **Gemini CLI** | `~/.gemini/` |
-| **Windsurf** | `~/.windsurf/` |
+下载最新 release 的 `.zip`，将内容解压到对应工具配置目录即可。
 
 ### B. 通过 APM 安装
 
