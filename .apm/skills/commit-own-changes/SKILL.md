@@ -1,6 +1,6 @@
 ---
 name: commit-own-changes
-description: 提交改动时防止带入其他 Agent 的未提交修改。事关重大，在执行任何 `git add`，`git commit` 命令前 **必须** 使用本技能。
+description: 提交改动时防止带入其他 Agent 的未提交修改。在执行任何 `git add`，`git commit` 命令前 **必须** 使用本技能。
 ---
 
 # commit-own-changes
@@ -24,11 +24,11 @@ git status
 3. 获取改动的具体行号，根据行号暂存修改
 
 ```powershell
-git-stage-lines diff <changed_file>.ts
+git-stage-lines diff <changed_file>
 ```
 
 ```powershell
-git-stage-lines <changed_file>.ts:<修改的行号范围>
+git-stage-lines <changed_file>:<修改的行号范围>
 ```
 
 > 行号范围格式：`12-18,27,45-50`。`+N` 用 `N`，`-N` 用 `-N`。
@@ -38,7 +38,7 @@ git-stage-lines <changed_file>.ts:<修改的行号范围>
 4. 提交
 
 ```powershell
-git commit -m "feat: xxx" -m "中文详细描述，包含每个文件的修改内容"
+git commit -m "feat: xxx" -m "详细描述每个文件的修改内容（按团队语言惯例）"
 ```
 
 5. 释放锁
