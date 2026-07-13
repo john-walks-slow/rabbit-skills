@@ -1,0 +1,65 @@
+lockfile_version: '1'
+generated_at: '2026-07-13T19:11:24.272072+00:00'
+dependencies: []
+local_deployed_files:
+- .agents/skills/commit-own-changes
+- .agents/skills/commit-own-changes/SKILL.md
+- .agents/skills/commit-own-changes/scripts/git-lock.ps1
+- .agents/skills/cross-check
+- .agents/skills/cross-check/SKILL.md
+- .agents/skills/full-auto
+- .agents/skills/full-auto/SKILL.md
+- .agents/skills/grilling
+- .agents/skills/grilling/SKILL.md
+- .agents/skills/handoff
+- .agents/skills/handoff/SKILL.md
+- .agents/skills/spawn-deep-researcher
+- .agents/skills/spawn-deep-researcher/SKILL.md
+- .agents/skills/spawn-reviewer
+- .agents/skills/spawn-reviewer/SKILL.md
+- .agents/skills/try
+- .agents/skills/try/SKILL.md
+- .agents/skills/update-module-instruction
+- .agents/skills/update-module-instruction/SKILL.md
+- .agents/skills/update-project-instruction
+- .agents/skills/update-project-instruction/SKILL.md
+- .agents/skills/web-search-best-practice
+- .agents/skills/web-search-best-practice/SKILL.md
+- .agents/skills/workflow-implement-review
+- .agents/skills/workflow-implement-review/SKILL.md
+- .agents/skills/workflow-research-plan
+- .agents/skills/workflow-research-plan/SKILL.md
+- .agents/skills/workflow-troubleshoot-fix-review
+- .agents/skills/workflow-troubleshoot-fix-review/SKILL.md
+- .opencode/agents/auto-human.md
+- .opencode/agents/bugfix.md
+- .opencode/agents/deep-researcher.md
+- .opencode/agents/expert.md
+- .opencode/agents/iterate.md
+- .opencode/agents/leader.md
+- .opencode/agents/plan.md
+- .opencode/agents/reviewer.md
+local_deployed_file_hashes:
+  .agents/skills/commit-own-changes/SKILL.md: sha256:6b0ad76ed07e7222883d3f1455d65ddcd506b262e39540e9b28d3276df7a0ef9
+  .agents/skills/commit-own-changes/scripts/git-lock.ps1: sha256:50466eb892da08752501ee7bb4032c3834730d98d4e9929792a67a50d7cdad9b
+  .agents/skills/cross-check/SKILL.md: sha256:be4ce96ec65a06079ed35203256a76efd7cfcdec00c05106abc4687e61d22677
+  .agents/skills/full-auto/SKILL.md: sha256:914aafd447345d7026f5555e4ada2f80268dd874d40aba04e885e170c06e8532
+  .agents/skills/grilling/SKILL.md: sha256:adf2b26117825e7234bedd818fa2797653a64bfbca8eabc5851d51fffa18f889
+  .agents/skills/handoff/SKILL.md: sha256:0963e390431d0ebbf4f3bac4b12604a54e06a1190b2721da44fc7e691cab6b47
+  .agents/skills/spawn-deep-researcher/SKILL.md: sha256:cf89f4cb2c341ad72cecc38e8564c8d2861d85b0c7addce45436cd432cc0c948
+  .agents/skills/spawn-reviewer/SKILL.md: sha256:47a5d8d781db9f5933388e9697dbbb4c29a10b70ed0fa420ce2ec2e56c3b784e
+  .agents/skills/try/SKILL.md: sha256:3400e806844e2553043922e1b377f4780d7e1d7199e64dbd67f196390d6243bd
+  .agents/skills/update-module-instruction/SKILL.md: sha256:b820d0bd37e31907d8597a594e4553c8fc763aad292f35b455af1ed29323430a
+  .agents/skills/update-project-instruction/SKILL.md: sha256:0f448666cdedcca11349c780aaadeb13d732b23ca64f9e0560db2004b3af1a28
+  .agents/skills/web-search-best-practice/SKILL.md: sha256:90c63e292fee68c9849794fcd26a4a1d4a3d64ce6616e8b8d7cebfde14641ff7
+  .agents/skills/workflow-implement-review/SKILL.md: sha256:f32059a17d709527166d55c7ff5a636cf44477cb56a31a9f8b1a3997c233b883
+  .agents/skills/workflow-research-plan/SKILL.md: sha256:6bc630797999cb4c72400636c08900a47cad33ce0dac4e59b7ce39a02652f526
+  .agents/skills/workflow-troubleshoot-fix-review/SKILL.md: sha256:ede76ea5f64b4e08b9d64f81577dab63331588cc05183a6263dd232fcf0f9210
+  .opencode/agents/auto-human.md: sha256:d7a056757be4955e5f4f0231c325f8a52c621447312197d3c9839462555d2901
+  .opencode/agents/bugfix.md: sha256:68bc1b3fbd7913a27a9c59446202e10ff34a54de94aa8bf8e656fa7d8be27cea
+  .opencode/agents/deep-researcher.md: sha256:cc9a067ba53969a7f18d781cf78837766a972656c2f95c6ee3e25fc7e8ffb90f
+  .opencode/agents/expert.md: sha256:50969af8245ff838b683d3c275abb9ce6e54bb679ed6ba1a4f1e57fdc5f85201
+  .opencode/agents/iterate.md: sha256:3ba30f996c1cdf03a2a7959bd03149a44eeeb0807128a108c6e6f898eb81004b
+  .opencode/agents/leader.md: sha256:77e19214a7c38c6ff32d18445449636045a601059935c0495011dffe9236f7ad
+  .opencode/agents/plan.md: sha256:3a2d247e50241570f14aba1130e990a69ca7335030c9833b9138412b19225638
+  .opencode/agents/reviewer.md: sha256:97f3498c52c93f8cf8e84e0b3ae5bf1feea95586423ef53498b2c7da50c15b7a
