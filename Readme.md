@@ -5,7 +5,7 @@
 ## 原则
 
 - 简洁清晰、零学习成本。相对松弛的约束，不为模型捆手捆脚。
-- 通用需求开发工作流：在一次会话中完成计划到交付。Research → Plan → Implement → Review → Documentation → Commit。
+- 通用需求开发工作流：分两阶段执行。调研设计阶段：Research → Plan。开发交付阶段：Implement → Validation → Review → Documentation → Commit。
 - 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Retest → Review → Documentation → Commit。
 - 基于子代理的调研、检视阶段，显著减少幻觉并提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 以行为粒度提交修改、`grilling` 盘问计划、`cross-check` 审视既有结论、`handoff` 会话交接、`try` 修改前备份。
@@ -38,20 +38,26 @@ apm compile -g
 
 ### 方法 A. 通过调用 Workflow Skill（Skill-Based）
 
-开发新功能前调用 `/workflow-plan-implement-review` 工作流，如：
+开发新功能分两阶段，对应 agent-based 的 plan + iterate：
 
 ```
-/workflow-plan-implement-review 调研 Agent 记忆的 sota 方案，给我的 Agent 加上记忆功能。
+/workflow-research-plan 调研 Agent 记忆的 sota 方案，给我的 Agent 加上记忆功能。
 ```
 
-修复 Bug 前调用 `/workflow-troubleshoot-fix-review` 工作流。
+计划通过后执行：
+
+```
+/workflow-implement-review 实施计划，给我的 Agent 加上记忆功能。
+```
+
+修复 Bug 时调用 `/workflow-troubleshoot-fix-review` 工作流。
 
 ### 方法 B. 通过切换 Agent（Agent-Based）
 
-如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。提示词内容与 Skill 方式一致，优点是可以为计划/实施设置不同模型。
+如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。提示词引用对应 Skill 的内容，优点是可以为不同阶段设置不同模型。
 
-调研和设计新方案时切换到 `plan`。 
-实施时切换到 `implement`。 
+调研和设计新方案时切换到 `plan`。
+实施时切换到 `iterate`。
 修复 bug 时切换到 `bugfix`。
 
 ## 内容物
@@ -73,16 +79,17 @@ apm compile -g
 | `reviewer`        | 代码检视                        |
 | `expert`          | 通用困难任务                    |
 | `auto-human`      | 自动决策（用于 full-auto 模式） |
-| `plan` (Agent-Based) | 调研和设计新方案，对应 workflow-plan-implement-review 前半部分 |
-| `iterate` (Agent-Based) | 实施并交付，对应 workflow-plan-implement-review 后半部分 |
-| `bugfix` (Agent-Based) | 定位和修复 Bug，对应 workflow-troubleshoot-fix-review |
-| `leader` (Agent-Based) | 自主迭代 |
+| `plan` (Agent-Based) | 调研和设计新方案，引用 /workflow-research-plan |
+| `iterate` (Agent-Based) | 实施并交付，引用 /workflow-implement-review |
+| `bugfix` (Agent-Based) | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
+| `leader` (Agent-Based) | 自主迭代，委托 plan/iterate/bugfix 子代理 |
 
 ### Skills & Commands（技能与命令）
 
 | 技能                               | 激活方式  | 说明                                                                         |
 | ---------------------------------- | --------- | ---------------------------------------------------------------------------- |
-| `workflow-plan-implement-review`   | 仅用户    | 核心工作流：Research → Plan → Implement → Review → Documentation → Commit    |
+| `workflow-research-plan`           | 仅用户    | 调研设计阶段：Research → Plan                                                |
+| `workflow-implement-review`        | 仅用户    | 开发交付阶段：Implement → Validation → Review → Documentation → Commit       |
 | `workflow-troubleshoot-fix-review` | 仅用户    | Bugfix 工作流：Troubleshoot → Fix → Retest → Review → Documentation → Commit |
 | `handoff`                          | 仅用户    | 总结当前会话用于交接                                                         |
 | `spawn-deep-researcher`            | 用户或 AI | 启动网络调研子代理                                                           |
@@ -122,3 +129,5 @@ apm compile -g
 如果仅通过文档传递计划可能出现交接偏差。相反，一个不会产生偏差的严格计划已经接近于完整的实施了。分离两者上下文的收益并不大，却增加了额外的复杂度和交接的脆弱性。
 计划与实施应当是一脉相承的，计划产生的上下文对于实施者同样有用。因此，我更倾向于让计划止于方案设计，为实施预留一些自主发挥的空间，并让实施阶段继承计划阶段的全部上下文。
 另一方面，检视，调研和 cross check 恰恰通过上下文隔离避免了对错误路径的依赖。
+
+因此 `workflow-research-plan` 和 `workflow-implement-review` 被设计为在同一次会话中按序执行，以继承完整上下文。仅在明确需要切换模型时，才使用 agent-based 方式跨会话切换。
