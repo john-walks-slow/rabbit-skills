@@ -2,7 +2,6 @@
 name: workflow-troubleshoot-fix-review
 description: 完成 Bug 的根因分析、修复、验证、检视和交付。
 user-invocable: true
-disable-model-invocation: true
 ---
 
 # workflow-troubleshoot-fix-review
