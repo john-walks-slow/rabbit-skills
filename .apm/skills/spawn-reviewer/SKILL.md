@@ -1,6 +1,6 @@
 ---
 name: spawn-reviewer
-description: reviewer 子代理的调用规范。使用 reviewer 进行代码审查前必须使用。
+description: 使用 reviewer 子代理进行高质量的代码审查。调用 reviewer 子代理前必须阅读。
 user-invocable: true
 ---
 
