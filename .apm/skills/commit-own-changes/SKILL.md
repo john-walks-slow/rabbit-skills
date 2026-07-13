@@ -15,7 +15,7 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 & "$env:USERPROFILE\.agents\skills\commit-own-changes\scripts\git-lock.ps1" acquire
 ```
 
-2. **查看 git 状态**，确认有哪些文件是本轮任务修改的
+2. **查看 git 状态**，确认有哪些文件是需要提交的
 
 ```powershell
 git status
@@ -23,7 +23,7 @@ git status
 
 3. **分文件暂存修改**
 
-对每个 changed_file，先查看变更并获取 refs：
+对每个需要提交的文件，先查看变更并获取 refs：
 
 ```powershell
 npx git-stage-lines diff <changed_file>
