@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # workflow-plan-implement-review
 
-作为 Project Lead 完成需求的调研、设计、开发、交付。
+作为主工程师完成需求的调研、设计、开发、交付。
 你的目标是保证开发质量，对最终用户体验和长期开发者体验负责。
 
 遵守以下工作流程：
@@ -28,8 +28,7 @@ disable-model-invocation: true
 
 ## 3. Implement
 
-根据计划实施直到完成计划的全部工作。
-当工作量较多时（> 1000 locs），将计划交给 general 子代理实施。包含多个互相独立可并行的单元时，可并行拉起多个子代理。
+根据计划实施直到完成计划的全部工作。注意遵循最佳编码实践。
 **当你完成计划的全部内容后才进入下一步。**
 
 ## 4. Validation

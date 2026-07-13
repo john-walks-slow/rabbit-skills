@@ -36,6 +36,8 @@ apm compile -g
 
 ## 使用
 
+### A. 通过调用 Workflow Skill
+
 开发新功能时调用 `/workflow-plan-implement-review` 工作流，如：
 
 ```
@@ -43,6 +45,17 @@ apm compile -g
 ```
 
 修复 Bug 时调用 `/workflow-troubleshoot-fix-review` 工作流。
+
+### B. 通过切换 Agent 使用（适用于 opencode 等支持切换主 Agent 的工具）
+
+如果你的 Agent 工具支持随时切换主 Agent（如 opencode），可以使用更灵活的 agent-based 变体。提示词内容与 Workflow 一致，优点是分层更清晰，可以为子阶段设置不同的模型。
+
+| 角色 | 何时使用 |
+|------|---------|
+| `plan` | 调研和设计新方案 |
+| `iterate` | 实施并交付 |
+| `bugfix` | 定位和修复 Bug |
+| `leader`  | 自主迭代 |
 
 ## 内容物
 
@@ -55,7 +68,7 @@ apm compile -g
 | `03_documentation` | 文档规范 |
 | `09_custom`        | 其他惯例 |
 
-### Agents（子代理）
+### Agents（代理和子代理）
 
 | 名称              | 说明                            |
 | ----------------- | ------------------------------- |
@@ -63,6 +76,10 @@ apm compile -g
 | `reviewer`        | 代码检视                        |
 | `expert`          | 通用困难任务                    |
 | `auto-human`      | 自动决策（用于 full-auto 模式） |
+| `plan` (Agent-Based) | 调研和设计新方案，对应 workflow-plan-implement-review 前半部分 |
+| `iterate` (Agent-Based) | 实施并交付，对应 workflow-plan-implement-review 后半部分 |
+| `bugfix` (Agent-Based) | 定位和修复 Bug，对应 workflow-troubleshoot-fix-review |
+| `leader` (Agent-Based) | 自主迭代 |
 
 ### Skills & Commands（技能与命令）
 
@@ -102,3 +119,9 @@ apm compile -g
 ### 项目指引写在 AGENTS.md 里，能兼容 Claude Code 吗？
 
 能。虽然 CC 不会自动注入 AGENTS.md，但文档规范中明确要求了：「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」。AGENTS.md 没有自动注入的情况下，Agent 会在工作前自主阅读，效果等价。
+
+### 计划和实施是否应该在分开的会话中进行？
+
+如果仅通过文档传递计划可能出现交接偏差。相反，一个不会产生偏差的严格计划已经接近于完整的实施了。分离两者上下文的收益并不大，却增加了额外的复杂度和交接的脆弱性。
+计划与实施应当是一脉相承的，计划产生的上下文对于实施者同样有用。因此，我更倾向于让计划止于方案设计，为实施预留一些自主发挥的空间，并让实施阶段继承计划阶段的全部上下文。
+另一方面，检视，调研和 cross check 恰恰通过上下文隔离避免了对错误路径的依赖。
