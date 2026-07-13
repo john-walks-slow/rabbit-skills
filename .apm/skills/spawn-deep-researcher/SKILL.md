@@ -1,6 +1,6 @@
 ---
 name: spawn-deep-researcher
-description: deep-researcher 子代理的调用规范。使用 deep-researcher 进行深度网络调研前必须使用。
+description: 使用 deep-researcher 子代理进行网络调研。调用 deep-researcher 子代理前必须使用。
 user-invocable: true
 ---
 
