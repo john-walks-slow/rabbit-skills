@@ -29,21 +29,28 @@ disable-model-invocation: true
 ## 3. Implement
 
 根据计划实施直到完成计划的全部工作。
-当工作量较多时（> 700 locs），将计划交给 general 子代理实施。包含多个互相独立可并行的单元时，可并行拉起多个子代理。
+当工作量较多时（> 1000 locs），将计划交给 general 子代理实施。包含多个互相独立可并行的单元时，可并行拉起多个子代理。
 **当你完成计划的全部内容后才进入下一步。**
 
-## 4. Review
+## 4. Validation
+
+检查 ide 是否报错，确保项目编译正常。
+若项目具有测试规范，按照惯例运行和编写测试。
+自验证无问题后，请用户体验功能。
+**当用户确认功能正常后才进入下一步。**
+
+## 5. Review
 
 使用 /spawn-reviewer 检视代码（而不是使用 bugbot 子代理），指定检视报告输出位置为 /docs/features/yymmdd-{feature}/yymmdd-{feature}.review.md。
 若检视发现阻塞问题和合理的建议，则进行修改和优化。修改后再次将本次实施的全部代码提交检视。
 **直到拥有明确准入结论后才进入下一步。**
 
-## 5. Documentation
+## 6. Documentation
 
 将本次需求背景、计划、实施中的重点与值得后续注意的部分简要记录到 /docs/features/yymmdd-{feature}/yymmdd-{feature}.summary.md。
 遵循规范按需更新模块级和项目级 AGENTS.md。
 
-## 6. Commit
+## 7. Commit
 
 最后，在征得用户 _书面确认_ 后提交本次修改的文档和文件。遵循项目提交规范。
 
