@@ -36,26 +36,23 @@ apm compile -g
 
 ## 使用
 
-### A. 通过调用 Workflow Skill
+### 方法 A. 通过调用 Workflow Skill（Skill-Based）
 
-开发新功能时调用 `/workflow-plan-implement-review` 工作流，如：
+开发新功能前调用 `/workflow-plan-implement-review` 工作流，如：
 
 ```
 /workflow-plan-implement-review 调研 Agent 记忆的 sota 方案，给我的 Agent 加上记忆功能。
 ```
 
-修复 Bug 时调用 `/workflow-troubleshoot-fix-review` 工作流。
+修复 Bug 前调用 `/workflow-troubleshoot-fix-review` 工作流。
 
-### B. 通过切换 Agent 使用（适用于 opencode 等支持切换主 Agent 的工具）
+### 方法 B. 通过切换 Agent（Agent-Based）
 
-如果你的 Agent 工具支持随时切换主 Agent（如 opencode），可以使用更灵活的 agent-based 变体。提示词内容与 Workflow 一致，优点是分层更清晰，可以为子阶段设置不同的模型。
+如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。提示词内容与 Skill 方式一致，优点是可以为计划/实施设置不同模型。
 
-| 角色 | 何时使用 |
-|------|---------|
-| `plan` | 调研和设计新方案 |
-| `iterate` | 实施并交付 |
-| `bugfix` | 定位和修复 Bug |
-| `leader`  | 自主迭代 |
+调研和设计新方案时切换到 `plan`。 
+实施时切换到 `implement`。 
+修复 bug 时切换到 `bugfix`。
 
 ## 内容物
 
