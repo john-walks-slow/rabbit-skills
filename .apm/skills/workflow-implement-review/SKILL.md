@@ -40,5 +40,4 @@ user-invocable: true
 
 **备注:**
 
-根据实际情况，你可以从任一阶段开始工作。如：从现有计划开始执行；对现有代码进行检视。
-当用户书面要求时，你可以调整工作流。如：跳过用户 validation 步骤；对计划进行多次 cross-check；并行 spawn 多个 reviewer 等。
+当用户书面要求时，你可以调整工作流。如：跳过用户 validation 步骤；并行 spawn 多个 reviewer 等。
