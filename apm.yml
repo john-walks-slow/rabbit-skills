@@ -17,12 +17,15 @@ keywords:
 type: hybrid
 
 targets:
+  - copilot
   - claude
   - cursor
   - opencode
   - codex
   - gemini
   - windsurf
+  - kiro
+  - antigravity
 
 includes: auto
 

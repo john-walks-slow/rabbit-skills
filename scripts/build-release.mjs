@@ -15,6 +15,8 @@ const TARGET_FILE = {
   kiro:     'AGENTS.md',
   claude:   'CLAUDE.md',
   gemini:   'GEMINI.md',
+  copilot:  '.github/copilot-instructions.md',
+  antigravity: 'AGENTS.md',
 };
 
 const yml = readFileSync(`${ROOT}apm.yml`, 'utf8');
@@ -26,7 +28,6 @@ const targets = m
 console.log(`Building release for targets: ${targets.join(', ')}\n`);
 
 for (const target of targets) {
-  const ctxFile = TARGET_FILE[target] ?? 'AGENTS.md';
   const outDir = `${RELEASE_DIR}/${target}`;
 
   console.log(`  [${target}] → ${outDir}/`);
@@ -42,12 +43,16 @@ for (const target of targets) {
   execSync(`apm install -t ${target}`, { cwd: outDir, stdio: 'pipe' });
   execSync(`apm compile -t ${target}`, { cwd: outDir, stdio: 'pipe' });
 
+  await rm(`${outDir}/.apm`, { recursive: true, force: true });
   await rm(`${outDir}/apm_modules`, { recursive: true, force: true });
   await rm(`${outDir}/apm.lock.yaml`, { force: true });
   await rm(`${outDir}/.gitignore`, { force: true });
 
-  const exists = existsSync(`${outDir}/${ctxFile}`);
-  console.log(`    ${exists ? '✓' : '○'} ${ctxFile} (${exists ? 'generated' : 'rules deploy only'})`);
+  const ctxFile = TARGET_FILE[target];
+  if (ctxFile) {
+    const exists = existsSync(`${outDir}/${ctxFile}`);
+    console.log(`    ${exists ? '✓' : '○'} ${ctxFile} (${exists ? 'generated' : 'rules deploy only'})`);
+  }
 }
 
 console.log(`\nDone. Release ready at release/<target>/`);
