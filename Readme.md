@@ -5,7 +5,7 @@
 ## 原则
 
 - 简洁清晰、零学习成本。相对松弛的约束，不为模型捆手捆脚。
-- 通用需求开发工作流：分两阶段执行。调研设计阶段：Research → Plan。开发交付阶段：Implement → Validation → Review → Documentation → Commit。
+- 通用需求开发工作流。调研设计：Research → Plan。开发交付：Implement → Validation → Review → Documentation → Commit。
 - 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Retest → Review → Documentation → Commit。
 - 基于子代理的调研、检视阶段，显著减少幻觉并提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 以行为粒度提交修改、`grilling` 盘问计划、`cross-check` 审视既有结论、`handoff` 会话交接、`try` 修改前备份。
@@ -38,19 +38,17 @@ apm compile -g
 
 ### 方法 A. 通过调用 Workflow Skill（Skill-Based）
 
-开发新功能分两阶段，对应 agent-based 的 plan + iterate：
-
 ```
 /workflow-research-plan 调研 Agent 记忆的 sota 方案，给我的 Agent 加上记忆功能。
 ```
 
-计划通过后执行：
+认可计划后调用：
 
 ```
-/workflow-implement-review 实施计划，给我的 Agent 加上记忆功能。
+/workflow-implement-review 实施。
 ```
 
-修复 Bug 时调用 `/workflow-troubleshoot-fix-review` 工作流。
+修复 Bug 时调用 `/workflow-troubleshoot-fix-review`。
 
 ### 方法 B. 通过切换 Agent（Agent-Based）
 
@@ -88,9 +86,9 @@ apm compile -g
 
 | 技能                               | 激活方式  | 说明                                                                         |
 | ---------------------------------- | --------- | ---------------------------------------------------------------------------- |
-| `workflow-research-plan`           | 仅用户    | 调研设计阶段：Research → Plan                                                |
-| `workflow-implement-review`        | 仅用户    | 开发交付阶段：Implement → Validation → Review → Documentation → Commit       |
-| `workflow-troubleshoot-fix-review` | 仅用户    | Bugfix 工作流：Troubleshoot → Fix → Retest → Review → Documentation → Commit |
+| `workflow-research-plan`           | 用户或 AI | 调研设计工作流：Research → Plan                                                |
+| `workflow-implement-review`        | 用户或 AI | 开发交付工作流：Implement → Validation → Review → Documentation → Commit       |
+| `workflow-troubleshoot-fix-review` | 用户或 AI | Bugfix 工作流：Troubleshoot → Fix → Retest → Review → Documentation → Commit |
 | `handoff`                          | 仅用户    | 总结当前会话用于交接                                                         |
 | `spawn-deep-researcher`            | 用户或 AI | 启动网络调研子代理                                                           |
 | `spawn-reviewer`                   | 用户或 AI | 启动代码检视子代理                                                           |
@@ -117,8 +115,8 @@ apm compile -g
 
 ### 为什么推荐全局安装？
 
-我们默认用全局指令设定全局风格，用项目级 AGENTS.md 记录项目指引。项目级安装时两者可能冲突。
-若希望项目级安装，建议手动更换 03_documentation，update-project-instruction 和 update-module-instruction 中指引文档的文件名，将 AGENTS.md 替换为其他文件名即可。
+我们用全局指令设定全局风格，用项目级 AGENTS.md 记录项目指引。项目级安装时两者可能冲突。
+若希望项目级安装，可手动更换 03_documentation，update-project-instruction 和 update-module-instruction 中指引文档的文件名，将 AGENTS.md 替换为其他文件名即可。
 
 ### 项目指引写在 AGENTS.md 里，能兼容 Claude Code 吗？
 
@@ -126,8 +124,8 @@ apm compile -g
 
 ### 计划和实施是否应该在分开的会话中进行？
 
-如果仅通过文档传递计划可能出现交接偏差。相反，一个不会产生偏差的严格计划已经接近于完整的实施了。分离两者上下文的收益并不大，却增加了额外的复杂度和交接的脆弱性。
-计划与实施应当是一脉相承的，计划产生的上下文对于实施者同样有用。因此，我更倾向于让计划止于方案设计，为实施预留一些自主发挥的空间，并让实施阶段继承计划阶段的全部上下文。
-另一方面，检视，调研和 cross check 恰恰通过上下文隔离避免了对错误路径的依赖。
+如果仅通过文档传递计划可能在交接过程产生失真。相反，一个不会产生失真的严格计划已经无限接近于完整的实施了。大多数情况下，计划阶段产生的上下文对于实施阶段同样有用。计划与实施上下文隔离的收益并不大却增加了额外的复杂度和交接的脆弱性。
 
-因此 `workflow-research-plan` 和 `workflow-implement-review` 被设计为在同一次会话中按序执行，以继承完整上下文。仅在明确需要切换模型时，才使用 agent-based 方式跨会话切换。
+因此，一般建议在同一会话中进行计划和实施。只有在计划阶段产生的上下文已经过于庞杂的情况下，才推荐在新会话中依靠计划文档继续实施。
+
+另一方面，review，research 和 cross-check 则利用子代理上下文隔离的特性，避免了对错误的路径依赖。
