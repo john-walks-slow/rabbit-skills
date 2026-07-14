@@ -13,7 +13,7 @@ user-invocable: true
 ## 1. Research
 
 正确理解用户意图，充分调研对计划与实现有帮助的背景信息和外部信息。
-使用 explore 子代理探索代码库。使用 /spawn-deep-researcher 进行深度调研（指定输出文件: /docs/features/{feature}/yymmdd-{topic}.research.md）。
+使用 explore 子代理探索代码库。使用 /spawn-deep-researcher 进行深度调研（指定输出文件: /docs/features/yymmdd-{feature}/yymmdd-{topic}.research.md）。
 **当你有 95% 把握具备充分、完备的背景信息后才进入下一步。**
 
 ## 2. Plan
@@ -26,4 +26,4 @@ user-invocable: true
 
 **备注：**
 
-特别的，仅当需求体量很大时（> 3500 locs），考虑拆分 phase。输出总规划（yymmdd-{feature}.plan.md）和具体的当前 phase（yymmdd-{feature}-phase{n}.plan.md）计划。
+特别的，仅当需求体量很大时（> 3500 locs），考虑拆分 phase。分别输出总规划（yymmdd-{feature}.plan.md）和具体的当前 phase（yymmdd-{feature}-phase{n}.plan.md）计划。
