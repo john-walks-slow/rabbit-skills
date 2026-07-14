@@ -28,11 +28,15 @@
 
 ```bash
 apm install -g john-walks-slow/rabbit-skills
+```
+
+如果你的工具原生不支持 Rules（如 OpenCode、Codex、Gemini），需额外将 Rules 编译为全局指令：
+
+```bash
 apm compile -g
 ```
 
-> 注：APM 不会覆盖你原先手写的指令（AGENTS.md 等）。
-> 如果希望覆盖，请在备份后删除原有指令，再次执行 compile -g。
+> 注：APM 不会覆盖你原先手写的指令（AGENTS.md 等）。如果希望覆盖，请在备份后删除原有指令文件，再次执行 compile -g。
 
 ## 使用
 
