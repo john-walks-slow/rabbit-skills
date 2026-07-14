@@ -6,7 +6,7 @@
 
 - 简洁清晰、零学习成本。相对松弛的约束，不为模型捆手捆脚。
 - 通用需求开发工作流。调研设计：Research → Plan。开发交付：Implement → Validation → Review → Documentation → Commit。
-- 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Retest → Review → Documentation → Commit。
+- 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Validation → Review → Documentation → Commit。
 - 基于子代理的调研、检视阶段，显著减少幻觉并提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 以行为粒度提交修改、`grilling` 盘问计划、`cross-check` 审视既有结论、`handoff` 会话交接、`try` 修改前备份。
 - 极简的文档规范，留存开发状态的同时避免历史文档-代码双向同步问题。
