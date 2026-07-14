@@ -40,7 +40,7 @@ apm compile -g
 
 ## 使用
 
-### 方法 A. 通过调用 Workflow Skill（Skill-Based）
+### 方法 A. 通过调用 Workflow Skill
 
 ```
 /workflow-research-plan 调研 Agent 记忆的 sota 方案，给我的 Agent 加上记忆功能。
@@ -54,9 +54,9 @@ apm compile -g
 
 修复 Bug 时调用 `/workflow-troubleshoot-fix-review`。
 
-### 方法 B. 通过切换 Agent（Agent-Based）
+### 方法 B. 通过切换 Agent
 
-如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。提示词引用对应 Skill 的内容，优点是可以为不同阶段设置不同模型。
+如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。工作流程与 Skill 一致，优点是可以为不同阶段设置不同模型。
 
 调研和设计新方案时切换到 `planner`。
 实施时切换到 `iterator`。
@@ -81,10 +81,10 @@ apm compile -g
 | `reviewer`        | 代码检视                        |
 | `expert`          | 通用困难任务                    |
 | `auto-human`      | 自动决策（用于 full-auto 模式） |
-| `planner` (Agent-Based) | 调研和设计新方案，引用 /workflow-research-plan |
-| `iterator` (Agent-Based) | 实施并交付，引用 /workflow-implement-review |
-| `bugfix` (Agent-Based) | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
-| `leader` (Agent-Based) | 自主迭代，委托 planner/iterator/bugfix 子代理 |
+| `planner` | 调研和设计新方案，引用 /workflow-research-plan |
+| `iterator` | 实施并交付，引用 /workflow-implement-review |
+| `bugfix` | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
+| `leader` | 自主迭代，委托 planner/iterator/bugfix 子代理 |
 
 ### Skills & Commands（技能与命令）
 
