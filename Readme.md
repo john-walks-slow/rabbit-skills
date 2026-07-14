@@ -5,7 +5,7 @@
 ## 原则
 
 - 简洁清晰、零学习成本。相对松弛的约束，不为模型捆手捆脚。
-- 通用需求开发工作流。调研设计：Research → Plan。开发交付：Implement → Validate → Review → Documentation → Commit。
+- 通用需求开发工作流。调研设计：Research → Plan → Align。开发交付：Implement → Validate → Review → Documentation → Commit。
 - 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Validate → Review → Documentation → Commit。
 - 基于子代理的调研、检视阶段，显著减少幻觉并提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 以行粒度提交修改、`grilling` 盘问计划、`cross-check` 审视既有结论、`handoff` 会话交接、`try` 修改前备份。
@@ -90,7 +90,7 @@ apm compile -g
 
 | 技能                               | 激活方式  | 说明                                                                         |
 | ---------------------------------- | --------- | ---------------------------------------------------------------------------- |
-| `workflow-research-plan`           | 用户或 AI | 调研设计工作流：Research → Plan                                                |
+| `workflow-research-plan`           | 用户或 AI | 调研设计工作流：Research → Plan → Align                                                |
 | `workflow-implement-review`        | 用户或 AI | 开发交付工作流：Implement → Validate → Review → Documentation → Commit       |
 | `workflow-troubleshoot-fix-review` | 用户或 AI | Bugfix 工作流：Troubleshoot → Fix → Validate → Review → Documentation → Commit |
 | `handoff`                          | 仅用户    | 总结当前会话用于交接                                                         |
