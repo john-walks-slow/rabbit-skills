@@ -1,6 +1,6 @@
 ---
 name: spawn-deep-researcher
-description: 使用 deep-researcher 子代理对特定主题进行深度、广泛、准确的网络调研。当需要对特定主题进行高质量调研时优先使用。调用 deep-researcher 子代理前必须阅读。
+description: 使用 deep-researcher 子代理对特定主题进行深度、广泛、准确的网络调研。当需要对特定主题进行高质量调研时优先使用。拉起 deep-researcher 子代理前必须阅读。
 user-invocable: true
 ---
 
