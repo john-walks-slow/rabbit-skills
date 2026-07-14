@@ -1,5 +1,5 @@
 ---
-name: iterate
+name: iterator
 description: iterate 代理。仅支持用户调用或 leader 调用。
 ---
 
