@@ -15,11 +15,13 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 1. **获取锁**（防止同一时间其他 Agent 进行 Git 操作；会自动等待直到上一个锁释放）
 
 ```bash
-scripts/git-lock.sh acquire <task-id>   # Linux/macOS
+{skill_dir}/scripts/git-lock.sh acquire <task-id>   # Linux/macOS
 ```
 ```powershell
-.\scripts\git-lock.ps1 acquire -TaskId <task-id>   # Windows
+{skill_dir}\scripts\git-lock.ps1 acquire -TaskId <task-id>   # Windows
 ```
+
+> 若 acquire 执行失败（输出不包含 `acquired`），立即中止，**不得继续后续步骤**。向用户报告异常。 
 
 2. **查看 git 状态**，确认有哪些文件是需要提交的
 
@@ -78,10 +80,10 @@ git commit -m "feat: xxx" -m "详细描述每个文件的修改内容（按团�
 5. **释放锁**
 
 ```bash
-scripts/git-lock.sh release <task-id>   # Linux/macOS
+{skill_dir}/scripts/git-lock.sh release <task-id>   # Linux/macOS
 ```
 ```powershell
-.\scripts\git-lock.ps1 release -TaskId <task-id>   # Windows
+{skill_dir}\scripts\git-lock.ps1 release -TaskId <task-id>   # Windows
 ```
 
 ## 原则
