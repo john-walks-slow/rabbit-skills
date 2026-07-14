@@ -54,8 +54,8 @@ apm compile -g
 
 如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。提示词引用对应 Skill 的内容，优点是可以为不同阶段设置不同模型。
 
-调研和设计新方案时切换到 `plan`。
-实施时切换到 `iterate`。
+调研和设计新方案时切换到 `planner`。
+实施时切换到 `iterator`。
 修复 bug 时切换到 `bugfix`。
 
 ## 内容物
@@ -77,10 +77,10 @@ apm compile -g
 | `reviewer`        | 代码检视                        |
 | `expert`          | 通用困难任务                    |
 | `auto-human`      | 自动决策（用于 full-auto 模式） |
-| `plan` (Agent-Based) | 调研和设计新方案，引用 /workflow-research-plan |
-| `iterate` (Agent-Based) | 实施并交付，引用 /workflow-implement-review |
+| `planner` (Agent-Based) | 调研和设计新方案，引用 /workflow-research-plan |
+| `iterator` (Agent-Based) | 实施并交付，引用 /workflow-implement-review |
 | `bugfix` (Agent-Based) | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
-| `leader` (Agent-Based) | 自主迭代，委托 plan/iterate/bugfix 子代理 |
+| `leader` (Agent-Based) | 自主迭代，委托 planner/iterator/bugfix 子代理 |
 
 ### Skills & Commands（技能与命令）
 

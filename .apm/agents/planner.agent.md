@@ -1,5 +1,5 @@
 ---
-name: plan
+name: planner
 description: plan 代理。仅支持用户调用或 leader 调用。
 ---
 
