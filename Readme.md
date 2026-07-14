@@ -81,9 +81,9 @@ apm compile -g
 | `reviewer`        | subagent  | 代码检视                        |
 | `expert`          | subagent  | 通用困难任务                    |
 | `auto-human`      | subagent  | 自动决策（用于 full-auto 模式） |
-| `planner`         | main      | 调研和设计新方案，引用 /workflow-research-plan |
-| `iterator`        | main      | 实施并交付，引用 /workflow-implement-review |
-| `bugfixer`        | main      | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
+| `planner`         | both      | 调研和设计新方案，引用 /workflow-research-plan |
+| `iterator`        | both      | 实施并交付，引用 /workflow-implement-review |
+| `bugfixer`        | both      | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
 | `leader`          | main      | 自主迭代，委托 planner/iterator/bugfixer 子代理 |
 
 ### Skills & Commands（技能与命令）
