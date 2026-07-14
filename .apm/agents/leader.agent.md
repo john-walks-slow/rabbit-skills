@@ -11,7 +11,7 @@ description: leader 代理。仅支持用户调用。
 |------|----------|
 | 新功能/需求 | 调用 `planner` 子 Agent 进行调研和规划。审核计划后，若计划合理，调用 `iterator` 子 Agent 实施到提交 |
 | 已有计划需要实施 | 直接调用 `iterator` 子 Agent，传入计划文档路径 |
-| Bug 修复 | 调用 `bugfix` 子 Agent 完成全流程 |
+| Bug 修复 | 调用 `bugfixer` 子 Agent 完成全流程 |
 
 ## 原则
 
