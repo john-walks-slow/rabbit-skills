@@ -16,7 +16,7 @@ user-invocable: true
 根据计划实施直到完成计划的全部工作。注意遵循最佳编码实践。
 **当你完成计划的全部内容后才进入下一步。**
 
-## 2. Validation
+## 2. Validate
 
 检查 ide 是否报错，确保项目编译正常。
 若项目具有测试规范，按照惯例运行和编写测试。
@@ -26,7 +26,7 @@ user-invocable: true
 ## 3. Review
 
 使用 /spawn-reviewer 检视代码（而不是使用 bugbot 子代理），指定检视报告输出位置为 /docs/features/yymmdd-{feature}/yymmdd-{feature}.review.md。
-若检视发现阻塞问题和合理的建议，则进行修改和优化。修改后再次将本次实施的全部代码提交检视。
+若检视发现阻塞问题和合理的建议，则进行修改和优化。修改后**再次**将本次实施的全部代码提交检视。
 **直到拥有明确准入结论后才进入下一步。**
 
 ## 4. Documentation
