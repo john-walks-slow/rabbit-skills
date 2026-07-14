@@ -1,22 +1,24 @@
 ---
 name: spawn-deep-researcher
-description: 使用 deep-researcher 子代理进行深度、准确的网络调研。调用 deep-researcher 子代理前必须阅读。
+description: 使用 deep-researcher 子代理对特定主题进行深度、广泛、准确的网络调研。当需要对特定主题进行高质量调研时优先使用。调用 deep-researcher 子代理前必须阅读。
 user-invocable: true
 ---
 
 使用 `deep-researcher` 子代理进行深度网络调研。
 你提供的输入指令必须是 json 字符串，遵循如下 schema：
 
-```json
-{
-  "type": "object",
-  "properties": {
-    "context": { "type": "string", "description": "任务背景" },
-    "topic": { "type": "string", "description": "调研主题" },
-    "output_to_file": { "type": "string", "description": "可选。报告写入路径" }
-  },
-  "required": ["topic"]
-}
+```
+---
+output_to_file: 报告写入路径或 false
+---
+
+## Context
+
+<任务背景>
+
+## Topic
+
+<调研主题>
 ```
 
 注意：
