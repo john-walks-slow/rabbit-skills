@@ -14,7 +14,7 @@ output_to_file: 报告写入路径或 false。无显式要求时建议给 false�
 
 ## Context
 
-<任务背景。如计划文档等。>
+<任务背景。如计划文档/决策背景/问题现象。>
 
 ## Changes
 
