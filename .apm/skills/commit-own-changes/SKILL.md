@@ -27,6 +27,12 @@ scripts/git-lock.sh acquire <task-id>   # Linux/macOS
 git status
 ```
 
+**清除预暂存**（防止前序操作残留的预暂存干扰精确 staging）
+
+```powershell
+git restore --staged .
+```
+
 3. **分文件暂存修改**
 
 对每个需要提交的文件，先查看变更并获取 refs：
