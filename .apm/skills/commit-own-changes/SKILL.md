@@ -9,18 +9,16 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 
 ## 工作流程
 
-使用前先定义任务 ID（确保 acquire/release 使用同一 ID）：
-```bash
-TASK_ID="commit-$(date +%s)"
-```
+每个 git 操作会话需指定一个唯一 `<task-id>`（建议用本次任务的极简英文 summary，
+如 `fix-login-crash`、`add-dark-mode`）。acquire 和 release 必须使用同一 ID。
 
-1. **等待获取锁**（防止同一时间其他 Agent 进行 Git 操作；一直等到上一个锁释放）
+1. **获取锁**（防止同一时间其他 Agent 进行 Git 操作；会自动等待直到上一个锁释放）
 
 ```bash
-scripts/git-lock.sh acquire "$TASK_ID"   # Linux/macOS
+scripts/git-lock.sh acquire <task-id>   # Linux/macOS
 ```
 ```powershell
-.\scripts\git-lock.ps1 acquire -TaskId $env:TASK_ID   # Windows
+.\scripts\git-lock.ps1 acquire -TaskId <task-id>   # Windows
 ```
 
 2. **查看 git 状态**，确认有哪些文件是需要提交的
@@ -74,10 +72,10 @@ git commit -m "feat: xxx" -m "详细描述每个文件的修改内容（按团�
 5. **释放锁**
 
 ```bash
-scripts/git-lock.sh release "$TASK_ID"   # Linux/macOS
+scripts/git-lock.sh release <task-id>   # Linux/macOS
 ```
 ```powershell
-.\scripts\git-lock.ps1 release -TaskId $env:TASK_ID   # Windows
+.\scripts\git-lock.ps1 release -TaskId <task-id>   # Windows
 ```
 
 ## 原则
