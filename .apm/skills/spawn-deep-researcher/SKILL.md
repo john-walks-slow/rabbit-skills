@@ -9,7 +9,7 @@ user-invocable: true
 
 ```
 ---
-output_to_file: 报告写入路径或 false。如无显式要求，建议输出到 /docs/freeform/yymmdd-<topic>.research.md。
+output_to_file: 报告写入路径或 false。无显式要求时建议输出到 /docs/freeform/yymmdd-<topic>.research.md。
 ---
 
 ## Context
