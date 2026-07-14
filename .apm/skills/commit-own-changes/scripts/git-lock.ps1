@@ -5,9 +5,12 @@
 .PARAMETER Action
     acquire: 获取锁（一直等到上一个 lock 释放）
     release: 释放锁
+.PARAMETER TaskId
+    当前任务的唯一 ID（如 UUID），用于标识锁持有者。
 #>
 param(
-    [Parameter(Mandatory)] [ValidateSet('acquire','release')] [string]$Action
+    [Parameter(Mandatory)] [ValidateSet('acquire','release')] [string]$Action,
+    [Parameter(Mandatory)] [string]$TaskId
 )
 
 $lockFile = Join-Path (git rev-parse --git-dir) "agent.lock"
@@ -32,15 +35,15 @@ function Acquire {
             $file = [System.IO.File]::Open($lockFile, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
             try {
                 $writer = [System.IO.StreamWriter]::new($file)
-                $writer.WriteLine("pid=$pid")
+                $writer.WriteLine("task=$TaskId")
                 $writer.WriteLine("ts=$(Get-Date -UFormat %s)")
             } finally {
                 if ($writer) { $writer.Dispose() } else { $file.Dispose() }
             }
             if ($waited) {
-                Write-Output "acquired after wait:$pid"
+                Write-Output "acquired after wait:$TaskId"
             } else {
-                Write-Output "acquired:$pid"
+                Write-Output "acquired:$TaskId"
             }
             return
         } catch {
@@ -52,17 +55,17 @@ function Acquire {
 function Release {
     if (Test-Path $lockFile) {
         $content = Get-Content $lockFile -Raw -ErrorAction SilentlyContinue
-        if ($content -match "pid=(\d+)") {
-            if ([int]$matches[1] -eq $pid) {
+        if ($content -match "task=(.+)") {
+            if ($matches[1] -eq $TaskId) {
                 Remove-Item $lockFile -Force -ErrorAction SilentlyContinue
-                if ($?) { Write-Output "released:$pid" }
+                if ($?) { Write-Output "released:$TaskId" }
                 else { Write-Warning "释放锁文件失败: $lockFile" }
             } else {
-                Write-Warning "锁由其他进程持有 (PID $($matches[1]))，跳过释放"
+                Write-Warning "锁由其他任务持有 (Task $($matches[1]))，跳过释放"
             }
         } else {
             Remove-Item $lockFile -Force -ErrorAction SilentlyContinue
-            Write-Output "released (orphaned):$pid"
+            Write-Output "released (orphaned):$TaskId"
         }
     }
 }
