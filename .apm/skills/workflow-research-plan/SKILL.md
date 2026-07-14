@@ -1,12 +1,12 @@
 ---
 name: workflow-research-plan
-description: 完成需求的调研和设计，输出高质量计划。
+description: 需求调研设计工作流。仅在显式要求时使用。
 user-invocable: true
 ---
 
 # workflow-research-plan
 
-作为产品架构师完成需求的调研、设计。
+作为产品架构师完成需求的调研、设计，输出计划文档。
 
 遵守以下工作流程：
 
@@ -22,7 +22,7 @@ user-invocable: true
 同时关注用户体验和和项目可维护性。
 计划文档输出到 /docs/features/yymmdd-{feature}/yymmdd-{feature}.plan.md。
 若你对于自己的选型有所犹豫，或当该工作事关重大时，请对计划额外执行一次 /cross-check。
-**确保你理清了所有疑惑点，对自己的设计感到十分清晰后，才结束此阶段。**
+**确保你理清了所有疑惑点，对自己的设计感到十分清晰后，才输出最终计划。** 输出计划后请用户确认，请勿直接实施。
 
 **备注：**
 
