@@ -12,30 +12,32 @@ user-invocable: true
 
 ## 1. Research
 
-正确理解用户意图，充分调研对计划与实现有帮助的背景信息和外部信息。
-使用 explore 子代理探索代码库。使用 /spawn-deep-researcher 进行深度调研（指定输出文件: /docs/features/yymmdd-{feature}/yymmdd-{topic}.research.md）。
-**当你有 95% 把握具备充分、完备的背景信息后才进入下一步。**
+正确理解用户意图，充分调研对体验设计和架构选型有帮助的背景信息和外部资料。
+使用 explore 子代理探索代码库。使用 /spawn-deep-researcher 进行网络调研（指定输出文件: /docs/features/yymmdd-{feature}/yymmdd-{topic}.research.md）。
+
+**当你有 95% 把握掌握了充分、完备的背景信息和网络资料后才进入下一步。**
 
 ## 2. Plan
 
-设计需求、规划方案与架构，并与用户对齐计划。
-同时关注用户体验和和项目可维护性。
+设计用户体验，规划方案与架构。
+以最高的优先级关注使用体验和项目可维护性。
 计划文档输出到 /docs/features/yymmdd-{feature}/yymmdd-{feature}.plan.md。
 若你对于自己的选型有所犹豫，或当该工作事关重大时，请对计划额外执行一次 /cross-check。
+
 **确保你理清了所有疑惑点，对自己的设计感到十分清晰后，进入下一步。**
 
-**备注：**
-
-特别的，仅当需求体量很大时（> 3500 locs），考虑拆分 phase。分别输出总规划（yymmdd-{feature}.plan.md）和具体的当前 phase（yymmdd-{feature}-phase{n}.plan.md）计划。
+> 特别的，仅当需求体量很大时（> 3500 locs），可以考虑拆分 phase，分别输出总规划（yymmdd-{feature}.plan.md）和具体的当前 phase（yymmdd-{feature}-phase{n}.plan.md）计划。
 
 ## 3. Align
 
-请用户审查计划。若用户表达了疑虑、困惑、反对，请仔细理解用户的关注点重新审视你的计划。
-用户不是上帝，用户可能正确也可能完全搞错了。在对齐计划时，按需进行进一步调研、搜索、请教 expert、cross-check 等。
+请用户检查计划。若用户表达了疑虑、困惑、反对，请仔细理解用户的关注点，重新审视你的计划。
+用户不是上帝，用户可能正确也可能搞错。保持独立判断，按需进行进一步调研、搜索、咨询 `expert`、cross-check 等。
 调整计划时，**不要** 在 .plan.md 中包含 “与上一版的差异” 章节。计划文档只应该包含改进完成的最终计划内容。
 
 持续改进计划，直到你的计划与用户期望完全对齐为止。
 
-若用户表示 “Go ahead”，“实施”，“开工”等，立刻使用 /workflow-implement-review 技能，进入实施阶段。
+## Next Step
+
+若用户表示 “Go ahead”，“实施”，“开工”等，立刻使用 /workflow-implement-review 技能，基于当前计划进入实施阶段。
 
 
