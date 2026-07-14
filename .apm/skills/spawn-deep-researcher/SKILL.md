@@ -5,7 +5,7 @@ user-invocable: true
 ---
 
 使用 `deep-researcher` 子代理进行深度网络调研。
-你提供的输入指令必须是 json 字符串，遵循如下 schema：
+你提供的输入指令必须遵循如下格式：
 
 ```
 ---
