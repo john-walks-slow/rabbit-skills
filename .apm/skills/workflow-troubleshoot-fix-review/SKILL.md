@@ -1,6 +1,6 @@
 ---
 name: workflow-troubleshoot-fix-review
-description: 完成 Bug 的根因分析、修复、验证、检视和交付。
+description: 问题分析修复工作流。仅在显式要求时使用。
 user-invocable: true
 ---
 
