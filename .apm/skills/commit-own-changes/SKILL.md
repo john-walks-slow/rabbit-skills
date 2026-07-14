@@ -9,9 +9,6 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 
 ## 工作流程
 
-每个 git 操作会话需指定一个唯一 `<task-id>`（建议用本次任务的极简英文 summary，
-如 `fix-login-crash`、`add-dark-mode`）。acquire 和 release 必须使用同一 ID。
-
 1. **获取锁**（防止同一时间其他 Agent 进行 Git 操作；会自动等待直到上一个锁释放）
 
 ```bash
@@ -21,6 +18,9 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 {skill_dir}\scripts\git-lock.ps1 acquire -TaskId <task-id>   # Windows
 ```
 
+> `<task-id>` 建议用本次任务的极简英文 summary，
+如 `fix-login-crash`、`add-dark-mode`。获取锁和释放锁时必须使用同一 ID。
+
 > 若 acquire 执行失败（输出不包含 `acquired`），立即中止，**不得继续后续步骤**。向用户报告异常。 
 
 2. **查看 git 状态**，确认有哪些文件是需要提交的
@@ -29,7 +29,7 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 git status
 ```
 
-**清除预暂存**（防止前序操作残留的预暂存干扰精确 staging）
+**清除暂存**（防止过去残留的暂存项干扰本次提交）
 
 ```powershell
 git restore --staged .
@@ -74,7 +74,7 @@ git add <changed_file>
 4. **提交**
 
 ```powershell
-git commit -m "feat: xxx" -m "详细描述每个文件的修改内容（按团队语言惯例）"
+git commit -m "feat: xxx" -m "详细描述每个文件的修改内容（使用用户母语）"
 ```
 
 5. **释放锁**
