@@ -1,13 +1,13 @@
 ---
 name: workflow-implement-review
-description: 完成需求的开发、验证、检视和交付。
+description: 需求开发交付工作流。仅在显式要求时使用。
 user-invocable: true
 ---
 
 # workflow-implement-review
 
 作为主工程师完成需求的开发、交付。
-你的目标是保证开发质量，对最终用户体验和长期开发者体验负责。
+保证开发质量，对最终用户体验和长期开发者体验负责。
 
 遵守以下工作流程：
 
