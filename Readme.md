@@ -30,7 +30,7 @@
 apm install -g john-walks-slow/rabbit-skills
 ```
 
-如果你的工具原生不支持 Rules（如 OpenCode、Codex、Gemini），需额外将 Rules 编译为全局指令：
+如果你的工具原生不支持 Instructions / Rules（如 OpenCode、Codex、Gemini），需额外将 Rules 编译为全局指令：
 
 ```bash
 apm compile -g
