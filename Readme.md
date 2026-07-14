@@ -97,10 +97,11 @@ apm compile -g
 | `handoff`                          | 仅用户    | 总结当前会话用于交接                                                         |
 | `spawn-deep-researcher`            | 用户或 AI | 启动网络调研子代理                                                           |
 | `spawn-reviewer`                   | 用户或 AI | 启动代码检视子代理                                                           |
-| `grilling`                         | 用户或 AI | 向用户盘问设计方案                                                           |
-| `try`                              | 用户或 AI | 修改前先备份便于回滚                                                         |
-| `cross-check`                      | 用户或 AI | 使用独立子代理复核关键结论                                                   |
 | `commit-own-changes`               | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                     |
+| `grilling`                         | 用户或 AI | 向用户盘问设计方案                                                           |
+| `cross-check`                      | 用户或 AI | 使用独立子代理复核关键结论                                                   |
+| `tidy`                      | 用户或 AI | 清理当前会话中做过的无效修改                                                   |
+| `try`                              | 用户或 AI | 修改前先备份便于回滚                                                         |
 | `full-auto`                        | 仅用户    | 全自动模式：所有需要用户决策的地方自动由 auto-human 代理                     |
 | `update-project-instruction`       | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                            |
 | `update-module-instruction`        | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                     |
