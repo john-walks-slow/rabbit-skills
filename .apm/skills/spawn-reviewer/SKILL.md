@@ -18,7 +18,7 @@ output_to_file: 报告写入路径或 false。无显式要求时建议给 false�
 
 ## Changes
 
-<变更文件及变更描述。或者：仅当修改已经 commit 时，传入 commit 号>
+<变更文件及每一文件变更内容的描述。或者：仅当修改已经 commit 时，传入 commit 号>
 ```
 
 注意：
