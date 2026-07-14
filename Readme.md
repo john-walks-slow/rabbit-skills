@@ -4,7 +4,7 @@
 
 ## 原则
 
-- 简洁清晰而松弛的约束，不为模型捆手捆脚。
+- 简洁清晰，相对松弛的约束，不为模型捆手捆脚。
 - 零学习成本，不绑定特定开发范式（如 TDD 等，真的需要时再引入）。
 - 通用需求开发工作流。先调研设计：Research → Plan → Align。再迭代交付：Implement → Validate → Review → Documentation → Commit。
 - 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot → Fix → Validate → Review → Documentation → Commit。
