@@ -75,16 +75,16 @@ apm compile -g
 
 ### Agents（代理和子代理）
 
-| 名称              | 说明                            |
-| ----------------- | ------------------------------- |
-| `deep-researcher` | 网络调研                        |
-| `reviewer`        | 代码检视                        |
-| `expert`          | 通用困难任务                    |
-| `auto-human`      | 自动决策（用于 full-auto 模式） |
-| `planner` | 调研和设计新方案，引用 /workflow-research-plan |
-| `iterator` | 实施并交付，引用 /workflow-implement-review |
-| `bugfix` | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
-| `leader` | 自主迭代，委托 planner/iterator/bugfix 子代理 |
+| 名称              | 类型      | 说明                            |
+| ----------------- | --------- | ------------------------------- |
+| `deep-researcher` | subagent  | 网络调研                        |
+| `reviewer`        | subagent  | 代码检视                        |
+| `expert`          | subagent  | 通用困难任务                    |
+| `auto-human`      | subagent  | 自动决策（用于 full-auto 模式） |
+| `planner`         | main      | 调研和设计新方案，引用 /workflow-research-plan |
+| `iterator`        | main      | 实施并交付，引用 /workflow-implement-review |
+| `bugfixer`        | main      | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
+| `leader`          | main      | 自主迭代，委托 planner/iterator/bugfixer 子代理 |
 
 ### Skills & Commands（技能与命令）
 
