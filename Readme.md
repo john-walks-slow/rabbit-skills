@@ -1,14 +1,15 @@
 # rabbit-skills
 
-轻量、有效的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发。
+轻量、松弛、有效的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发。
 
 ## 原则
 
-- 简洁清晰、零学习成本。相对松弛的约束，不为模型捆手捆脚。
-- 通用需求开发工作流。调研设计：Research → Plan → Align。开发交付：Implement → Validate → Review → Documentation → Commit。
-- 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Validate → Review → Documentation → Commit。
-- 基于子代理的调研、检视阶段，显著减少幻觉并提高交付质量。
-- 日常实用 Skill：`commit-own-changes` 以行粒度提交修改、`grilling` 盘问计划、`cross-check` 审视既有结论、`handoff` 会话交接、`try` 修改前备份。
+- 简洁清晰而松弛的约束，不为模型捆手捆脚。
+- 零学习成本，不绑定特定开发范式（如 TDD 等，真的需要时再引入）。
+- 通用需求开发工作流。先调研设计：Research → Plan → Align。再迭代交付：Implement → Validate → Review → Documentation → Commit。
+- 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot → Fix → Validate → Review → Documentation → Commit。
+- 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
+- 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份。
 - 极简的文档规范，留存开发状态的同时避免历史文档-代码双向同步问题。
 - 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
 
