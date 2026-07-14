@@ -60,7 +60,7 @@ apm compile -g
 
 调研和设计新方案时切换到 `planner`。
 实施时切换到 `iterator`。
-修复 bug 时切换到 `bugfix`。
+修复 bug 时切换到 `bugfixer`。
 
 ## 内容物
 
