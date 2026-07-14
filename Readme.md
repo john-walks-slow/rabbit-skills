@@ -5,8 +5,8 @@
 ## 原则
 
 - 简洁清晰、零学习成本。相对松弛的约束，不为模型捆手捆脚。
-- 通用需求开发工作流。调研设计：Research → Plan。开发交付：Implement → Validation → Review → Documentation → Commit。
-- 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Validation → Review → Documentation → Commit。
+- 通用需求开发工作流。调研设计：Research → Plan。开发交付：Implement → Validate → Review → Documentation → Commit。
+- 通用 Bugfix 工作流：先定位再修改避免越改越错。Troubleshoot → Fix → Validate → Review → Documentation → Commit。
 - 基于子代理的调研、检视阶段，显著减少幻觉并提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 以行为粒度提交修改、`grilling` 盘问计划、`cross-check` 审视既有结论、`handoff` 会话交接、`try` 修改前备份。
 - 极简的文档规范，留存开发状态的同时避免历史文档-代码双向同步问题。
@@ -91,8 +91,8 @@ apm compile -g
 | 技能                               | 激活方式  | 说明                                                                         |
 | ---------------------------------- | --------- | ---------------------------------------------------------------------------- |
 | `workflow-research-plan`           | 用户或 AI | 调研设计工作流：Research → Plan                                                |
-| `workflow-implement-review`        | 用户或 AI | 开发交付工作流：Implement → Validation → Review → Documentation → Commit       |
-| `workflow-troubleshoot-fix-review` | 用户或 AI | Bugfix 工作流：Troubleshoot → Fix → Retest → Review → Documentation → Commit |
+| `workflow-implement-review`        | 用户或 AI | 开发交付工作流：Implement → Validate → Review → Documentation → Commit       |
+| `workflow-troubleshoot-fix-review` | 用户或 AI | Bugfix 工作流：Troubleshoot → Fix → Validate → Review → Documentation → Commit |
 | `handoff`                          | 仅用户    | 总结当前会话用于交接                                                         |
 | `spawn-deep-researcher`            | 用户或 AI | 启动网络调研子代理                                                           |
 | `spawn-reviewer`                   | 用户或 AI | 启动代码检视子代理                                                           |
