@@ -1,25 +1,24 @@
 ---
 name: spawn-reviewer
-description: 使用 reviewer 子代理进行高质量的代码审查。调用 reviewer 子代理前必须阅读。
+description: 使用 reviewer 子代理进行高质量的代码审查。当需要检视代码时优先使用。调用 reviewer 子代理前必须阅读。
 user-invocable: true
 ---
 
 使用 `reviewer` 子代理（而不是使用 `bugbot` 或其他子代理）进行代码审查。
-你提供的输入指令必须是 json 字符串，遵循如下 schema：
+你提供的输入指令必须遵循如下格式：
 
-```json
-{
-  "type": "object",
-  "properties": {
-    "context": {
-      "type": "string",
-      "description": "任务背景，需求计划/问题描述"
-    },
-    "changes": { "type": "string", "description": "变更文件及描述" },
-    "output_to_file": { "type": "string", "description": "可选。报告写入路径" }
-  },
-  "required": ["changes"]
-}
+```
+---
+output_to_file: 报告写入路径或 false
+---
+
+## Context
+
+<任务背景。如计划文档等。>
+
+## Changes
+
+<变更文件及变更描述。或者：仅当修改已经 commit 时，传入 commit 号>
 ```
 
 注意：
