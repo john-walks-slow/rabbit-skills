@@ -9,7 +9,7 @@ user-invocable: true
 
 ```
 ---
-output_to_file: 报告写入路径或 false。如无明确要求建议给 false。
+output_to_file: 报告写入路径或 false。无明确要求时给 false。
 ---
 
 ## Context
