@@ -112,8 +112,9 @@ apm compile -g
 
 ## 自定义
 
-按需配置各个子代理使用的模型，建议你为 expert 子代理选择高级模型。
-本项目的提示词都是 self-explanatory 的。你可以任意编辑和选用。
+按需配置各个代理使用的模型，建议为 planner，reviewer，expert 选择高级模型。
+
+本项目的提示词都是 self-explanatory 的，你可以根据实际需要任意增改。
 
 ## FAQ
 
