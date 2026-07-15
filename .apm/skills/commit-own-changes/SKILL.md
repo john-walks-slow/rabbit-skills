@@ -15,7 +15,7 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 {skill_dir}/scripts/git-lock.sh acquire <task-id>   # Linux/macOS
 ```
 ```powershell
-{skill_dir}\scripts\git-lock.ps1 acquire -TaskId <task-id>   # Windows
+{skill_dir}\scripts\git-lock.ps1 -Action acquire -TaskId <task-id>   # Windows
 ```
 
 > `<task-id>` 建议用本次任务的极简英文 summary，
@@ -83,7 +83,7 @@ git commit -m "feat: xxx" -m "详细描述每个文件的修改内容（使用�
 {skill_dir}/scripts/git-lock.sh release <task-id>   # Linux/macOS
 ```
 ```powershell
-{skill_dir}\scripts\git-lock.ps1 release -TaskId <task-id>   # Windows
+{skill_dir}\scripts\git-lock.ps1 -Action release -TaskId <task-id>   # Windows
 ```
 
 ## 原则

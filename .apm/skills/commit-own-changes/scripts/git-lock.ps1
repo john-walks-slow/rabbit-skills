@@ -1,76 +1,118 @@
+#!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-    获取/释放 git 操作互斥锁。
-    确保同一时间只有一个 agent 在执行 git 操作。
+  Acquire or release a git-based agent lock file.
+
+.DESCRIPTION
+  Prevents multiple agents from running git operations simultaneously.
+  Lock is stored in .git/agent.lock/ with task and timestamp files.
+
 .PARAMETER Action
-    acquire: 获取锁（一直等到上一个 lock 释放）
-    release: 释放锁
+  "acquire" or "release"
+
 .PARAMETER TaskId
-    当前任务的唯一 ID（如 UUID），用于标识锁持有者。
+  Unique identifier for this task (e.g. "fix-login-crash")
 #>
+
 param(
-    [Parameter(Mandatory)] [ValidateSet('acquire','release')] [string]$Action,
-    [Parameter(Mandatory)] [string]$TaskId
+    [Parameter(Mandatory = $true, Position = 0)]
+    [ValidateSet('acquire', 'release')]
+    [string]$Action,
+
+    [Parameter(Mandatory = $true, Position = 1)]
+    [string]$TaskId
 )
 
-$lockFile = Join-Path (git rev-parse --git-dir) "agent.lock"
+# Find git dir
+$gitDir = git rev-parse --git-dir 2>$null
+if (-not $gitDir) {
+    Write-Error "not in a git repository"
+    exit 1
+}
+$lockDir = Join-Path $gitDir "agent.lock"
+$taskFile = Join-Path $lockDir "task"
+$tsFile = Join-Path $lockDir "ts"
 
-function Acquire {
-    $waited = $false
-    while ($true) {
-        if (Test-Path $lockFile) {
-            $waited = $true
-            $content = Get-Content $lockFile -Raw -ErrorAction SilentlyContinue
-            if ($content -match 'ts=([\d\.]+)') {
-                $lockTs = [double]::Parse($matches[1])
-                $age = (Get-Date) - (Get-Date -UnixTimeSeconds $lockTs)
-                if ($age.TotalMinutes -gt 5) {
-                    Remove-Item $lockFile -Force -ErrorAction SilentlyContinue
-                    Write-Warning "Cleaned up expired lock (age: $($age.TotalMinutes.ToString('F1'))m)"
-                    continue
-                }
-            }
-        }
-        try {
-            $file = [System.IO.File]::Open($lockFile, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
-            try {
-                $writer = [System.IO.StreamWriter]::new($file)
-                $writer.WriteLine("task=$TaskId")
-                $writer.WriteLine("ts=$(Get-Date -UFormat %s)")
-            } finally {
-                if ($writer) { $writer.Dispose() } else { $file.Dispose() }
-            }
-            if ($waited) {
-                Write-Output "acquired after wait:$TaskId"
-            } else {
-                Write-Output "acquired:$TaskId"
-            }
-            return
-        } catch {
-            Start-Sleep -Milliseconds (Get-Random -Minimum 200 -Maximum 400)
-        }
-    }
+function Get-Timestamp {
+    return [int][double]::Parse((Get-Date -UFormat %s))
 }
 
-function Release {
-    if (Test-Path $lockFile) {
-        $content = Get-Content $lockFile -Raw -ErrorAction SilentlyContinue
-        if ($content -match "task=(.+)") {
-            if ($matches[1] -eq $TaskId) {
-                Remove-Item $lockFile -Force -ErrorAction SilentlyContinue
-                if ($?) { Write-Output "released:$TaskId" }
-                else { Write-Warning "释放锁文件失败: $lockFile" }
-            } else {
-                Write-Warning "锁由其他任务持有 (Task $($matches[1]))，跳过释放"
-            }
-        } else {
-            Remove-Item $lockFile -Force -ErrorAction SilentlyContinue
-            Write-Output "released (orphaned):$TaskId"
-        }
+function Read-Task {
+    if (Test-Path $taskFile) {
+        return (Get-Content $taskFile -Raw).Trim()
     }
+    return $null
 }
 
 switch ($Action) {
-    'acquire'  { Acquire }
-    'release'  { Release }
+    'acquire' {
+        $waited = $false
+        $lockAgeLimit = 300  # 5 minutes
+
+        while ($true) {
+            try {
+                $null = New-Item -ItemType Directory -Path $lockDir -ErrorAction Stop
+                break  # acquired
+            } catch {
+                # Lock exists, wait and retry
+                if (-not $waited) {
+                    Write-Warning "waiting:$TaskId"
+                }
+                $waited = $true
+
+                # Check lock age
+                if (Test-Path $tsFile) {
+                    $tsContent = (Get-Content $tsFile -Raw).Trim()
+                    if ($tsContent -match 'ts=(\d+)') {
+                        $lockTs = [int]$Matches[1]
+                        $now = Get-Timestamp
+                        if (($now - $lockTs) -gt $lockAgeLimit) {
+                            Remove-Item -Path $lockDir -Recurse -Force -ErrorAction SilentlyContinue
+                            continue  # retry immediately after cleanup
+                        }
+                    }
+                }
+                Start-Sleep -Milliseconds 350
+            }
+        }
+
+        $now = Get-Timestamp
+        Set-Content -Path $taskFile -Value "task=$TaskId" -NoNewline
+        Set-Content -Path $tsFile -Value "ts=$now" -NoNewline
+
+        if ($waited) {
+            Write-Output "acquired after wait:$TaskId"
+        } else {
+            Write-Output "acquired:$TaskId"
+        }
+        exit 0
+    }
+
+    'release' {
+        if (-not (Test-Path $lockDir)) {
+            exit 0
+        }
+
+        $readTask = Read-Task
+        if (-not $readTask) {
+            Remove-Item -Path $lockDir -Recurse -Force -ErrorAction SilentlyContinue
+            Write-Output "released (orphaned):$TaskId"
+            exit 0
+        }
+
+        # Strip "task=" prefix
+        $lockTask = $readTask
+        if ($lockTask.StartsWith('task=')) {
+            $lockTask = $lockTask.Substring(5)
+        }
+
+        if ($lockTask -eq $TaskId) {
+            Remove-Item -Path $lockDir -Recurse -Force -ErrorAction SilentlyContinue
+            Write-Output "released:$TaskId"
+            exit 0
+        }
+
+        Write-Warning "Lock held by another task ($lockTask), skip release"
+        exit 0
+    }
 }
