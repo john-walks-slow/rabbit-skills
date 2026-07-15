@@ -5,7 +5,7 @@
 ## 原则
 
 - 简洁清晰，相对松弛的约束，不为模型捆手捆脚。
-- 零学习成本，不绑定特定开发范式（如 TDD 等，真的需要时再引入）。
+- 零学习成本，不绑定特定开发范式（如 TDD 等，需要时再引入）。
 - 通用需求开发工作流。先调研设计：Research → Plan → Align。再迭代交付：Implement → Validate → Review → Documentation → Commit。
 - 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot → Fix → Validate → Review → Documentation → Commit。
 - 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
@@ -63,6 +63,8 @@ apm compile -g
 实施时切换到 `iterator`。
 修复 bug 时切换到 `bugfixer`。
 
+> 注：网络搜索能力对计划与实施质量有着最大的影响。请确保 Agent 具有完全的网络搜索和访问能力（例如：通过 exa，jina 等服务）。
+
 ## 内容物
 
 ### Instructions（系统指令）
@@ -115,6 +117,8 @@ apm compile -g
 ## 自定义
 
 按需配置各个代理使用的模型，建议为 planner，reviewer，expert 选择高级模型。
+
+本项目默认没有对 spec 格式和测试规范做任何约束。如果需要更强约束，请在项目级指令中添加。
 
 本项目的提示词都是 self-explanatory 的，你可以根据实际需要任意增改。
 
