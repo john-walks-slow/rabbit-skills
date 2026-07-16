@@ -10,7 +10,7 @@
 - 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot → Fix → Validate → Review → Documentation → Commit。
 - 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份。
-- 化繁为简的文档规范，留存开发状态的同时避免历史文档-代码双向同步问题。
+- 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
 - 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
 
 ## 安装
