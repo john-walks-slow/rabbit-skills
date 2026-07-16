@@ -9,7 +9,8 @@ user-invocable: true
 创建或更新 `{project_root}/AGENTS.md`。
 仅包括快速入门项目开发必须的信息。
 简洁、直入主题。不超过 300 行。
-特定领域的详细规范请更新到 `{project_root}/docs/references/{topic}.md` 并在本文件中引用。
+
+特定领域的详细规范请更新到 `{project_root}/docs/references/{topic}.md`（见 /update-references）并在本文件中引用。
 
 格式参考：
 
