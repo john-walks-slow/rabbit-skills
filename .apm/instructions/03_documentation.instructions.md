@@ -11,16 +11,17 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 ## AGENTS.md
 
 项目级指引。
-进行任何工作前，必须确保已了解其中内容。
-更新时见 `/update-project-instruction`。
+**进行任何工作前，必须确保已了解其中内容。**
+更新规则见 `/update-project-instruction`。
 
 ## {specific_module}/AGENTS.md
 
 模块级指引。
-就某一模块进行任何工作前，必须确保已了解其中内容。
-更新时见 `/update-module-instruction`。
+**就某一模块进行任何工作前，必须确保已了解其中内容。**
+更新规则见 `/update-module-instruction`。
 
 ## docs/features/yymmdd-{feature_name}/
+|- yymmdd-{topic}.research.md
 |- yymmdd-{feature_name}.plan.md
 |- yymmdd-{feature_name}.review.md
 |- yymmdd-{feature_name}.summary.md
@@ -33,6 +34,10 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 
 问题修复记录。
 
+## docs/references/yymmdd-{topic}.md
+
+不归属于特定模块和需求的领域级规范（例：设计规范、测试规范），可以被模块和项目级指引引用。
+
 ## docs/freeform/yymmdd-{topic}.md
 
-不归属于特定功能或问题的记录。
+不归属于特定模块和需求的其他记录。
