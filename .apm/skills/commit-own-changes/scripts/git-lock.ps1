@@ -54,7 +54,16 @@ switch ($Action) {
                 $null = New-Item -ItemType Directory -Path $lockDir -ErrorAction Stop
                 break  # acquired
             } catch {
-                # Lock exists, wait and retry
+                # Check if the lock belongs to us (same TaskId) — silently reacquire
+                $existingTask = Read-Task
+                if ($existingTask -and $existingTask -eq "task=$TaskId") {
+                    $now = Get-Timestamp
+                    Set-Content -Path $tsFile -Value "ts=$now" -NoNewline
+                    Write-Output "reacquired:$TaskId"
+                    exit 0
+                }
+
+                # Lock held by another agent, wait and retry
                 if (-not $waited) {
                     Write-Warning "waiting:$TaskId"
                 }
