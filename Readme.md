@@ -10,7 +10,7 @@
 - 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot → Fix → Validate → Review → Documentation → Commit。
 - 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份。
-- 极简的文档规范，留存开发状态的同时避免历史文档-代码双向同步问题。
+- 化繁为简的文档规范，留存开发状态的同时避免历史文档-代码双向同步问题。
 - 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
 
 ## 安装
@@ -101,12 +101,13 @@ apm compile -g
 | `commit-own-changes`               | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                     |
 | `grilling`                         | 用户或 AI | 向用户盘问设计方案                                                           |
 | `cross-check`                      | 用户或 AI | 使用独立子代理复核关键结论                                                   |
-| `tidy`                      | 仅用户 | 清理当前会话中的无效修改                                                   |
+| `tidy`                             | 仅用户    | 清理当前会话中的无效修改                                                   |
 | `handoff`                          | 仅用户    | 总结当前会话用于交接                                                         |
 | `try`                              | 用户或 AI | 修改前先备份便于回滚                                                         |
 | `full-auto`                        | 仅用户    | 全自动模式：所有需要用户决策的地方自动由 auto-human 代理                     |
 | `update-project-instruction`       | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                            |
 | `update-module-instruction`        | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                     |
+| `update-references`                | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                             |
 
 ### Hooks（钩子）
 
