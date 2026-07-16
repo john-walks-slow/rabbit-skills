@@ -77,6 +77,8 @@ git add <changed_file>
 git commit -m "feat: xxx" -m "详细描述每个文件的修改内容（使用用户母语）"
 ```
 
+> 注意：PowerShell 不支持 heredoc 语法
+
 5. **释放锁**
 
 ```bash
