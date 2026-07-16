@@ -8,7 +8,7 @@ user-invocable: true
 
 创建或更新 `{project_root}/{specific_module}/AGENTS.md`。
 仅包括快速熟悉模块开发必须的信息。
-极简、直入主题。不超过 300 行。
+简洁、直入主题。不超过 300 行。
 
 格式参考：
 
