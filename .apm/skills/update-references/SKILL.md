@@ -1,6 +1,6 @@
 ---
 name: update-references
-description: {project_root}/references 目录的更新规范。当需要更新*不隶属于特定功能*的通用规范时使用。如：代码提交规范、测试用例规范、文档规范、版本管理等。
+description: project_root/references 目录的更新规范。当需要更新*不隶属于特定功能*的通用规范时使用。如：代码提交规范、测试用例规范、文档规范、版本管理等。
 user-invocable: true
 ---
 
