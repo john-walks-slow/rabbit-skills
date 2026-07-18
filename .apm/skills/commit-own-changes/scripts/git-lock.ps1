@@ -23,7 +23,6 @@ param(
     [string]$TaskId
 )
 
-# Find git dir
 $gitDir = git rev-parse --git-dir 2>$null
 if (-not $gitDir) {
     Write-Error "not in a git repository"
@@ -32,95 +31,180 @@ if (-not $gitDir) {
 $lockDir = Join-Path $gitDir "agent.lock"
 $taskFile = Join-Path $lockDir "task"
 $tsFile = Join-Path $lockDir "ts"
+$lockAgeLimit = 300  # seconds — steal locks with a stale timestamp
+$writeGrace = 3      # seconds — allow holder to finish writing task/ts after mkdir
 
 function Get-Timestamp {
     return [int][double]::Parse((Get-Date -UFormat %s))
 }
 
-function Read-Task {
-    if (Test-Path $taskFile) {
-        return (Get-Content $taskFile -Raw).Trim()
+function Read-TaskId {
+    if (-not (Test-Path -LiteralPath $taskFile)) { return $null }
+    try {
+        $raw = (Get-Content -LiteralPath $taskFile -Raw -ErrorAction Stop)
+    } catch {
+        return $null
+    }
+    if (-not $raw) { return $null }
+    $raw = $raw.Trim()
+    if ($raw.StartsWith('task=') -and $raw.Length -gt 5) {
+        return $raw.Substring(5)
     }
     return $null
+}
+
+function Read-LockTs {
+    if (-not (Test-Path -LiteralPath $tsFile)) { return $null }
+    try {
+        $raw = (Get-Content -LiteralPath $tsFile -Raw -ErrorAction Stop)
+    } catch {
+        return $null
+    }
+    if (-not $raw) { return $null }
+    $raw = $raw.Trim()
+    if ($raw -match 'ts=(\d+)') {
+        return [int]$Matches[1]
+    }
+    return $null
+}
+
+function Get-DirAgeSeconds {
+    if (-not (Test-Path -LiteralPath $lockDir)) { return $null }
+    try {
+        $created = (Get-Item -LiteralPath $lockDir -ErrorAction Stop).CreationTimeUtc
+    } catch {
+        return $null
+    }
+    return [int]((Get-Date).ToUniversalTime() - $created).TotalSeconds
+}
+
+function Remove-LockDir {
+    if (-not (Test-Path -LiteralPath $lockDir)) { return }
+    try {
+        Remove-Item -LiteralPath $lockDir -Recurse -Force -ErrorAction Stop
+    } catch {
+        # concurrent remover or already gone
+    }
+}
+
+function Write-LockIdentity {
+    $now = Get-Timestamp
+    # Stop on failure so we never report "acquired" without durable identity.
+    Set-Content -LiteralPath $taskFile -Value "task=$TaskId" -NoNewline -ErrorAction Stop
+    Set-Content -LiteralPath $tsFile -Value "ts=$now" -NoNewline -ErrorAction Stop
+    if ((Read-TaskId) -ne $TaskId) {
+        throw "lost ownership after write"
+    }
+}
+
+function Remove-OwnIncompleteClaim {
+    # Only drop the dir if it is still ours / unowned. Never delete a foreign holder's lock.
+    $owner = Read-TaskId
+    if (-not $owner -or $owner -eq $TaskId) {
+        Remove-LockDir
+    }
+}
+
+function Try-StealStale {
+    # Complete lock (has ts): steal only after lockAgeLimit.
+    $lockTs = Read-LockTs
+    if ($null -ne $lockTs) {
+        $now = Get-Timestamp
+        if (($now - $lockTs) -gt $lockAgeLimit) {
+            Remove-LockDir
+            return $true
+        }
+        return $false
+    }
+
+    # Incomplete lock (mkdir without task/ts): reclaim after writeGrace so a
+    # crashed acquirer does not block forever, but never during the write window.
+    $dirAge = Get-DirAgeSeconds
+    if ($null -ne $dirAge -and $dirAge -ge $writeGrace) {
+        Remove-LockDir
+        return $true
+    }
+    return $false
 }
 
 switch ($Action) {
     'acquire' {
         $waited = $false
-        $lockAgeLimit = 300  # 5 minutes
 
         while ($true) {
+            $created = $false
             try {
                 $null = New-Item -ItemType Directory -Path $lockDir -ErrorAction Stop
-                break  # acquired
+                $created = $true
             } catch {
-                # Check if the lock belongs to us (same TaskId) — silently reacquire
-                $existingTask = Read-Task
-                if ($existingTask -and $existingTask -eq "task=$TaskId") {
-                    $now = Get-Timestamp
-                    Set-Content -Path $tsFile -Value "ts=$now" -NoNewline
-                    Write-Output "reacquired:$TaskId"
-                    exit 0
-                }
-
-                # Lock held by another agent, wait and retry
-                if (-not $waited) {
-                    $lockTaskId = 'unknown'
-                    if ($existingTask -and $existingTask.StartsWith('task=') -and $existingTask.Length -gt 5) {
-                        $lockTaskId = $existingTask.Substring(5)
-                    }
-                    Write-Warning "waiting:$lockTaskId"
-                }
-                $waited = $true
-
-                # Check lock age
-                if (Test-Path $tsFile) {
-                    $tsContent = (Get-Content $tsFile -Raw).Trim()
-                    if ($tsContent -match 'ts=(\d+)') {
-                        $lockTs = [int]$Matches[1]
-                        $now = Get-Timestamp
-                        if (($now - $lockTs) -gt $lockAgeLimit) {
-                            Remove-Item -Path $lockDir -Recurse -Force -ErrorAction SilentlyContinue
-                            continue  # retry immediately after cleanup
-                        }
-                    }
-                }
-                Start-Sleep -Milliseconds 350
+                $created = $false
             }
-        }
 
-        $now = Get-Timestamp
-        Set-Content -Path $taskFile -Value "task=$TaskId" -NoNewline
-        Set-Content -Path $tsFile -Value "ts=$now" -NoNewline
+            if ($created) {
+                try {
+                    Write-LockIdentity
+                    if ($waited) {
+                        Write-Output "acquired after wait:$TaskId"
+                    } else {
+                        Write-Output "acquired:$TaskId"
+                    }
+                    exit 0
+                } catch {
+                    Remove-OwnIncompleteClaim
+                    Start-Sleep -Milliseconds 200
+                    continue
+                }
+            }
 
-        if ($waited) {
-            Write-Output "acquired after wait:$TaskId"
-        } else {
-            Write-Output "acquired:$TaskId"
+            $existingTask = Read-TaskId
+
+            if ($existingTask -and $existingTask -eq $TaskId) {
+                try {
+                    $now = Get-Timestamp
+                    Set-Content -LiteralPath $tsFile -Value "ts=$now" -NoNewline -ErrorAction Stop
+                    if ((Read-TaskId) -eq $TaskId) {
+                        Write-Output "reacquired:$TaskId"
+                        exit 0
+                    }
+                } catch {
+                    # fall through
+                }
+            }
+
+            if (-not $waited) {
+                $lockTaskId = if ($existingTask) { $existingTask } else { 'unknown' }
+                Write-Warning "waiting:$lockTaskId"
+            }
+            $waited = $true
+
+            if (Try-StealStale) {
+                continue
+            }
+
+            Start-Sleep -Milliseconds 350
         }
-        exit 0
     }
 
     'release' {
-        if (-not (Test-Path $lockDir)) {
+        if (-not (Test-Path -LiteralPath $lockDir)) {
             exit 0
         }
 
-        $readTask = Read-Task
-        if (-not $readTask) {
-            Remove-Item -Path $lockDir -Recurse -Force -ErrorAction SilentlyContinue
-            Write-Output "released (orphaned):$TaskId"
-            exit 0
-        }
+        $lockTask = Read-TaskId
 
-        # Strip "task=" prefix
-        $lockTask = $readTask
-        if ($lockTask.StartsWith('task=')) {
-            $lockTask = $lockTask.Substring(5)
+        if (-not $lockTask) {
+            # Incomplete lock: only reclaim after grace so we do not yank the
+            # directory out from under a concurrent acquirer mid-write.
+            $dirAge = Get-DirAgeSeconds
+            if ($null -ne $dirAge -and $dirAge -ge $writeGrace) {
+                Remove-LockDir
+                Write-Output "released (orphaned):$TaskId"
+            }
+            exit 0
         }
 
         if ($lockTask -eq $TaskId) {
-            Remove-Item -Path $lockDir -Recurse -Force -ErrorAction SilentlyContinue
+            Remove-LockDir
             Write-Output "released:$TaskId"
             exit 0
         }
