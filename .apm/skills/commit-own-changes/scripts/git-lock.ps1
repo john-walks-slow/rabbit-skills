@@ -65,7 +65,11 @@ switch ($Action) {
 
                 # Lock held by another agent, wait and retry
                 if (-not $waited) {
-                    Write-Warning "waiting:$TaskId"
+                    $lockTaskId = 'unknown'
+                    if ($existingTask -and $existingTask.StartsWith('task=') -and $existingTask.Length -gt 5) {
+                        $lockTaskId = $existingTask.Substring(5)
+                    }
+                    Write-Warning "waiting:$lockTaskId"
                 }
                 $waited = $true
 

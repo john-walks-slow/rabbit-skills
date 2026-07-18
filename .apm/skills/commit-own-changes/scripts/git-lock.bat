@@ -51,8 +51,24 @@ set "waited=0"
 :acquireLoop
 md "%lockDir%" 2>nul
 if errorlevel 1 (
+    call :readTask
+    set "lockTask=!readVal!"
+    if defined lockTask if "!lockTask:~0,5!"=="task=" set "lockTask=!lockTask:~5!"
+
+    rem Same TaskId already holds the lock — reacquire (refresh ts)
+    if defined lockTask if "!lockTask!"=="%TaskId%" (
+        call :getTs
+        >%lockDir%\ts echo ts=%ts%
+        echo reacquired:%TaskId%
+        exit /b 0
+    )
+
     if "%waited%"=="0" (
-        1>&2 echo waiting:%TaskId%
+        if "!lockTask!"=="" (
+            1>&2 echo waiting:unknown
+        ) else (
+            1>&2 echo waiting:!lockTask!
+        )
     )
     set "waited=1"
     call :readTs
