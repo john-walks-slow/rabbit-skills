@@ -14,14 +14,15 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 ```bash
 {skill_dir}/scripts/git-lock.sh acquire <task-id>   # Linux/macOS
 ```
+
 ```powershell
 {skill_dir}\scripts\git-lock.ps1 -Action acquire -TaskId <task-id>   # Windows
 ```
 
 > `<task-id>` 建议用本次任务的极简英文 summary，
-如 `fix-login-crash`、`add-dark-mode`。获取锁和释放锁时必须使用同一 ID。
+> 如 `fix-login-crash`、`add-dark-mode`。获取锁和释放锁时必须使用同一 ID。
 
-> 若 acquire 执行失败（输出不包含 `acquired`），立即中止，**不得继续后续步骤**。向用户报告异常。 
+> 若 acquire 执行失败（输出不包含 `acquired`），立即中止，**不得继续后续步骤**。向用户报告异常。
 
 2. **查看 git 状态**，确认有哪些文件是需要提交的
 
@@ -73,17 +74,18 @@ git add <changed_file>
 
 4. **提交**
 
-```powershell
-git commit -m "feat: xxx" -m "详细描述每个文件的修改内容（使用用户母语）"
-```
+> 注意：PowerShell 不支持 heredoc，提交消息必须使用 -F - 指定
 
-> 注意：PowerShell 不支持 heredoc 语法
+```powershell
+"<type>: <title>`n`n- <file>: <changes>`n- <file>: <changes>" | git commit -F -
+```
 
 5. **释放锁**
 
 ```bash
 {skill_dir}/scripts/git-lock.sh release <task-id>   # Linux/macOS
 ```
+
 ```powershell
 {skill_dir}\scripts\git-lock.ps1 -Action release -TaskId <task-id>   # Windows
 ```
