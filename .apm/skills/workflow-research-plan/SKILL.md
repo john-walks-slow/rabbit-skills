@@ -1,12 +1,12 @@
 ---
 name: workflow-research-plan
-description: 需求调研设计工作流。进行新需求开发、架构设计和重构前必须遵守此流程制定计划。快速单点优化时可跳过。
+description: 需求调研设计工作流。进行需求开发、架构设计和重构前必须遵守此流程制定计划。
 user-invocable: true
 ---
 
 # workflow-research-plan
 
-作为产品架构师完成需求的调研、设计，输出计划文档。
+作为产品架构师完成调研、设计，输出计划文档。
 
 遵守以下工作流程：
 
