@@ -1,6 +1,6 @@
 ---
 name: workflow-troubleshoot
-description: 根因分析工作流。执行修复前必须遵守此流程分析原因。
+description: 根因分析工作流。排查复杂问题时必须遵守此流程分析原因。快速修复简单问题时可跳过。
 user-invocable: true
 ---
 
