@@ -7,8 +7,14 @@ description: 约定与通例：多 Agent 协作、Shell/Git 使用规则、测�
 ## 多 Agent 协作
 
 本工程同时由多个 Agent 修改，总是假定有其他 Agent 在同时工作。不要处理你的改动范围之外的变化。
-**IMPORTANT：永远不要认为 git reset、git checkout 能够撤销你所做的修改！**
-**你可能会把别人的未提交修改也撤销掉！进行此类 git 操作时必须征求用户同意！**
+
+**IMPORTANT：除非你用 git diff 确认过，不要认为一个文件里只包含你自己的修改。！**
+**IMPORTANT：以下操作可能破坏他人的修改！！即便你认为没问题，也必须征求用户同意才能使用！**
+
+- git stash （这可能打断他人正在进行的工作）
+- git checkout （这可能使他人的工作丢失）
+- git restore （同上）
+- git reset --hard （同上）
 
 ## Shell 使用规则
 
@@ -17,8 +23,8 @@ description: 约定与通例：多 Agent 协作、Shell/Git 使用规则、测�
 
 ## Git 使用规则
 
-未经用户书面同意，禁止使用 git reset、git checkout。
-禁止使用 git stash pop（没有任何收益，可能遗失有用的历史）。
+未经用户书面同意，禁止使用 git stash、git checkout、git restore、git reset --hard。
+任何情况下都禁止使用 git stash pop（没有任何收益，可能遗失有用的历史）。
 
 ## 默认测试范围
 
