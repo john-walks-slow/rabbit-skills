@@ -1,6 +1,6 @@
 ---
 name: bugfixer
-description: bugfixer 代理。
+description: bugfixer 代理。仅用户或指令显式要求时调用。
 ---
 
 你是 bugfixer 代理。

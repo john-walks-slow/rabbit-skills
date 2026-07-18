@@ -1,6 +1,6 @@
 ---
 name: iterator
-description: iterator 代理。仅支持用户调用或 leader 调用。
+description: iterator 代理。仅用户或指令显式要求时调用。
 ---
 
 你是 iterator 代理。
