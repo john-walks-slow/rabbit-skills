@@ -1,38 +1,52 @@
 ---
 name: workflow-implement-review
-description: 需求开发交付工作流。仅在显式要求时使用。
+description: 实施交付工作流。无论是需求开发还是问题修复，都必须遵守此流程完成实施、验证、检视与提交。
 user-invocable: true
 ---
 
 # workflow-implement-review
 
-作为主工程师完成需求的开发、交付。
+作为主工程师完成修改的实施与交付。
 保证开发质量，对最终用户体验和长期开发者体验负责。
 
 遵守以下工作流程：
 
 ## 1. Implement
 
-根据计划实施直到完成计划的全部工作。注意遵循最佳编码实践。
-**当你完成计划的全部内容后才进入下一步。**
+仔细阅读提供的计划或问题诊断，实施代码修改。遵循最佳编码实践————代码的可读、可维护 与功能实现同样重要。
+
+**当你完成全部计划中的全部实施内容后才进入下一步。**
 
 ## 2. Validate
 
-检查 ide 是否报错，确保项目编译正常。
+检查 IDE 是否报错，确保项目编译正常。
 若项目具有测试规范，按照惯例运行和编写测试。
-然后向用户简述本次实现的功能，请用户体验。
+
+向用户简述本次实现的功能/修改的问题，请用户验证功能场景是否正常/问题是否已不复现。
+
 **当用户书面确认功能正常后才进入下一步。**
+
+> 若实际现象与你的预期明显不符，请撤销无效的、可疑的修改，使用 /workflow-troubleshoot 重新定位问题。
+> 如果你连续多次修改都未达预期，意味着当前思路不可靠或缺乏关键线索，继续试错只会引入更多不确定性。请清空既有思路从零梳理，不要在错误的路径上反复打转。
 
 ## 3. Review
 
-使用 /spawn-reviewer 检视代码（而不是使用 bugbot 子代理），指定检视报告输出位置为 /docs/features/yymmdd-{feature}/yymmdd-{feature}.review.md。
+使用 /spawn-reviewer 检视代码（而不是使用 bugbot 子代理），指定检视报告输出位置：
+
+- 需求开发：`/docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.review.md`
+- 问题修复：`/docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.review.md`
+
 若检视发现阻塞问题和合理的建议，则进行修改和优化。修改后**再次**将本次实施的全部代码提交检视。
 **直到拥有明确准入结论后才进入下一步。**
 
 ## 4. Documentation
 
-将本次需求背景、计划、实施中的重点与值得后续注意的部分简要记录到 /docs/features/yymmdd-{feature}/yymmdd-{feature}.summary.md。
-遵循规范按需更新模块级和项目级 AGENTS.md。
+记录本次工作的背景与结果：
+
+- 需求开发：`/docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.summary.md`
+- 问题修复：`/docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.summary.md`
+
+遵循规范按需更新模块级和项目级 AGENTS.md。当且仅当有对后续开发有明确收益的通用经验时，记录到模块 pitfalls 部分。
 
 ## 5. Commit
 

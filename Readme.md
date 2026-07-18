@@ -7,9 +7,9 @@
 - 简洁清晰，相对松弛的约束，不为模型捆手捆脚。
 - 零学习成本，不绑定特定开发范式（如 TDD 等，需要时再引入）。
 - 通用需求开发工作流。先调研设计：Research → Plan → Align。再迭代交付：Implement → Validate → Review → Documentation → Commit。
-- 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot → Fix → Validate → Review → Documentation → Commit。
+- 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot（根因分析）→ Implement Review（修复与交付）。
 - 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
-- 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份。
+- 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
 - 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
 - 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
 
@@ -53,7 +53,7 @@ apm compile -g
 /workflow-implement-review 实施。
 ```
 
-修复 Bug 时调用 `/workflow-troubleshoot-fix-review`。
+修复 Bug 时依次调用 `/workflow-troubleshoot` 和 `/workflow-implement-review`。
 
 ### 方法 B. 通过切换 Agent
 
@@ -78,36 +78,39 @@ apm compile -g
 
 ### Agents（代理和子代理）
 
-| 名称              | 类型      | 说明                            |
-| ----------------- | --------- | ------------------------------- |
-| `deep-researcher` | subagent  | 网络调研                        |
-| `reviewer`        | subagent  | 代码检视                        |
-| `expert`          | subagent  | 通用困难任务                    |
-| `auto-human`      | subagent  | 自动决策（用于 full-auto 模式） |
-| `planner`         | both      | 调研和设计新方案，引用 /workflow-research-plan |
-| `iterator`        | both      | 实施并交付，引用 /workflow-implement-review |
-| `bugfixer`        | both      | 定位和修复 Bug，引用 /workflow-troubleshoot-fix-review |
-| `leader`          | main      | 自主迭代，委托 planner/iterator/bugfixer 子代理 |
+| 名称              | 类型     | 说明                                                                     |
+| ----------------- | -------- | ------------------------------------------------------------------------ |
+| `deep-researcher` | subagent | 网络调研                                                                 |
+| `reviewer`        | subagent | 代码检视                                                                 |
+| `expert`          | subagent | 通用困难任务                                                             |
+| `auto-human`      | subagent | 自动决策（用于 full-auto 模式）                                          |
+| `planner`         | both     | 调研和设计新方案，引用 /workflow-research-plan                           |
+| `iterator`        | both     | 实施并交付，引用 /workflow-implement-review                              |
+| `bugfixer`        | both     | 定位和修复 Bug，引用 /workflow-troubleshoot + /workflow-implement-review |
+| `leader`          | main     | 自主迭代，委托 planner/iterator/bugfixer 子代理                          |
 
 ### Skills & Commands（技能与命令）
 
-| 技能                               | 激活方式  | 说明                                                                         |
-| ---------------------------------- | --------- | ---------------------------------------------------------------------------- |
-| `workflow-research-plan`           | 用户或 AI | 调研设计工作流：Research → Plan → Align                                                |
-| `workflow-implement-review`        | 用户或 AI | 开发交付工作流：Implement → Validate → Review → Documentation → Commit       |
-| `workflow-troubleshoot-fix-review` | 用户或 AI | Bugfix 工作流：Troubleshoot → Fix → Validate → Review → Documentation → Commit |
-| `spawn-deep-researcher`            | 用户或 AI | 启动网络调研子代理                                                           |
-| `spawn-reviewer`                   | 用户或 AI | 启动代码检视子代理                                                           |
-| `commit-own-changes`               | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                     |
-| `grilling`                         | 用户或 AI | 向用户盘问设计方案                                                           |
-| `cross-check`                      | 用户或 AI | 使用独立子代理复核关键结论                                                   |
-| `tidy`                             | 仅用户    | 清理当前会话中的无效修改                                                   |
-| `handoff`                          | 仅用户    | 总结当前会话用于交接                                                         |
-| `try`                              | 用户或 AI | 修改前先备份便于回滚                                                         |
-| `full-auto`                        | 仅用户    | 全自动模式：所有需要用户决策的地方自动由 auto-human 代理                     |
-| `update-project-instruction`       | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                            |
-| `update-module-instruction`        | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                     |
-| `update-references`                | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                             |
+| 技能                         | 激活方式  | 说明                                                                          |
+| ---------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `workflow-research-plan`     | 用户或 AI | 调研设计工作流：Research → Plan → Align                                       |
+| `workflow-troubleshoot`      | 用户或 AI | 问题根因分析工作流：Troubleshoot（分析 → 诊断结论 → 交接给 implement-review） |
+| `workflow-implement-review`  | 用户或 AI | 统一实施交付工作流：Implement → Validate → Review → Documentation → Commit    |
+| `workflow-manage-tasks`      | 用户或 AI | 任务分派工作流：理解梳理 → 分派子代理 → 跟踪推进                              |
+| `spawn-deep-researcher`      | 用户或 AI | 启动网络调研子代理                                                            |
+| `spawn-reviewer`             | 用户或 AI | 启动代码检视子代理                                                            |
+| `commit-own-changes`         | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
+| `grilling`                   | 用户或 AI | 向用户盘问设计方案                                                            |
+| `cross-check`                | 用户或 AI | 使用独立子代理复核关键结论                                                    |
+| `tidy`                       | 仅用户    | 清理当前会话中的无效修改                                                      |
+| `handoff`                    | 仅用户    | 总结当前会话用于交接                                                          |
+| `try`                        | 用户或 AI | 修改前先备份便于回滚                                                          |
+| `bad-smell`                  | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
+| `unstuck`                    | 用户或 AI | 连续修改未达预期时强制退一步重新分析                                          |
+| `full-auto`                  | 仅用户    | 全自动模式：所有需要用户决策的地方自动由 auto-human 代理                      |
+| `update-project-instruction` | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
+| `update-module-instruction`  | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |
+| `update-references`          | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                               |
 
 ### Hooks（钩子）
 

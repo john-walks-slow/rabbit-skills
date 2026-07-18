@@ -1,6 +1,6 @@
 ---
 name: workflow-research-plan
-description: 需求调研设计工作流。仅在显式要求时使用。
+description: 需求调研设计工作流。进行新需求开发、架构设计和重构前必须遵守此流程制定计划。
 user-invocable: true
 ---
 
@@ -13,7 +13,7 @@ user-invocable: true
 ## 1. Research
 
 正确理解用户意图，充分调研对体验设计和架构选型有帮助的背景信息和外部资料。
-使用 explore 子代理探索代码库。使用 /spawn-deep-researcher 进行网络调研（指定输出文件: /docs/features/yymmdd-{feature}/yymmdd-{topic}.research.md）。
+使用 explore 子代理探索代码库。使用 /spawn-deep-researcher 进行网络调研（指定输出文件: /docs/features/yymmdd-{feature_name}/yymmdd-{topic}.research.md）。
 
 **当你有 95% 把握掌握了充分、完备的背景信息和网络资料后才进入下一步。**
 
@@ -21,12 +21,12 @@ user-invocable: true
 
 设计用户体验，规划方案与架构。
 以最高的优先级关注使用体验和项目可维护性。
-计划文档输出到 /docs/features/yymmdd-{feature}/yymmdd-{feature}.plan.md。
+计划文档输出到 /docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.plan.md。
 若你对于自己的选型有所犹豫，或当该工作事关重大时，请对计划额外执行一次 /cross-check。
 
 **确保你理清了所有疑惑点，对自己的设计感到十分清晰后，进入下一步。**
 
-> 特别的，仅当需求体量很大时（> 3500 locs），可以考虑拆分 phase，分别输出总规划（yymmdd-{feature}.plan.md）和具体的当前 phase（yymmdd-{feature}-phase{n}.plan.md）计划。
+> 特别的，仅当需求体量很大时（> 3500 locs），可以考虑拆分 phase，分别输出总规划（yymmdd-{feature_name}.plan.md）和具体的当前 phase（yymmdd-{feature_name}-phase{n}.plan.md）计划。
 
 ## 3. Align
 
@@ -39,5 +39,3 @@ user-invocable: true
 ## Next Step
 
 若用户表示 “Go ahead”，“实施”，“开工”等，立刻使用 /workflow-implement-review 技能，基于当前计划进入实施阶段。
-
-
