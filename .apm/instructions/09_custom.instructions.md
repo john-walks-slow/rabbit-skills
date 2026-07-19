@@ -21,6 +21,8 @@ description: 约定与通例：多 Agent 协作、Shell/Git 使用规则、测�
 不使用 powershell -Command 等前缀，直接裸命令执行。
 不使用 2>$null 吞掉错误消息。
 
+执行任何会修改文件内容（例如替换 token）的批处理脚本/命令前，**必须** 先 dry run。
+
 ## Git 使用规则
 
 未经用户书面同意，禁止使用 git stash、git checkout、git restore、git reset --hard。

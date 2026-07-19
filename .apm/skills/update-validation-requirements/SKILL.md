@@ -1,8 +1,9 @@
 ---
-name: update-validation-requirements
+
+## name: update-validation-requirements
+
 description: 创建或更新需求、问题的用户验证要求文档。当实施内容需要用户验收，尤其需要真实设备、真实环境或真实交互验证时使用。
 user-invocable: true
----
 
 # update-validation-requirements
 
@@ -30,7 +31,7 @@ user-invocable: true
 
 | 验证步骤             | 预期结果               | 实际结果 | 状态   | 备注/证据 |
 | -------------------- | ---------------------- | -------- | ------ | --------- |
-| {清晰、可重复的步骤} | {可观察、可判断的结果} | 待填写   | 待验证 | 待填写    |
+| {清晰、可重复的步骤} | {可观察、可判断的结果} | {留空}   | 待验证 | {留空}    |
 
 状态使用：`待验证`、`通过`、`不通过`、`受阻`。
 
