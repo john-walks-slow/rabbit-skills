@@ -9,7 +9,7 @@
 - 通用需求开发工作流。先调研设计：Research → Plan → Align。再迭代交付：Implement → Validate → Review → Documentation → Commit。
 - 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot（根因分析）→ Implement Review（修复与交付）。
 - 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
-- 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
+- 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`teach-me` 把当前项目的关键设计和风险教给负责人、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
 - 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
 - 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
 
@@ -100,6 +100,7 @@ apm compile -g
 | `spawn-deep-researcher`      | 用户或 AI | 启动网络调研子代理                                                            |
 | `spawn-reviewer`             | 用户或 AI | 启动代码检视子代理                                                            |
 | `commit-own-changes`         | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
+| `teach-me`                   | 仅用户    | 教授当前项目负责人必须掌握的关键设计、核心知识、权衡与风险信号                |
 | `grilling`                   | 用户或 AI | 向用户盘问设计方案                                                            |
 | `cross-check`                | 用户或 AI | 使用独立子代理复核关键结论                                                    |
 | `tidy`                       | 仅用户    | 清理当前会话中的无效修改                                                      |
@@ -108,9 +109,10 @@ apm compile -g
 | `bad-smell`                  | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
 | `unstuck`                    | 用户或 AI | 连续修改未达预期时强制退一步重新分析                                          |
 | `full-auto`                  | 仅用户    | 全自动模式：所有需要用户决策的地方自动由 auto-human 代理                      |
-| `update-project-instruction` | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
-| `update-module-instruction`  | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |
-| `update-references`          | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                               |
+| `update-project-instruction`    | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
+| `update-module-instruction`     | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |
+| `update-references`             | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                               |
+| `update-validation-requirements` | 用户或 AI | 创建/更新用户验证表，记录核心场景和必须实机验证的场景                         |
 
 ### Hooks（钩子）
 
