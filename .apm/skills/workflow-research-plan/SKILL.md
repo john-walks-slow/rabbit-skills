@@ -1,6 +1,6 @@
 ---
 name: workflow-research-plan
-description: 需求调研设计工作流。进行需求开发、架构设计和重构前必须遵守此流程制定计划。
+description: 需求调研设计工作流。进行中等以上规模需求开发、架构设计和重构前必须遵守此流程制定计划。
 user-invocable: true
 ---
 
