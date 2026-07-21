@@ -25,7 +25,7 @@ user-invocable: true
 | 调研类     | 预研和信息搜集                     | planner  |
 | 暂缓       | 有外部阻塞或用户意图不清晰         | N/A      |
 
-输出到 `docs/freeform/yymmdd-{summary}.tasks.md`，表格包含以下列，方便用户跟踪：
+输出到 `docs/tasks/yymmdd-{summary}.tasks.md`，表格包含以下列，方便用户跟踪：
 
 | 任务 | 类型 | 状态 | 分派至 | 产出文档 |
 | ---- | ---- | ---- | ------ | -------- |
@@ -45,7 +45,7 @@ user-invocable: true
 
 ## 3. 跟踪与推进
 
-在 `docs/freeform/yymmdd-{summary}.tasks.md` 中持续跟踪所有任务进展，不要遗漏。
+在 `docs/tasks/yymmdd-{summary}.tasks.md` 中持续跟踪所有任务进展，不要遗漏。
 
 根据子代理输出的计划或结果判断其工作是否达标。阶段性结果达标后，予以下一步指令推进其继续工作。
 
