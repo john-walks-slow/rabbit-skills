@@ -7,7 +7,8 @@
 - 简洁清晰，相对松弛的约束，不为模型捆手捆脚。
 - 零学习成本，不绑定特定开发范式（如 TDD 等，需要时再引入）。
 - 通用需求开发工作流。先调研设计：Research → Plan → Align。再迭代交付：Implement → Validate → Review → Documentation → Commit。
-- 通用 Bugfix 工作流。先定位再修改避免越改越错：Troubleshoot（根因分析）→ Implement Review（修复与交付）。
+- 通用 Bugfix 工作流。先定位再修改避免越改越错。
+- 任务分派工作流，跟踪问题、整理依赖关系、并行实施，并使用文档双向沟通。
 - 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`teach-me` 把当前项目的关键设计和风险教给负责人、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
 - 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
@@ -64,6 +65,14 @@ apm compile -g
 排查修复疑难问题时切换到 `bugfixer`。
 
 > 注：网络搜索能力对计划与实施质量有着最大的影响。请确保 Agent 具有完全的网络搜索和访问能力（例如：通过 exa，jina 等服务）。
+
+### 方法 C. 通过任务分派工作流
+
+如果你有许多略显杂乱的任务，可以使用任务分派工作流，由 AI 为你梳理和分配工作给对应的 subagent 实施。
+调用 /workflow-manage-tasks 或是切换到 Manager Agent，然后描述任务。
+Manager 会为你整理待办事项、跟踪进度、在任务开始执行前与你对齐计划，并在子代理阶段性工作完成、需要评估时与你沟通。
+
+> 注：/workflow-manage-tasks 仅推荐拥有后台运行 Subagent 以及 延续 subagent 会话能力的 AI 工具使用。
 
 ## 内容物
 
