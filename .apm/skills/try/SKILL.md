@@ -13,26 +13,28 @@ user-invocable: true
 ## 工作流程
 
 1. 确认文件存在且是目标文件
-2. 创建备份：
+2. 创建备份（默认不改动当前工作区；如需清桌编辑，将下方的 `git stash create` 换为 `git stash push`）：
 
 ```bash
-git stash push -u -m "backup:<file-path>" -- <file-path>
+BACKUP_HASH=$(git stash create -u)
+git stash store -m "backup:<file-path>" "$BACKUP_HASH"
 ```
 
-> `-u` 会把文件从工作区移走（等价于 `git clean`），得到一个干净的起点开始编辑。
+> `-u`（`--include-untracked`）将未跟踪的文件也纳入备份。
 
 3. 执行修改
 4. 如果结果满意，继续工作。
 5. 如果需要回滚：
 
 ```bash
-git stash list
-git restore --source='stash@{0}' -- <file-path>
+git restore --source="$BACKUP_HASH" -- <file-path> 2>/dev/null \
+  || git restore --source="${BACKUP_HASH}^3" -- <file-path>
 ```
 
 ## 约束
 
-- 保持操作路径限定。只备份要求的文件，不将无关文件带入 stash
+- 恢复时只操作目标文件，不影响其他已 stash 的内容
 - 不执行破坏性 git 命令
+- 默认不包含 `.gitignore` 中的文件（需备份时用 `-a`/`--all` 替代 `-u`）
 
 若项目不是 git 仓库，告知用户无法执行。
