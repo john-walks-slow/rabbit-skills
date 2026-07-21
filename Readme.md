@@ -98,7 +98,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `iterator`        | both     | 实施并交付，引用 /workflow-implement-review                              |
 | `bugfixer`        | both     | 定位和修复疑难问题，引用 /workflow-troubleshoot + /workflow-implement-review |
 | `manager`         | both     | 任务梳理与分派，引用 /workflow-manage-tasks                         |
-| `leader`          | main     | 下达 idea，自主推进项目演进               |
+| `leader`          | both     | 下达 idea 并向 manager 派发，自主推进项目演进，引用 /workflow-leader |
 
 ### Skills & Commands（技能与命令）
 
@@ -108,6 +108,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `workflow-troubleshoot`      | 用户或 AI | 问题根因分析工作流：Troubleshoot（分析 → 诊断结论 → 交接给 implement-review） |
 | `workflow-implement-review`  | 用户或 AI | 统一实施交付工作流：Implement → Validate → Review → Documentation → Commit    |
 | `workflow-manage-tasks`      | 用户或 AI | 任务分派工作流：理解梳理 → 分派子代理 → 跟踪推进                              |
+| `workflow-leader`            | 仅用户    | 项目领导工作流：给出愿景 → 构思 idea → 向 manager 派发 → 等待汇报并继续推进 |
 | `spawn-deep-researcher`      | 用户或 AI | 启动网络调研子代理                                                            |
 | `spawn-reviewer`             | 用户或 AI | 启动代码检视子代理                                                            |
 | `commit-own-changes`         | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
