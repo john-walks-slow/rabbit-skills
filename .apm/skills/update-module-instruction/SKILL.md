@@ -1,12 +1,12 @@
 ---
 name: update-module-instruction
-description: （子）模块级 AGENTS.md 更新规范。当新建模块；新需求开发结束；模块内容重构结束；记录对后续开发有明确收益的经验时使用。
+description: 模块/子模块级 AGENTS.md 更新规范。当新建目录；新需求开发结束；重构结束；记录对该模块后续开发有明确收益的经验时使用。
 user-invocable: true
 ---
 
 # update-module-instruction
 
-创建或更新 `{project_root}/{specific_module}/AGENTS.md`。
+创建或更新 `{project_root}/{module_path...}/AGENTS.md`。
 仅包括快速熟悉模块开发必须的信息。
 简洁、直入主题。不超过 300 行。
 
