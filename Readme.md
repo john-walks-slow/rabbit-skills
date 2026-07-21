@@ -98,8 +98,8 @@ Manager 会为你整理待办事项、跟踪进度、在任务开始执行前与
 | `planner`         | both     | 调研和设计新方案，引用 /workflow-research-plan                           |
 | `iterator`        | both     | 实施并交付，引用 /workflow-implement-review                              |
 | `bugfixer`        | both     | 定位和修复疑难问题，引用 /workflow-troubleshoot + /workflow-implement-review |
-| `leader`          | main     | 提供 idea 引领方向，只读不写，引用 /workflow-manage-tasks               |
-| `manager`         | both     | 任务梳理与分派推进，引用 /workflow-manage-tasks                         |
+| `leader`          | main     | 提供 idea，自主推进项目演进               |
+| `manager`         | both     | 任务梳理与分派，引用 /workflow-manage-tasks                         |
 
 ### Skills & Commands（技能与命令）
 
