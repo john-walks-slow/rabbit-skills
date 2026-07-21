@@ -60,21 +60,20 @@ apm compile -g
 
 如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。工作流程与 Skill 一致，优点是可以为不同阶段设置不同模型。
 
-把握方向时切换到 `leader`（只读，通过 manager 推进）。
-任务梳理和分派时切换到 `manager`。
 调研和设计新方案时切换到 `planner`。
 实施时切换到 `iterator`。
 排查修复疑难问题时切换到 `bugfixer`。
 
-> 注：网络搜索能力对计划与实施质量有着最大的影响。请确保 Agent 具有完全的网络搜索和访问能力（例如：通过 exa，jina 等服务）。
-
-### 方法 C. 通过任务分派工作流
+### 方法 C. 通过任务分派
 
 如果你有许多略显杂乱的任务，可以使用任务分派工作流，由 AI 为你梳理和分配工作给对应的 subagent 实施。
-调用 /workflow-manage-tasks 或是切换到 Manager Agent，然后描述任务。
-Manager 会为你整理待办事项、跟踪进度、在任务开始执行前与你对齐计划，并在子代理阶段性工作完成、需要评估时与你沟通。
+调用 `/workflow-manage-tasks` 或是切换到 `Manager` Agent，然后描述任务。
+AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始执行前与你对齐计划，并在子代理阶段性工作完成需要评估时与你沟通。
 
-> 注：/workflow-manage-tasks 仅推荐拥有后台运行 Subagent 以及 延续 subagent 会话能力的 AI 工具使用。
+> 注：`/workflow-manage-tasks` 仅推荐拥有后台运行 Subagent 以及 延续 Subagent 会话能力的 AI 工具使用。
+
+> 注：网络搜索能力对计划与实施质量有着最大的影响。请确保 Agent 具有完全的网络搜索和访问能力（例如：通过 exa，jina 等服务）。
+
 
 ## 内容物
 
@@ -98,8 +97,8 @@ Manager 会为你整理待办事项、跟踪进度、在任务开始执行前与
 | `planner`         | both     | 调研和设计新方案，引用 /workflow-research-plan                           |
 | `iterator`        | both     | 实施并交付，引用 /workflow-implement-review                              |
 | `bugfixer`        | both     | 定位和修复疑难问题，引用 /workflow-troubleshoot + /workflow-implement-review |
-| `leader`          | main     | 提供 idea，自主推进项目演进               |
 | `manager`         | both     | 任务梳理与分派，引用 /workflow-manage-tasks                         |
+| `leader`          | main     | 下达 idea，自主推进项目演进               |
 
 ### Skills & Commands（技能与命令）
 
