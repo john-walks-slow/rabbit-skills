@@ -60,6 +60,8 @@ apm compile -g
 
 如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。工作流程与 Skill 一致，优点是可以为不同阶段设置不同模型。
 
+把握方向时切换到 `leader`（只读，通过 manager 推进）。
+任务梳理和分派时切换到 `manager`。
 调研和设计新方案时切换到 `planner`。
 实施时切换到 `iterator`。
 排查修复疑难问题时切换到 `bugfixer`。
@@ -96,7 +98,8 @@ Manager 会为你整理待办事项、跟踪进度、在任务开始执行前与
 | `planner`         | both     | 调研和设计新方案，引用 /workflow-research-plan                           |
 | `iterator`        | both     | 实施并交付，引用 /workflow-implement-review                              |
 | `bugfixer`        | both     | 定位和修复疑难问题，引用 /workflow-troubleshoot + /workflow-implement-review |
-| `manager`         | main     | 统筹迭代，委托子代理执行任务，引用 /workflow-manage-tasks                |
+| `leader`          | main     | 提供 idea 引领方向，只读不写，引用 /workflow-manage-tasks               |
+| `manager`         | both     | 任务梳理与分派推进，引用 /workflow-manage-tasks                         |
 
 ### Skills & Commands（技能与命令）
 
