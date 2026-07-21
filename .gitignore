@@ -1,3 +1,6 @@
+# Freeform docs (historical research notes, not project source)
+docs/freeform/
+
 # Dependencies / build output
 apm_modules/
 node_modules/
