@@ -14,9 +14,9 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 **进行任何工作前，必须确保已了解其中内容。**
 更新规则见 `/update-project-instruction`。
 
-## {specific_module}/AGENTS.md
+## {module_path...}/AGENTS.md
 
-模块级指引。
+模块/子模块级指引。
 **就某一模块进行任何工作前，必须确保已了解其中内容。**
 更新规则见 `/update-module-instruction`。
 
