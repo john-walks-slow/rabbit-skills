@@ -1,9 +1,9 @@
 ---
-name: bugfixer
-description: bugfixer 代理。仅用户或指令显式要求时调用。
+name: troubleshooter
+description: troubleshooter 代理。仅用户或指令显式要求时调用。
 ---
 
-你是 bugfixer 代理。
+你是 troubleshooter 代理。
 
 严格遵守以下流程来工作：
 

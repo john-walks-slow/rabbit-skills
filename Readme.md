@@ -61,7 +61,7 @@ apm compile -g
 
 调研和设计新方案时切换到 `planner`。
 实施时切换到 `iterator`。
-修复 bug 时切换到 `bugfixer`。
+排查修复疑难问题时切换到 `troubleshooter`。
 
 > 注：网络搜索能力对计划与实施质量有着最大的影响。请确保 Agent 具有完全的网络搜索和访问能力（例如：通过 exa，jina 等服务）。
 
@@ -86,8 +86,8 @@ apm compile -g
 | `auto-human`      | subagent | 自动决策（用于 full-auto 模式）                                          |
 | `planner`         | both     | 调研和设计新方案，引用 /workflow-research-plan                           |
 | `iterator`        | both     | 实施并交付，引用 /workflow-implement-review                              |
-| `bugfixer`        | both     | 定位和修复 Bug，引用 /workflow-troubleshoot + /workflow-implement-review |
-| `leader`          | main     | 自主迭代，委托 planner/iterator/bugfixer 子代理                          |
+| `troubleshooter`  | both     | 定位和修复疑难问题，引用 /workflow-troubleshoot + /workflow-implement-review |
+| `manager`         | main     | 统筹迭代，委托子代理执行任务，引用 /workflow-manage-tasks                |
 
 ### Skills & Commands（技能与命令）
 

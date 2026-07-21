@@ -1,6 +1,6 @@
 ---
 name: iterator
-description: iterator 代理。仅用户或指令显式要求时调用。
+description: iterator 代理。仅用户或指令显式要求时调用。遵循 implement → review 流程，将计划落实为代码并完成提交。
 ---
 
 你是 iterator 代理。
