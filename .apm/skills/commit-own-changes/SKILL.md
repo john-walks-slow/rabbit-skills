@@ -1,101 +1,52 @@
 ---
 name: commit-own-changes
-description: 提交改动时防止带入其他无关的未提交修改。事关安全，在执行任何 `git add`，`git commit` 命令前 **必须** 使用本技能。
+description: >-
+  提交改动时防止带入其他无关的未提交修改。事关安全，在执行任何 `git add` / `git commit`
+  前 **必须** 使用本技能。一律通过 own.mjs（agent-ownership hooks）提交。
 ---
 
 # commit-own-changes
 
-提交改动时防止带入其他无关的未提交修改。
+提交改动时防止带入其他无关的未提交修改。**一律** 走 own.mjs，禁止手搓 stage-lines / `git add -A`。
 
-## 工作流程
-
-1. **获取锁**（防止同一时间其他 Agent 进行 Git 操作；会自动等待直到上一个锁释放）
-
-**重要：** 锁文件为 `.git/agent.lock`（单文件，sh/ps1 同一格式）。acquire 会等待直到获得锁；设置足够长的超时并耐心等待。**禁止**手动检查/删除锁文件。**禁止**跳过本步骤进行后续操作。
+CLI（本 skill 自带脚本，路径相对 skill 目录）：
 
 ```bash
-{skill_dir}/scripts/git-lock.sh acquire <task-id>   # Linux/macOS
+node {skill_dir}/scripts/bin/own.mjs
 ```
 
-```powershell
-{skill_dir}\scripts\git-lock.ps1 -Action acquire -TaskId <task-id>   # Windows
-```
+> sessionStart hook 会注入 **绝对路径** 的 commit 命令；优先用 hook 注入的那条。
+> 若无注入，用上面的 `{skill_dir}` 路径（APM 安装后 skill 在 `.agents/skills/commit-own-changes/` 或用户目录同等位置）。
 
-> `<task-id>` 建议用本次任务的极简英文 summary，
-> 如 `fix-login-crash`、`add-dark-mode`。获取锁和释放锁时必须使用同一 ID。
+## 流程
 
-> 若 acquire 执行失败（输出不包含 `acquired`），立即中止，**不得继续后续步骤**。向用户报告异常。
-
-2. **查看 git 状态**，确认有哪些文件是需要提交的
-
-```powershell
-git status
-```
-
-**清除暂存**（防止过去残留的暂存项干扰本次提交）
-
-```powershell
-git restore --staged .
-```
-
-3. **分文件暂存修改**
-
-对每个需要提交的文件，先查看变更并获取 refs：
-
-```powershell
-npx git-stage-lines diff <changed_file>
-```
-
-如果文件的所有改动都属于本轮提交、不存在混合意图，直接全量暂存：
-
-```powershell
-git add <changed_file>
-```
-
-否则用 git-stage-lines 精确选择。提供两种方式，按场景任选其一：
-
-- **Refs（精确，推荐）** — 从 `diff` 输出的 refs（如 `+12`, `-20`）选择要暂存的行：
-
-  ```powershell
-  npx git-stage-lines <changed_file>:<refs> --json
-  ```
-
-  `+N` 写作 `N`，`-N` 保持 `-N`，例如 `git-stage-lines src/app.ts:-12,12,15,20 --json`。
-
-- **Ranges（快速）** — 如果你知道自己改了哪些行号范围，直接按工作树行号选择：
-
-  ```powershell
-  npx git-stage-lines <changed_file> <ranges> --mode both --json
-  ```
-
-  例如 `git-stage-lines src/app.ts 10-15,20-30 --mode both --json`。
-
-  范围是"模糊匹配"的：`10-30` 只会暂存该范围内**实际有改动**的行，中间的未改动行（如 16~19）不受影响。因此如果改了 10~15 和 20~30，`10-30` 可以一次性覆盖。
-
-> 特别地：如果你和其他 Agent 的修改区域重叠（或你的改动被其他 Agent 删除/修改了），不要在本次提交中包含那一部分，但继续正常完成剩余的提交。在提交 message 中备注冲突情况并向用户说明即可。
-
-4. **提交**
-
-> 注意：PowerShell 不支持 heredoc，提交消息必须使用 -F - 指定
-
-```powershell
-"<type>: <title>`n`n- <file>: <changes>`n- <file>: <changes>" | git commit -F -
-```
-
-5. **释放锁**
+1. 检视通过后，只提交自己的行：
 
 ```bash
-{skill_dir}/scripts/git-lock.sh release <task-id>   # Linux/macOS
+node {skill_dir}/scripts/bin/own.mjs status
+node {skill_dir}/scripts/bin/own.mjs stage
+node {skill_dir}/scripts/bin/own.mjs commit -m "…"
 ```
 
-```powershell
-{skill_dir}\scripts\git-lock.ps1 -Action release -TaskId <task-id>   # Windows
+2. auto owner 报 ambiguous（exit 2 / 多 owner）：
+
+```bash
+node {skill_dir}/scripts/bin/own.mjs owners
+node {skill_dir}/scripts/bin/own.mjs commit --owner <conversation_id> -m "…"
 ```
+
+3. 父 Agent 协调多个子 Agent 的提交：
+
+```bash
+node {skill_dir}/scripts/bin/own.mjs plan
+node {skill_dir}/scripts/bin/own.mjs commit-each --execute -m "chore(own): commit for {owner}"
+```
+
+完整说明见 `{skill_dir}/scripts/README.md`。
 
 ## 原则
 
 - 同时有多个 Agent 在工作。请勿假设只有你自己修改过某一文件。
 - 禁止 `git add -A`。
-- 优先用 `git add <file>` 全量暂存（当文件所有改动都属于本轮提交时），避免不必要的逐行操作。
-- 用 refs 方式时，refs 必须从 `npx git-stage-lines diff` 获取，不要凭推测。
-- 用 ranges 方式时，确保 `--mode both` 以避免新增/删除行号混淆。
+- 禁止手搓 `git-stage-lines`；own.mjs 已负责锁与行级 stage。
+- own 错误（锁超时、ambiguous、message 缺失、0 owners 等）不得绕过：修复后重试，或中止并向用户报告。
