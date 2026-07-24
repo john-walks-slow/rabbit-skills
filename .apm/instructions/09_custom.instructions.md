@@ -16,20 +16,6 @@ description: 约定与通例：多 Agent 协作、Shell/Git 使用规则、测�
 - git restore （同上）
 - git reset --hard （同上）
 
-### 提交时使用 ownership hooks
-
-提交 **必须** 走 own.mjs（`commit-own-changes` skill 自带），禁止 `git add -A`、禁止手搓 `git-stage-lines`。
-
-优先使用 sessionStart hook 注入的绝对路径命令；否则：
-
-```bash
-node {skill_dir}/scripts/bin/own.mjs commit -m "<msg>"
-```
-
-（`{skill_dir}` = `commit-own-changes` skill 目录，通常为 `.agents/skills/commit-own-changes` 或用户级同等路径。）
-
-own.mjs 已内含 git 锁、行级暂存和身份解析（auto ledger∩diff）。多 owner / 跨 agent 收尾见 `plan` / `commit-each`。
-
 ## Shell 使用规则
 
 不使用 powershell -Command 等前缀，直接裸命令执行。
