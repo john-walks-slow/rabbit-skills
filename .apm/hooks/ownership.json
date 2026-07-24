@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "node ${PLUGIN_ROOT}/.apm/skills/commit-own-changes/scripts/session-start.mjs"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "node ${PLUGIN_ROOT}/.apm/skills/commit-own-changes/scripts/track-edit.mjs"
+      }
+    ]
+  }
+}
