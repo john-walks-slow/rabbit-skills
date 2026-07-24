@@ -10,7 +10,8 @@
 - 通用 Bugfix 工作流。先定位再修改避免越改越错。
 - 任务分派工作流，跟踪问题、整理依赖关系、并行实施，并使用文档双向沟通。
 - 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
-- 日常实用 Skill：`commit-own-changes` 通过行级 ownership hooks 实现无需 worktree 的安全并行提交、`teach-me` 把当前项目的关键设计和风险教给负责人、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
+- 日常实用 Skill：`teach-me` 把当前项目的关键设计和风险教给负责人、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
+- 多 agent 安全并行提交由单独的 `commit-own-changes` 仓库提供（`john-walks-slow/commit-own-changes`），按需安装。
 - 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
 - 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
 
@@ -111,7 +112,6 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `workflow-leader`            | 仅用户    | 项目领导工作流：给出愿景 → 构思 idea → 向 manager 派发 → 等待汇报并继续推进 |
 | `spawn-deep-researcher`      | 用户或 AI | 启动网络调研子代理                                                            |
 | `spawn-reviewer`             | 用户或 AI | 启动代码检视子代理                                                            |
-| `commit-own-changes`         | 用户或 AI | 多 agent 并发时只提交自己改动的行（own.mjs，不带别人的修改） |
 | `teach-me`                   | 仅用户    | 教授当前项目负责人必须掌握的关键设计、核心知识、权衡与风险信号                |
 | `grilling`                   | 用户或 AI | 向用户盘问设计方案                                                            |
 | `cross-check`                | 用户或 AI | 使用独立子代理复核关键结论                                                    |
@@ -128,12 +128,9 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 ### Hooks（钩子）
 
-| 文件                   | 说明                                                          |
-| ---------------------- | ------------------------------------------------------------- |
-| `long-file-reminder`   | 长文件提醒：超过行数阈值时提示拆分                            |
-| `ownership`            | 行级归属追踪；脚本随 `commit-own-changes` skill 派发          |
-
-> CLI：`node {skill_dir}/scripts/bin/own.mjs`。sessionStart 会注入绝对路径。部分行级暂存依赖 `git-stage-lines`（有 apply-cached 回退）。
+| 文件                 | 说明                               |
+| -------------------- | ---------------------------------- |
+| `long-file-reminder` | 长文件提醒：超过行数阈值时提示拆分 |
 
 ## 自定义
 
