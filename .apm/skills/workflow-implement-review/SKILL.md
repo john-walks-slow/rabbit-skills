@@ -38,8 +38,8 @@ user-invocable: true
 - 需求开发：`/docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.review.md`
 - 问题修复：`/docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.review.md`
 
-若检视发现阻塞问题和合理的建议，则进行修改和优化。修改后**再次**将本次实施的全部代码提交检视。
-**直到拥有明确准入结论后才进入下一步。**
+若检视发现阻塞问题和合理的建议，则进行修改和优化。若前次检视结果低于条件准入，则在修改后**再次**将本次实施的全部代码提交检视。
+**直到拥有准入或条件准入结论后才进入下一步。**
 
 ## 4. Documentation
 
