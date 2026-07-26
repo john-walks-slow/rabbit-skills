@@ -1,9 +1,8 @@
 ---
-
-## name: update-validation-requirements
-
+name: update-validation-requirements
 description: 创建或更新需求、问题的用户验证要求文档。当实施内容需要用户验收，尤其需要真实设备、真实环境或真实交互验证时使用。
 user-invocable: true
+---
 
 # update-validation-requirements
 
