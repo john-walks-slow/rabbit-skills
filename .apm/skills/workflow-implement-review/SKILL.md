@@ -33,6 +33,8 @@ user-invocable: true
 
 ## 3. Review
 
+> 特别地：在你的修改少于 50 行，且改动风险极为可控时，才可跳过此步骤。
+
 使用 /spawn-reviewer 检视代码（而不是使用 bugbot 子代理），指定检视报告输出位置：
 
 - 需求开发：`/docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.review.md`
@@ -52,9 +54,8 @@ user-invocable: true
 
 ## 5. Commit
 
-最后，在征得用户 _书面确认_ 后提交本次修改的文档和文件。遵循项目提交规范。
-注意：Commit 步骤需要单独的用户批准，此前步骤的授权不能延伸到本步骤。
+最后，提交本次修改的文档和文件。遵循项目提交规范。
 
 **备注:**
 
-当用户书面要求时，你可以调整工作流。如：跳过用户 validation 步骤；并行 spawn 多个 reviewer 等。
+当用户书面要求时，你可以调整工作流。如：跳过用户 validation 步骤；并行 spawn 多个 reviewer；commit 前需确认等。
