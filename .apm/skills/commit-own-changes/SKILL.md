@@ -31,7 +31,9 @@ description: 提交改动时防止带入其他无关的未提交修改。事关�
 确认有哪些 hunk 是需要提交的：
 
 ```powershell
-git-hunk list
+git status             # 确认仓库状态
+git-hunk list          # 全部 hunk
+git-hunk list <files...>   # 或只看特定文件的 hunk
 ```
 
 可以使用 `show` 确认 hunk 的内容：
@@ -62,7 +64,20 @@ git add <files...>
 git-hunk stage <hunk_ids...>
 ```
 
-> 特别地：如果你和其他 Agent 的修改区域重叠（或你的改动被其他 Agent 删除/修改了），不要在本次提交中包含那一部分，但继续正常完成剩余的提交。在提交 message 中备注冲突情况并向用户说明即可。
+与其他 Agent 修改重叠时的处理（混在同一行，无法拆分）：
+
+- **Case 1 — 要提交 B，但 B 已基于 A 的未提交修改**：向用户说明情况，询问是否需要等待前置修改提交后再提交本修改。如用户要求等待，则恢复暂存区并释放锁。如用户同意直接一并提交，则提交 A+B 整体。在 message 中备注包含 A 的改动。
+- **Case 2 — 要提交 A，但 A 之后又叠加了 B 的修改**：构造 patch 仅含 A 的部分，用 git apply --cached 暂存；B 留在工作区，留待 B 的 Agent 提交。
+
+**构造 patch 的流程与注意事项**：
+
+1. 优先 `git-hunk stage` / `git add -p` 选 hunk——若能独立成 hunk，不需要 patch。
+2. 若必须手写 patch（A、B 混在同一行无法用 hunk 表达），写完后必须转 LF 并验证：
+
+```powershell
+$c = [System.IO.File]::ReadAllText('x.patch'); $c = $c -replace "`r`n", "`n"; [System.IO.File]::WriteAllText('x.patch', $c, (New-Object System.Text.UTF8Encoding($false)))
+git apply --cached --check x.patch
+```
 
 5. **提交**
 
