@@ -5,7 +5,10 @@
 
 .DESCRIPTION
   Prevents multiple agents from running git operations simultaneously.
+  Pure mutual exclusion: the first acquirer wins, holders must release.
   Lock is a single file .git/agent.lock (same format as git-lock.sh).
+  No stale-steal / timeout reclaim — a crashed holder requires manual
+  removal of the lock file.
 #>
 
 param(
@@ -23,12 +26,6 @@ if (-not $gitDir) {
     exit 1
 }
 $lockFile = Join-Path $gitDir "agent.lock"
-$lockAgeLimit = 300
-$writeGrace = 3
-
-function Get-Timestamp {
-    return [int][double]::Parse((Get-Date -UFormat %s))
-}
 
 function Read-TaskFrom([string]$Path) {
     if (-not (Test-Path -LiteralPath $Path)) { return $null }
@@ -46,106 +43,21 @@ function Read-TaskFrom([string]$Path) {
     return $null
 }
 
-function Read-TsFrom([string]$Path) {
-    if (-not (Test-Path -LiteralPath $Path)) { return $null }
-    try {
-        $raw = Get-Content -LiteralPath $Path -Raw -ErrorAction Stop
-    } catch {
-        return $null
+function Read-Owner([string]$Path) {
+    $target = if (Test-Path -LiteralPath $Path -PathType Container) {
+        Join-Path $Path 'task'
+    } else {
+        $Path
     }
-    if (-not $raw) { return $null }
-    foreach ($line in ($raw -split "`r?`n")) {
-        if ($line -match '^ts=(\d+)') {
-            return [int]$Matches[1]
-        }
-    }
-    return $null
-}
-
-function Get-PathAgeSeconds([string]$Path) {
-    if (-not (Test-Path -LiteralPath $Path)) { return $null }
-    try {
-        $item = Get-Item -LiteralPath $Path -ErrorAction Stop
-        $mtime = $item.LastWriteTimeUtc
-        return [int]((Get-Date).ToUniversalTime() - $mtime).TotalSeconds
-    } catch {
-        return $null
-    }
-}
-
-function Test-StaleFile([string]$Path) {
-    $lockTs = Read-TsFrom $Path
-    if ($null -ne $lockTs) {
-        return ((Get-Timestamp) - $lockTs) -gt $lockAgeLimit
-    }
-    $age = Get-PathAgeSeconds $Path
-    return ($null -ne $age -and $age -ge $writeGrace)
+    return Read-TaskFrom $target
 }
 
 function Get-UniqueSidePath([string]$Prefix) {
     return "$Prefix.$PID.$([guid]::NewGuid().ToString('N').Substring(0, 8))"
 }
 
-function Remove-StalePath {
-    if (-not (Test-Path -LiteralPath $lockFile)) { return $false }
-
-    $tmp = Get-UniqueSidePath "$lockFile.steal"
-    try {
-        Move-Item -LiteralPath $lockFile -Destination $tmp -ErrorAction Stop
-    } catch {
-        return $false
-    }
-
-    if (Test-Path -LiteralPath $tmp -PathType Container) {
-        # Legacy directory lock
-        Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
-        return $true
-    }
-
-    if (Test-StaleFile $tmp) {
-        Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
-        return $true
-    }
-
-    if (-not (Test-Path -LiteralPath $lockFile)) {
-        try {
-            Move-Item -LiteralPath $tmp -Destination $lockFile -ErrorAction Stop
-        } catch {
-            Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
-        }
-    } else {
-        Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
-    }
-    return $false
-}
-
-function Try-StealStale {
-    if (-not (Test-Path -LiteralPath $lockFile)) { return $false }
-
-    if (Test-Path -LiteralPath $lockFile -PathType Container) {
-        $tsPath = Join-Path $lockFile 'ts'
-        $legacyTs = Read-TsFrom $tsPath
-        if ($null -ne $legacyTs) {
-            if (((Get-Timestamp) - $legacyTs) -gt $lockAgeLimit) {
-                return Remove-StalePath
-            }
-            return $false
-        }
-        $age = Get-PathAgeSeconds $lockFile
-        if ($null -ne $age -and $age -ge $writeGrace) {
-            return Remove-StalePath
-        }
-        return $false
-    }
-
-    if (Test-StaleFile $lockFile) {
-        return Remove-StalePath
-    }
-    return $false
-}
-
 function Try-CreateLockFile {
-    $content = "task=$TaskId`nts=$(Get-Timestamp)`n"
+    $content = "task=$TaskId`n"
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($content)
     try {
         $fs = [System.IO.File]::Open(
@@ -168,7 +80,7 @@ function Try-CreateLockFile {
 }
 
 function Restore-OrDrop([string]$Tmp, [string]$ExpectedTask) {
-    $still = Read-TaskFrom $Tmp
+    $still = Read-Owner $Tmp
     if ($still -eq $ExpectedTask) {
         Remove-Item -LiteralPath $Tmp -Recurse -Force -ErrorAction SilentlyContinue
         return $true
@@ -190,46 +102,23 @@ switch ($Action) {
         $waited = $false
 
         while ($true) {
-            if (Test-Path -LiteralPath $lockFile -PathType Container) {
+            if (Test-Path -LiteralPath $lockFile) {
+                $existingTask = Read-Owner $lockFile
+                if ($existingTask -eq $TaskId) {
+                    Write-Output "reacquired:$TaskId"
+                    exit 0
+                }
                 if (-not $waited) {
-                    $legacyTask = Read-TaskFrom (Join-Path $lockFile 'task')
-                    $label = if ($legacyTask) { $legacyTask } else { 'legacy-dir' }
+                    $label = if ($existingTask) { $existingTask } else { 'unknown' }
                     Write-Warning "waiting:$label"
                 }
                 $waited = $true
-                if (Try-StealStale) { continue }
                 Start-Sleep -Milliseconds 350
                 continue
             }
 
-            if (Test-Path -LiteralPath $lockFile -PathType Leaf) {
-                $existingTask = Read-TaskFrom $lockFile
-
-                if ($existingTask -and $existingTask -eq $TaskId) {
-                    try {
-                        $content = "task=$TaskId`nts=$(Get-Timestamp)`n"
-                        [System.IO.File]::WriteAllText($lockFile, $content)
-                        if ((Read-TaskFrom $lockFile) -eq $TaskId) {
-                            Write-Output "reacquired:$TaskId"
-                            exit 0
-                        }
-                    } catch {
-                        # fall through
-                    }
-                } else {
-                    if (-not $waited) {
-                        $label = if ($existingTask) { $existingTask } else { 'unknown' }
-                        Write-Warning "waiting:$label"
-                    }
-                    $waited = $true
-                    if (Try-StealStale) { continue }
-                    Start-Sleep -Milliseconds 350
-                    continue
-                }
-            }
-
             if (Try-CreateLockFile) {
-                if ((Read-TaskFrom $lockFile) -eq $TaskId) {
+                if ((Read-Owner $lockFile) -eq $TaskId) {
                     if ($waited) {
                         Write-Output "acquired after wait:$TaskId"
                     } else {
@@ -255,69 +144,11 @@ switch ($Action) {
             exit 0
         }
 
-        if (Test-Path -LiteralPath $lockFile -PathType Container) {
-            $legacyTask = Read-TaskFrom (Join-Path $lockFile 'task')
-            if (-not $legacyTask) {
-                $age = Get-PathAgeSeconds $lockFile
-                if ($null -ne $age -and $age -ge $writeGrace) {
-                    $tmp = Get-UniqueSidePath "$lockFile.releasing"
-                    try {
-                        Move-Item -LiteralPath $lockFile -Destination $tmp -ErrorAction Stop
-                        Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
-                        Write-Output "released (orphaned):$TaskId"
-                    } catch {}
-                }
-                exit 0
-            }
-            if ($legacyTask -ne $TaskId) {
-                Write-Warning "Lock held by another task ($legacyTask), skip release"
-                exit 0
-            }
-            $tmp = Get-UniqueSidePath "$lockFile.releasing"
-            try {
-                Move-Item -LiteralPath $lockFile -Destination $tmp -ErrorAction Stop
-            } catch {
-                exit 0
-            }
-            $still = Read-TaskFrom (Join-Path $tmp 'task')
-            if ($still -eq $TaskId) {
-                Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
-                Write-Output "released:$TaskId"
-            } elseif (-not (Test-Path -LiteralPath $lockFile)) {
-                try { Move-Item -LiteralPath $tmp -Destination $lockFile -ErrorAction Stop } catch {
-                    Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
-                }
-            } else {
-                Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
-            }
-            exit 0
-        }
-
-        $lockTask = Read-TaskFrom $lockFile
-
+        $lockTask = Read-Owner $lockFile
         if (-not $lockTask) {
-            $age = Get-PathAgeSeconds $lockFile
-            if ($null -ne $age -and $age -ge $writeGrace) {
-                $tmp = Get-UniqueSidePath "$lockFile.releasing"
-                try {
-                    Move-Item -LiteralPath $lockFile -Destination $tmp -ErrorAction Stop
-                } catch {
-                    exit 0
-                }
-                if (-not (Read-TaskFrom $tmp)) {
-                    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
-                    Write-Output "released (orphaned):$TaskId"
-                } elseif (-not (Test-Path -LiteralPath $lockFile)) {
-                    try { Move-Item -LiteralPath $tmp -Destination $lockFile -ErrorAction Stop } catch {
-                        Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
-                    }
-                } else {
-                    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
-                }
-            }
+            Write-Warning "Lock has no owner (crash remnant?), manual removal required"
             exit 0
         }
-
         if ($lockTask -ne $TaskId) {
             Write-Warning "Lock held by another task ($lockTask), skip release"
             exit 0
@@ -330,8 +161,8 @@ switch ($Action) {
             exit 0
         }
 
-        if ((Read-TaskFrom $tmp) -eq $TaskId) {
-            Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+        if ((Read-Owner $tmp) -eq $TaskId) {
+            Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
             Write-Output "released:$TaskId"
             exit 0
         }
@@ -340,10 +171,10 @@ switch ($Action) {
             try {
                 Move-Item -LiteralPath $tmp -Destination $lockFile -ErrorAction Stop
             } catch {
-                Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+                Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
             }
         } else {
-            Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
         }
         exit 0
     }
