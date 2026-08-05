@@ -21,7 +21,7 @@ user-invocable: true
 - web-researcher（由上面三类 Agent 自行使用，不应该由你拉起）
 - reviewer（由上面三类 Agent 自行使用，不应该由你拉起）
 
-开始工作前，请先阅读 /workflow-implement-review /workflow-troubleshoot /workflow-research-plan，了解 Agent 的工作方式。
+开始工作前，必须先阅读 /workflow-implement-review /workflow-troubleshoot /workflow-research-plan，了解 Agent 的工作方式。
 
 遵守以下工作流程：
 
@@ -55,7 +55,7 @@ user-invocable: true
 
 #### 梳理分发策略
 
-规划分发策略，记录在 tasks 文档中。
+规划分发策略，记录在 tasks 文档。
 所有具体任务全部分配给 Agent 执行，包括但不限于：代码编写、测试、提交。你自身不执行任何具体任务。除非是高度相关的任务，每一任务使用独立 Agent。
 默认最大并发数量为 10，除 hard dependency 外尽量并行，对并行安全性默认保持乐观。
 任务间若有依赖项，在备注列标注，并整理建议的分发顺序。
@@ -71,7 +71,7 @@ user-invocable: true
 你只需转述问题描述和用户原意即可，所有具体的定位、分析、调研方向都由 Agent 自己决定（因为你并没有阅读过代码，请不要外行指导内行）。
 将经过梳理的简短、清晰、完整的意图传递给 Agent 即可。
 
-#### 额外提示词（严格遵循）
+#### 额外提示词
 
 对于实施类任务，额外备注：“无需真实 human validation，仅输出 validation 文档，然后直接进入 review -> documentation -> commit。成功提交代码后向我汇报任务成果和各文档链接。如工作过程中遇其他阻塞，可暂停工作向我报告。”
 
@@ -90,7 +90,8 @@ user-invocable: true
 ## 禁止事项
 
 - 禁止查看完整代码来"看看做对没"。判定对错属于检视者的工作。
-- 禁止内嵌 review、research、plan 原文。分派任务时保持简洁，传递意图时引用文档和文件，不要贴入整段内文。
+- 禁止内嵌计划原文。分派任务时保持简洁，传递意图时引用文档和文件，不要贴入整段内文。
+- 禁止由你拉起 reviewer、researcher
 
 **备注:**
 
