@@ -1,6 +1,6 @@
 ---
 name: commit-own-changes
-description: 提交改动时防止带入其他无关的未提交修改。事关安全，在执行任何 `git add`，`git commit` 命令前 **必须** 使用本技能。
+description: 基于 git-hunk 提交改动，防止带入其他无关的未提交修改。事关安全，在执行任何 `git add`，`git commit` 命令前 **必须** 使用本技能。例外：若你当前在单独 worktree 中工作，则无需使用本技能。
 ---
 
 # commit-own-changes

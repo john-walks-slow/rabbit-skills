@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./long-file-reminder.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
