@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./inject-agents-md.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
