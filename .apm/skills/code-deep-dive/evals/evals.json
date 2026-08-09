@@ -1,0 +1,53 @@
+{
+  "skill_name": "code-deep-dive",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我刚用 React 写了个待办应用（项目在 code-deep-dive-workspace/test-project），我对 useState 和 useEffect 的理解停留在'用了就会更新'。帮我写一篇深度文章讲清楚 Hooks 到底怎么工作的，我打算通勤时用手机看完。请输出到 docs/learning/ 下。",
+      "expected_output": "一篇自包含的中文 markdown 深度文章，讲解 React Hooks（useState/useEffect 为主）工作原理，内嵌项目真实代码并完整解读，适合手机碎片时间阅读，约 1.5 小时学习时长，含充分外部链接。",
+      "files": [],
+      "expectations": [
+        "文章为中文 markdown，保存到项目 docs/learning/ 目录",
+        "讲解使用项目 frontend/src/App.jsx 等文件中的真实代码片段，并标注来源文件路径",
+        "被讲解的代码片段完整内嵌在文章中，不是只给文件路径",
+        "正文内容量达到约 1.5 小时学习时长（正文中文字符数应在 10000 以上）",
+        "讲解 Hooks 的底层机制（如渲染调度、状态如何触发更新），不止于 API 用法",
+        "包含至少 12 个外部学习链接，每个链接有说明文字",
+        "文章带章节预计阅读时长标注，适合手机阅读",
+        "讲解姿态为如实讲解代码行为，不含'我们精心选择了这个方案'之类的赞美叙事"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "项目（code-deep-dive-workspace/test-project）后端是 Express，AI 帮我搭了一堆中间件（logger、auth、错误处理），但我不明白它们执行的先后顺序是怎么决定的，也不知道错误是怎么一路传过去的。写一篇深度文章把中间件机制讲透，我在地铁上读。输出到 docs/learning/ 下。",
+      "expected_output": "一篇自包含的中文 markdown 深度文章，讲透 Express 中间件机制（洋葱模型、顺序、错误传播），内嵌项目 backend 真实代码并解读，适合手机阅读，约 1.5 小时学习时长，含充分外部链接。",
+      "files": [],
+      "expectations": [
+        "文章为中文 markdown，保存到项目 docs/learning/ 目录",
+        "使用 backend/src/app.js、backend/src/middleware/* 等真实代码，标注来源文件路径",
+        "被讲解的代码片段完整内嵌在文章中",
+        "正文中文字符数达到约 1.5 小时学习时长",
+        "讲清中间件的执行顺序机制、next() 如何控制流程、错误如何传播到错误处理中间件",
+        "包含至少 12 个外部学习链接，每个链接有说明文字",
+        "文章带章节预计阅读时长标注，适合手机阅读",
+        "讲解姿态为如实讲解代码行为，不做价值评判"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "项目（code-deep-dive-workspace/test-project）用 Docker Compose 部署了 frontend（nginx）、backend（node）、db（postgres）三个服务，我不懂容器之间是怎么联网的，nginx 里的 proxy_pass http://backend:3000 为什么写的是服务名而不是 IP。写一篇深度文章把容器网络讲透，我在午休时读。输出到 docs/learning/ 下。",
+      "expected_output": "一篇自包含的中文 markdown 深度文章，讲透 Docker 容器网络（bridge 网络、DNS 服务发现、端口映射），内嵌项目 docker-compose.yml、Dockerfile、nginx.conf 真实配置并解读，适合手机阅读，约 1.5 小时学习时长，含充分外部链接。",
+      "files": [],
+      "expectations": [
+        "文章为中文 markdown，保存到项目 docs/learning/ 目录",
+        "使用 docker-compose.yml、frontend/nginx.conf、Dockerfile 等真实配置，标注来源文件路径",
+        "被讲解的配置/代码完整内嵌在文章中",
+        "正文中文字符数达到约 1.5 小时学习时长",
+        "讲透 bridge 网络原理、compose 服务名 DNS 解析、端口映射机制",
+        "包含至少 12 个外部学习链接，每个链接有说明文字",
+        "文章带章节预计阅读时长标注，适合手机阅读",
+        "讲解姿态为如实讲解，不做价值评判"
+      ]
+    }
+  ]
+}
