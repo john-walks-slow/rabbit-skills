@@ -128,7 +128,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 | 文件                 | 事件           | 说明                                        |
 | -------------------- | -------------- | ------------------------------------------- |
-| `inject-agents-md`   | `SessionStart` | 会话启动时列出项目内 AGENTS.md 并提醒先阅读 |
+| `agents-md-loader`   | `SessionStart` / `PreToolUse` | 让 Claude Code 读取 AGENTS.md：会话启动注入 git root→cwd 链，进入子目录按需注入，压缩后重注入 |
 | `long-file-reminder` | `PostToolUse`  | 长文件提醒：超过行数阈值时提示拆分          |
 
 > Hooks 通过 APM 部署：claude 目标合并进 `.claude/settings.json`，脚本 bundle 部署到 `.claude/hooks/rabbit-skills/`。
