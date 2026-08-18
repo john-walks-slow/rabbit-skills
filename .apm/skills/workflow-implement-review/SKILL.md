@@ -37,16 +37,7 @@ user-invocable: true
 若前次检视结果低于条件准入，则在修改后**再次**将本次实施的全部代码提交检视。
 **直到拥有准入或条件准入结论后才进入下一步。**
 
-## 4. Documentation
-
-记录本次工作的背景与结果：
-
-- 需求开发：`/docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.summary.md`
-- 问题修复：`/docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.summary.md`
-
-遵循规范按需更新模块级和项目级 AGENTS.md。当且仅当有对后续开发有明确收益的通用经验时，记录到模块 pitfalls 部分。
-
-## 5. Validate 
+## 4. Validate 
 
 使用 /update-validation-requirements 创建或更新用户验证要求文档。只记录最重要的核心场景，以及自动化测试无法可靠覆盖、必须实机验证的场景；没有符合条件的验证项时直接说明无需额外用户验证。
 
@@ -57,9 +48,18 @@ user-invocable: true
 > 若实际现象与你的预期明显不符，请撤销无效的、可疑的修改，使用 /workflow-troubleshoot 重新定位问题。
 > 如果你连续多次修改都未达预期，意味着当前思路不可靠或缺乏关键线索，继续试错只会引入更多不确定性。请清空既有思路从零梳理，不要在错误的路径上反复打转。
 
+## 5. Documentation
+
+记录本次工作的背景与结果：
+
+- 需求开发：`/docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.summary.md`
+- 问题修复：`/docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.summary.md`
+
+遵循规范按需更新模块级和项目级 AGENTS.md。当且仅当有对后续开发有明确收益的通用经验时，记录到模块 pitfalls 部分。
+
 ## 6. Commit
 
-最后，提交本次修改的文档和文件。遵循项目提交规范。
+最后，提交本次修改的文档和文件。遵循项目提交规范。如果你在 worktree 中工作，将提交合并回主工作树。
 
 
 **备注:**
