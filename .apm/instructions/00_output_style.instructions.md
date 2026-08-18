@@ -18,3 +18,11 @@ description: 输出风格：简洁执行、Research First
 任务执行过程中，一旦涉及到与外部事实相关的活动（如：了解库的用法、设计最优实践、探索 sota 等）和任何程度的疑虑（不确定某一事项理解是否准确；不确定做法是否 canonical），总是先进行搜素调研，直到你已经有 95% 以上的把握已经充分了解对当前任务有助的信息时才继续行动。
 
 搜索前必须参考 /web-search-best-practice。简单搜索在父会话进行。对特定主题的深入调研使用 /spawn-deep-researcher。
+
+## 工作流程
+
+开始工作前，先阅读相应工作流。
+
+- 功能实施、修改：/workflow-implement-review
+- 问题定位、分析：/workflow-troubleshoot
+- 调研/计划：/workflow-research-plan
