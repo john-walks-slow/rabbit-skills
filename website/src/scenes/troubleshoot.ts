@@ -1,0 +1,214 @@
+/**
+ * scene-troubleshoot.ts — 根因排障：日志捕获 → 因果链 → 诊断结论
+ *
+ * 叙事：终端日志逐行读入 → 异常行被珊瑚色标记捕获 →
+ * 现象→日志→根因 因果链逐级点亮 → 目标环锁定根因 →
+ * 盖章「诊断结论」+ 85% 置信仪表。
+ */
+import { gsap, ScrollTrigger, prefersReduced } from '../motion';
+import { el, svgRoot, seeded } from '../svg';
+
+const CORAL = '#FF8075';
+
+export function initTroubleshootScene() {
+  const host = document.getElementById('scene-troubleshoot');
+  if (!host) return;
+
+  const svg = svgRoot('0 0 500 400', host);
+  const rnd = seeded(771);
+
+  /* ---------- 终端窗 ---------- */
+  const term = el('g', {}, svg);
+  el('rect', {
+    x: 36, y: 26, width: 428, height: 150, rx: 10,
+    fill: '#0A0C0B', stroke: 'rgba(233,234,227,0.14)', 'stroke-width': 1,
+  }, term);
+  // 标题栏
+  [52, 64, 76].forEach((x) =>
+    el('circle', { cx: x, cy: 44, r: 2.6, fill: 'rgba(233,234,227,0.18)' }, term)
+  );
+  el('text', {
+    x: 250, y: 47, 'text-anchor': 'middle',
+    class: 'scene-label', fill: '#6B7069',
+  }, term, 'agent.log — frozen capture');
+  el('line', {
+    x1: 36, y1: 58, x2: 464, y2: 58,
+    stroke: 'rgba(233,234,227,0.08)', 'stroke-width': 1,
+  }, term);
+
+  /* ---------- 日志行 ---------- */
+  interface Row { rect: SVGRectElement; w: number; anomaly: boolean; }
+  const rowsGroup = el('g', { 'clip-path': 'url(#ts-clip)' }, term);
+  const clip = el('clipPath', { id: 'ts-clip' }, svg);
+  el('rect', { x: 38, y: 60, width: 424, height: 114 }, clip);
+
+  const rows: Row[] = [];
+  const ROW_Y = [74, 88, 102, 116, 130, 144, 158];
+  ROW_Y.forEach((y, i) => {
+    const anomaly = i === 4;
+    const w = anomaly ? 262 : 96 + Math.floor(rnd() * 250);
+    const rect = el('rect', {
+      x: 54, y, width: 0, height: 5, rx: 2.5,
+      fill: anomaly ? CORAL : 'rgba(233,234,227,0.16)',
+    }, rowsGroup);
+    rows.push({ rect, w, anomaly });
+    // 行首时间戳点缀
+    el('rect', { x: 44, y, width: 5, height: 5, rx: 1, fill: 'rgba(233,234,227,0.1)' }, rowsGroup);
+  });
+
+  // 异常行标记（左缘珊瑚条 + 光晕）
+  const anomalyMark = el('g', { opacity: 0 }, term);
+  el('rect', { x: 40, y: ROW_Y[4] - 2, width: 3, height: 9, rx: 1.5, fill: CORAL }, anomalyMark);
+  el('rect', { x: 44, y: ROW_Y[4] - 3, width: 404, height: 11, rx: 4, fill: CORAL, opacity: 0.08 }, anomalyMark);
+
+  // 从异常行落下的引导线 → 因果链首节点
+  const dropLine = el('path', {
+    d: `M 250 ${ROW_Y[4] + 8} L 250 216`,
+    fill: 'none', stroke: CORAL, 'stroke-width': 1, 'stroke-dasharray': '2 3', opacity: 0.5,
+  }, svg);
+
+  /* ---------- 因果链：现象 → 日志 → 根因 ---------- */
+  const chain: Array<{ x: number; y: number; label: string; sub: string }> = [
+    { x: 120, y: 244, label: '现象', sub: 'SYMPTOM' },
+    { x: 250, y: 270, label: '日志', sub: 'EVIDENCE' },
+    { x: 380, y: 244, label: '根因', sub: 'ROOT CAUSE' },
+  ];
+  const connectors = [
+    `M 140 250 C 180 268 210 270 230 270`,
+    `M 270 270 C 300 270 330 268 360 250`,
+  ].map((d) =>
+    el('path', { d, fill: 'none', stroke: CORAL, 'stroke-width': 1.3, 'stroke-linecap': 'round' }, svg)
+  );
+
+  const chainNodes = chain.map((c) => {
+    const g = el('g', { opacity: 0 }, svg);
+    el('circle', { cx: c.x, cy: c.y, r: 15, fill: '#121514', stroke: CORAL, 'stroke-width': 1.2 }, g);
+    el('circle', { cx: c.x, cy: c.y, r: 4.5, fill: CORAL }, g);
+    el('text', {
+      x: c.x, y: c.y - 26, 'text-anchor': 'middle',
+      fill: '#E9EAE3', 'font-size': 12, 'font-weight': 500, 'font-family': 'Space Grotesk, PingFang SC, sans-serif',
+    }, g, c.label);
+    el('text', {
+      x: c.x, y: c.y + 34, 'text-anchor': 'middle',
+      class: 'scene-label', fill: '#6B7069',
+    }, g, c.sub);
+    return { g, c };
+  });
+
+  // 根因锁定环（crosshair）
+  const lockG = el('g', { opacity: 0 }, svg);
+  const ring1 = el('circle', { cx: 380, cy: 244, r: 15, fill: 'none', stroke: CORAL, 'stroke-width': 1, 'stroke-dasharray': '4 4' }, lockG);
+  const ring2 = el('circle', { cx: 380, cy: 244, r: 23, fill: 'none', stroke: CORAL, 'stroke-width': 0.8, 'stroke-dasharray': '2 6' }, lockG);
+
+  /* ---------- 诊断报告卡 ---------- */
+  const report = el('g', { opacity: 0 }, svg);
+  el('rect', {
+    x: 300, y: 312, width: 168, height: 72, rx: 10,
+    fill: '#121514', stroke: 'rgba(233,234,227,0.16)', 'stroke-width': 1,
+  }, report);
+  el('text', {
+    x: 318, y: 322,
+    class: 'scene-label', fill: '#6B7069',
+  }, report, 'DIAGNOSIS');
+  // 打字机字段行（x, y, 终宽）
+  const fields: Array<[number, number, number]> = [
+    [318, 336, 96],
+    [318, 352, 130],
+    [318, 368, 74],
+  ];
+  const fieldRects: SVGRectElement[] = fields.map(([x, y]) =>
+    el('rect', { x, y, width: 0, height: 4, rx: 2, fill: 'rgba(233,234,227,0.22)' }, report)
+  );
+
+  // 盖章
+  const stamp = el('g', { opacity: 0 }, svg);
+  el('rect', {
+    x: 336, y: 330, width: 108, height: 34, rx: 6,
+    fill: 'none', stroke: CORAL, 'stroke-width': 1.6,
+  }, stamp);
+  el('text', {
+    x: 390, y: 352, 'text-anchor': 'middle',
+    fill: CORAL, 'font-size': 13.5, 'font-weight': 500,
+    'font-family': 'Space Grotesk, PingFang SC, sans-serif', 'letter-spacing': 2,
+  }, stamp, '诊断结论');
+
+  /* ---------- 85% 置信仪表 ---------- */
+  const dialC = { x: 108, y: 350, r: 22 };
+  const dial = el('g', { opacity: 0 }, svg);
+  el('path', {
+    d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
+    fill: 'none', stroke: 'rgba(233,234,227,0.14)', 'stroke-width': 3,
+  }, dial);
+  const dialArc = el('path', {
+    d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
+    fill: 'none', stroke: CORAL, 'stroke-width': 3, 'stroke-linecap': 'round',
+  }, dial);
+  const dialNum = el('text', {
+    x: dialC.x, y: dialC.y + 1, 'text-anchor': 'middle',
+    fill: '#E9EAE3', 'font-family': 'JetBrains Mono, monospace', 'font-size': 13, 'font-weight': 500,
+  }, dial, '0');
+  el('text', {
+    x: dialC.x, y: dialC.y + 14, 'text-anchor': 'middle',
+    fill: '#6B7069', 'font-family': 'JetBrains Mono, monospace', 'font-size': 6.5,
+  }, dial, 'PERCENT');
+  el('text', {
+    x: dialC.x, y: dialC.y + 42, 'text-anchor': 'middle',
+    class: 'scene-label', fill: '#6B7069',
+  }, dial, 'BELIEF · 置信度');
+
+  /* ---------- scrub 时间线 ---------- */
+  const counter = { v: 0 };
+  const tl = gsap.timeline({
+    defaults: { ease: 'power2.inOut' },
+    scrollTrigger: prefersReduced()
+      ? undefined
+      : { trigger: host, start: 'top 88%', end: 'bottom 52%', scrub: 0.7 },
+  });
+
+  // 日志读入
+  rows.forEach((r, i) => {
+    tl.to(r.rect, { attr: { width: r.w }, duration: 0.06, ease: 'power1.out' }, 0.02 + i * 0.028);
+  });
+  // 异常标记 + 闪烁
+  tl.to(anomalyMark, { opacity: 1, duration: 0.04 }, 0.3)
+    .fromTo(anomalyMark, { opacity: 0.3 }, { opacity: 1, duration: 0.05, repeat: 2, yoyo: true, ease: 'none' }, 0.32);
+  // 引导线落下
+  tl.fromTo(dropLine, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.08, ease: 'power1.inOut' }, 0.36);
+  // 因果链
+  chainNodes.forEach((n, i) => {
+    tl.fromTo(n.g, { opacity: 0, scale: 0.5, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.09, ease: 'back.out(2.2)' }, 0.4 + i * 0.09);
+    if (i > 0) tl.fromTo(connectors[i - 1], { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.08, ease: 'power2.out' }, 0.4 + i * 0.09 - 0.02);
+  });
+  // 根因锁定环
+  tl.to(lockG, { opacity: 1, duration: 0.04 }, 0.64)
+    .fromTo(ring1, { scale: 2.1, transformOrigin: '380px 244px' }, { scale: 1, duration: 0.1, ease: 'power3.out' }, 0.64)
+    .fromTo(ring2, { scale: 1.8, transformOrigin: '380px 244px' }, { scale: 1, duration: 0.12, ease: 'power3.out' }, 0.66);
+  // 报告卡 + 字段行
+  tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
+  fieldRects.forEach((r, i) => {
+    tl.to(r, { attr: { width: fields[i][2] }, duration: 0.05 }, 0.78 + i * 0.02);
+  });
+  // 盖章
+  tl.fromTo(stamp, { opacity: 0, scale: 1.7, rotation: -14, transformOrigin: '390px 347px' }, { opacity: 1, scale: 1, rotation: -6, duration: 0.07, ease: 'power4.in' }, 0.86);
+  // 仪表
+  tl.to(dial, { opacity: 1, duration: 0.05 }, 0.8)
+    .fromTo(dialArc, { drawSVG: '0%' }, { drawSVG: '85%', duration: 0.14, ease: 'power2.out' }, 0.82)
+    .to(counter, { v: 85, duration: 0.14, ease: 'power2.out', onUpdate: () => (dialNum.textContent = String(Math.round(counter.v))) }, 0.82);
+
+  if (prefersReduced()) {
+    tl.progress(1);
+    return;
+  }
+
+  /* ---------- idle 微循环 ---------- */
+  const idle = gsap.timeline({ paused: true });
+  idle.to(ring1, { rotation: 360, transformOrigin: '380px 244px', duration: 14, repeat: -1, ease: 'none' }, 0);
+  idle.to(ring2, { rotation: -360, transformOrigin: '380px 244px', duration: 22, repeat: -1, ease: 'none' }, 0);
+
+  ScrollTrigger.create({
+    trigger: host,
+    start: 'top 95%',
+    end: 'bottom 5%',
+    onToggle: (self) => (self.isActive ? idle.play() : idle.pause()),
+  });
+}

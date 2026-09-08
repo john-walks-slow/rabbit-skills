@@ -23,3 +23,7 @@ GEMINI.md
 .kiro/
 .opencode/
 .windsurf/
+
+# Website build output
+website/dist/
+website/src/generated/

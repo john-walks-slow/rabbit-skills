@@ -2,6 +2,8 @@
 
 轻量、松弛、有效的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发。
 
+> 🌐 官网：<https://john-walks-slow.github.io/rabbit-skills/> —— 哲学、三大核心工作流的动效介绍与全部内容物在线预览。
+
 ## 原则
 
 - 简洁清晰，相对松弛的约束，不为模型捆手捆脚。
