@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rabbit-skills — 轻量、松弛、有效的 Coding Agent 工作流套件</title>
+    <meta name="description" content="rabbit-skills：轻量、松弛、有效的 Coding Agent 配置套件。三大核心工作流 Research→Plan→Align / Troubleshoot / Implement→Review，基于 APM 规范，兼容九大主流 Agent 工具。" />
+    <meta name="theme-color" content="#0A0C0B" />
+    <meta property="og:title" content="rabbit-skills" />
+    <meta property="og:description" content="轻量、松弛、有效的 Coding Agent 工作流套件。三大核心工作流，让 AI 原生开发松弛下来。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://john-walks-slow.github.io/rabbit-skills/" />
+    <meta property="og:image" content="https://john-walks-slow.github.io/rabbit-skills/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="rabbit-skills" />
+    <meta name="twitter:description" content="轻量、松弛、有效的 Coding Agent 工作流套件。" />
+    <meta name="twitter:image" content="https://john-walks-slow.github.io/rabbit-skills/og.png" />
+    <link rel="icon" type="image/svg+xml" href="/rabbit-skills/favicon.svg" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到内容</a>
+
+    <!-- ================= NAV ================= -->
+    <header class="nav" id="nav">
+      <a class="nav-brand" href="#top" aria-label="rabbit-skills 首页">
+        <span class="nav-crest" id="nav-crest" aria-hidden="true"></span>
+        <span class="nav-word">rabbit-skills</span>
+      </a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a href="#philosophy" data-nav>哲学</a>
+        <a href="#workflows" data-nav>核心工作流</a>
+        <a href="#contents" data-nav>内容物</a>
+        <a href="#install" data-nav>安装</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-gh" href="https://github.com/john-walks-slow/rabbit-skills" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+          <span class="nav-stars" id="nav-stars">GitHub</span>
+        </a>
+        <button class="nav-burger" id="nav-burger" aria-label="打开菜单" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ================= HERO ================= -->
+      <section class="hero" id="top">
+        <div class="hero-canvas-wrap" aria-hidden="true">
+          <canvas id="hero-canvas"></canvas>
+        </div>
+
+        <div class="hero-inner">
+          <div class="hero-crest-row">
+            <span class="hero-crest" id="hero-crest" aria-hidden="true"></span>
+          </div>
+
+          <p class="hero-kicker mono">
+            <span class="kicker-item">APM PACKAGE</span>
+            <span class="kicker-dot" aria-hidden="true"></span>
+            <span class="kicker-item" id="hero-version">v0.3.31</span>
+            <span class="kicker-dot" aria-hidden="true"></span>
+            <span class="kicker-item">MIT</span>
+          </p>
+
+          <h1 class="hero-title" id="hero-title">rabbit-skills</h1>
+
+          <p class="hero-sub" id="hero-sub">轻量、松弛、有效的 Coding Agent 工作流套件。<br class="br-desktop" />不为模型捆手捆脚，让 AI 原生开发松弛下来。</p>
+
+          <div class="hero-cta">
+            <button class="cmd-chip" id="hero-cmd" data-copy="apm install -g john-walks-slow/rabbit-skills" aria-label="复制安装命令">
+              <span class="cmd-sign mono">$</span>
+              <code class="mono">apm install -g john-walks-slow/rabbit-skills</code>
+              <span class="cmd-copy" data-copy-icon aria-hidden="true">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              </span>
+            </button>
+            <a class="btn-ghost" href="#workflows">
+              看核心工作流
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+
+          <dl class="hero-stats" id="hero-stats">
+            <div class="stat" data-stat><dt class="mono">Skills</dt><dd><span class="stat-num" data-count="0">0</span></dd></div>
+            <div class="stat" data-stat><dt class="mono">Agents</dt><dd><span class="stat-num" data-count="0">0</span></dd></div>
+            <div class="stat" data-stat><dt class="mono">提示词行数</dt><dd><span class="stat-num" data-count="0">0</span></dd></div>
+            <div class="stat" data-stat><dt class="mono">Agent 平台</dt><dd><span class="stat-num" data-count="0">0</span></dd></div>
+          </dl>
+        </div>
+
+        <div class="hero-scroll-hint mono" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+          scroll
+        </div>
+      </section>
+
+      <!-- ================= PHILOSOPHY ================= -->
+      <section class="section" id="philosophy">
+        <div class="section-inner">
+          <p class="section-tag mono" data-reveal-text>PHILOSOPHY · 哲学</p>
+          <h2 class="section-title" data-split-lines>把判断力留给 Agent，<br />把决策权留给你。</h2>
+          <p class="section-lead" data-reveal>
+            大多数 Agent 框架用重型流程把模型捆起来。rabbit-skills 反其道而行：
+            用最少的、松弛的规则，守护真正要紧的事——调研先于动手、修复先于定位、交付必须经过检视。
+          </p>
+
+          <div class="philosophy-quote" data-reveal>
+            <span class="quote-mark mono" aria-hidden="true">"</span>
+            <p>简洁清晰，相对松弛的约束，<em>不为模型捆手捆脚</em>。</p>
+            <span class="quote-src mono">— Readme · 原则</span>
+          </div>
+
+          <div class="phil-cards" id="phil-cards">
+            <article class="phil-card" data-card>
+              <div class="phil-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4h3a2 2 0 0 1 2 2v3"/><path d="M20 17v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3"/><path d="M10 6V4a2 2 0 1 1 4 0v6"/><path d="m9 14 2 2 4-4"/></svg>
+              </div>
+              <h3 class="phil-name">松弛的约束</h3>
+              <p class="phil-desc">规则简洁清晰，不预设重型流程。把判断力留给 Agent，需要更强约束时再按项目加码。</p>
+            </article>
+            <article class="phil-card" data-card>
+              <div class="phil-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+              </div>
+              <h3 class="phil-name">零学习成本</h3>
+              <p class="phil-desc">不绑定任何开发范式——TDD、spec-driven，需要时再引入。读一遍 Readme 即可上手。</p>
+            </article>
+            <article class="phil-card" data-card>
+              <div class="phil-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+              </div>
+              <h3 class="phil-name">子代理隔离</h3>
+              <p class="phil-desc">调研、检视、复核交给独立上下文的子代理——显著减少幻觉，避免对错误结论的路径依赖。</p>
+            </article>
+            <article class="phil-card" data-card>
+              <div class="phil-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16"/><path d="m4 14 4-5 4 4 6-8"/></svg>
+              </div>
+              <h3 class="phil-name">化繁为简的文档</h3>
+              <p class="phil-desc">极简文档策略：给新成员 Quick Start、把关键历史留作记录，不在文档里重述代码。</p>
+            </article>
+            <article class="phil-card" data-card>
+              <div class="phil-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <h3 class="phil-name">标准 APM 打包</h3>
+              <p class="phil-desc">基于微软 APM 规范。一份 <code class="mono inline">apm.yml</code>，九大主流 Agent 工具一次接入。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= WORKFLOWS ================= -->
+      <section class="section section-alt" id="workflows">
+        <div class="section-inner">
+          <p class="section-tag mono" data-reveal-text>THREE WORKFLOWS · 核心工作流</p>
+          <h2 class="section-title" data-split-lines>三条工作流，覆盖 AI 原生开发全程。</h2>
+          <p class="section-lead" data-reveal>
+            每条工作流是一道带置信闸门的轨道：状态不到位就不放行。
+            它们也是 SKILL.md 里真实的文字——站点内容即产品本身。
+          </p>
+
+          <!-- 01 research-plan -->
+          <div class="workflow" id="wf-research" data-accent="cyan">
+            <div class="wf-copy">
+              <p class="wf-index mono">01 / RESEARCH → PLAN → ALIGN</p>
+              <h3 class="wf-name">调研与规划</h3>
+              <p class="wf-id mono">/workflow-research-plan</p>
+              <p class="wf-desc">
+                中等以上规模的需求，先作为产品架构师完成调研与设计：全面理解意图与既有代码、
+                网络调研外部方案，再设计体验与架构，最后与你对齐——直到计划与期望完全一致。
+              </p>
+              <ul class="wf-points">
+                <li><span class="pt-check" aria-hidden="true"></span>95% 把握掌握背景资料后，才允许进入设计</li>
+                <li><span class="pt-check" aria-hidden="true"></span>explore / deep-researcher 子代理独立调研</li>
+                <li><span class="pt-check" aria-hidden="true"></span>选型犹豫或事关重大时，自动触发 cross-check</li>
+                <li><span class="pt-check" aria-hidden="true"></span>产物：<code class="mono inline">docs/features/*.plan.md</code></li>
+              </ul>
+              <p class="wf-quote" data-wf-quote>"当你有 95% 把握掌握了充分、完备的背景信息和网络资料后才进入下一步。"</p>
+            </div>
+            <div class="wf-scene" id="scene-research" aria-hidden="true"></div>
+          </div>
+
+          <!-- 02 troubleshoot -->
+          <div class="workflow" id="wf-troubleshoot" data-accent="coral">
+            <div class="wf-copy">
+              <p class="wf-index mono">02 / REPRODUCE → ROOT CAUSE → DIAGNOSE</p>
+              <h3 class="wf-name">根因排障</h3>
+              <p class="wf-id mono">/workflow-troubleshoot</p>
+              <p class="wf-desc">
+                复杂问题先定位再修改，避免越改越错：先复现问题、确定回归验收标准，
+                再做根因分析——你的分析必须能解释用户看到的全部现象。置信不足 85%，不许输出诊断。
+              </p>
+              <ul class="wf-points">
+                <li><span class="pt-check" aria-hidden="true"></span>测试用例或实机日志完整复现后才继续</li>
+                <li><span class="pt-check" aria-hidden="true"></span>不假装明白、不盲目修复——问题只会扩大</li>
+                <li><span class="pt-check" aria-hidden="true"></span>单点修复 / 重构型修复，两条路径供你选择</li>
+                <li><span class="pt-check" aria-hidden="true"></span>产物：<code class="mono inline">docs/issues/*.troubleshoot.md</code></li>
+              </ul>
+              <p class="wf-quote" data-wf-quote>"当且仅当你对于根因的确信度大于 85% 时，才输出诊断结论。"</p>
+            </div>
+            <div class="wf-scene" id="scene-troubleshoot" aria-hidden="true"></div>
+          </div>
+
+          <!-- 03 implement-review -->
+          <div class="workflow" id="wf-implement" data-accent="green">
+            <div class="wf-copy">
+              <p class="wf-index mono">03 / IMPLEMENT → TEST → REVIEW → VALIDATE → DOC → COMMIT</p>
+              <h3 class="wf-name">实施与交付</h3>
+              <p class="wf-id mono">/workflow-implement-review</p>
+              <p class="wf-desc">
+                无论需求开发还是问题修复，统一走六步交付：实施、测试、独立子代理检视、
+                用户实机验证、文档沉淀、干净提交。每一步都有明确的放行条件。
+              </p>
+              <ul class="wf-points">
+                <li><span class="pt-check" aria-hidden="true"></span>reviewer 子代理独立检视，未达准入就再来一轮</li>
+                <li><span class="pt-check" aria-hidden="true"></span>核心场景必须实机验证，用户书面确认才前进</li>
+                <li><span class="pt-check" aria-hidden="true"></span>连续修改未达预期 → 强制退回 troubleshoot</li>
+                <li><span class="pt-check" aria-hidden="true"></span>产物：<code class="mono inline">*.review.md · *.summary.md</code> + commit</li>
+              </ul>
+              <p class="wf-quote" data-wf-quote>"直到拥有准入或条件准入结论后，才进入下一步。"</p>
+            </div>
+            <div class="wf-scene" id="scene-implement" aria-hidden="true"></div>
+          </div>
+
+          <p class="wf-more" data-reveal>
+            另有两条工作流协同作战：<code class="mono inline">/workflow-manage-tasks</code> 任务分派 ·
+            <code class="mono inline">/workflow-leader</code> 项目领导。
+            <a href="#contents" class="link">在内容物浏览器查看全部 →</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= CONTENTS ================= -->
+      <section class="section" id="contents">
+        <div class="section-inner">
+          <p class="section-tag mono" data-reveal-text>CONTENTS · 内容物</p>
+          <h2 class="section-title" data-split-lines>所有内容物，全部可预览。</h2>
+          <p class="section-lead" data-reveal>
+            <span id="contents-meta">—</span> 条内容物 · 构建期从项目文件自动生成。
+            点开任意条目阅读完整原文——你看到的就是仓库里跑的那份。
+          </p>
+
+          <div class="browser" id="browser">
+            <div class="browser-bar">
+              <div class="browser-tabs" role="tablist" aria-label="内容类型过滤">
+                <button class="btab mono active" data-filter="all" role="tab" aria-selected="true">全部 <span class="btab-n" data-n="all"></span></button>
+                <button class="btab mono" data-filter="skill" role="tab" aria-selected="false">Skills <span class="btab-n" data-n="skill"></span></button>
+                <button class="btab mono" data-filter="agent" role="tab" aria-selected="false">Agents <span class="btab-n" data-n="agent"></span></button>
+                <button class="btab mono" data-filter="instruction" role="tab" aria-selected="false">Instructions <span class="btab-n" data-n="instruction"></span></button>
+                <button class="btab mono" data-filter="hook" role="tab" aria-selected="false">Hooks <span class="btab-n" data-n="hook"></span></button>
+              </div>
+              <div class="browser-search">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input id="browser-search" type="text" placeholder="搜索名称或描述…（按 / 聚焦）" aria-label="搜索内容物" autocomplete="off" spellcheck="false" />
+              </div>
+            </div>
+            <p id="results-live" class="sr-only" role="status" aria-live="polite"></p>
+            <div class="browser-grid" id="browser-grid"></div>
+            <p class="browser-empty mono" id="browser-empty" hidden>没有匹配的内容物</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= INSTALL ================= -->
+      <section class="section section-alt" id="install">
+        <div class="section-inner">
+          <p class="section-tag mono" data-reveal-text>INSTALL · 安装</p>
+          <h2 class="section-title" data-split-lines>两条路，都是三十秒。</h2>
+
+          <div class="install-grid">
+            <article class="install-card" data-card>
+              <div class="install-head">
+                <span class="install-badge mono">推荐</span>
+                <h3 class="install-name">APM CLI</h3>
+              </div>
+              <p class="install-desc">一条命令全局安装到所有支持的 Agent 工具。Instructions 不被原生支持的工具（OpenCode、Codex、Gemini）需再执行一次编译。</p>
+              <button class="cmd-chip cmd-block" data-copy="apm install -g john-walks-slow/rabbit-skills">
+                <span class="cmd-sign mono">$</span>
+                <code class="mono">apm install -g john-walks-slow/rabbit-skills</code>
+                <span class="cmd-copy" data-copy-icon aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </span>
+              </button>
+              <button class="cmd-chip cmd-block cmd-dim" data-copy="apm compile -g">
+                <span class="cmd-sign mono">$</span>
+                <code class="mono">apm compile -g</code>
+                <span class="cmd-copy" data-copy-icon aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </span>
+              </button>
+              <p class="install-note mono">需要先安装 <a class="link" href="https://microsoft.github.io/apm/" target="_blank" rel="noopener">APM CLI</a></p>
+            </article>
+
+            <article class="install-card" data-card>
+              <div class="install-head">
+                <span class="install-badge install-badge-alt mono">离线</span>
+                <h3 class="install-name">预构件</h3>
+              </div>
+              <p class="install-desc">从 GitHub Release 下载对应工具的 zip 包，解压到该工具的配置目录即可。无需任何 CLI。</p>
+              <a class="btn-primary btn-block" href="https://github.com/john-walks-slow/rabbit-skills/releases/latest" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载最新 Release
+              </a>
+              <p class="install-note mono">每个目标工具一个 zip，开箱即用</p>
+            </article>
+          </div>
+
+          <div class="targets" data-reveal>
+            <p class="targets-label mono">一次安装，直接可用于</p>
+            <div class="targets-row" id="targets-row"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= OUTRO ================= -->
+      <section class="outro" id="outro">
+        <div class="outro-inner">
+          <span class="outro-crest" id="outro-crest" aria-hidden="true"></span>
+          <h2 class="outro-title" data-split-lines>把松弛还给<br />AI 原生开发。</h2>
+          <div class="hero-cta outro-cta">
+            <button class="cmd-chip" data-copy="apm install -g john-walks-slow/rabbit-skills">
+              <span class="cmd-sign mono">$</span>
+              <code class="mono">apm install -g john-walks-slow/rabbit-skills</code>
+              <span class="cmd-copy" data-copy-icon aria-hidden="true">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              </span>
+            </button>
+            <a class="btn-ghost" href="https://github.com/john-walks-slow/rabbit-skills" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <p class="footer-line mono">rabbit-skills · MIT · <a class="link" href="https://github.com/john-walks-slow" target="_blank" rel="noopener">john-walks-slow</a></p>
+        <p class="footer-line mono dim">本站由 rabbit-skills 自身工作流构建 · 内容物预览于构建期自动生成</p>
+      </div>
+    </footer>
+
+    <!-- ================= MODAL ================= -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="modal-backdrop" data-modal-close></div>
+      <div class="modal-panel" role="document">
+        <header class="modal-head">
+          <div class="modal-titles">
+            <h2 class="modal-title mono" id="modal-title">—</h2>
+            <p class="modal-meta mono" id="modal-meta">—</p>
+          </div>
+          <div class="modal-actions">
+            <a class="btn-ghost btn-sm" id="modal-gh" href="#" target="_blank" rel="noopener">在 GitHub 查看</a>
+            <button class="modal-close" data-modal-close aria-label="关闭">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+        </header>
+        <div class="modal-body markdown" id="modal-body"></div>
+      </div>
+    </div>
+
+    <div class="toast mono" id="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
