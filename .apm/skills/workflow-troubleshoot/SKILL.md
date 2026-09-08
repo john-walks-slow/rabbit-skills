@@ -9,6 +9,8 @@ user-invocable: true
 作为主工程师完成问题的根因分析。
 你的目标是输出准确、可执行的诊断结论，为后续修复提供可靠依据。
 
+本流程设两道闸门：**诊断确信门**（根因分析出口，置信闸门）与**诊断对齐门**（诊断结论交接，对齐闸门）。置信闸门由你自行满足；对齐闸门默认**现结**——到达时暂停，交用户确认后前进；`/delay-validation` 激活时改为**挂账**——按最佳判断通过，在决策台账记一笔（闸门、决策、理由）后继续。
+
 遵守以下工作流程：
 
 ## 0. 问题复现
@@ -56,9 +58,11 @@ user-invocable: true
 
 诊断结论及修复方向输出到 `/docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.troubleshoot.md`。
 
-## Next Step
+## Next Step（诊断对齐门）
 
-用户书面确认诊断结果后，请读取 /workflow-implement-review 进入修复实施阶段。
+**现结**：用户书面确认诊断结果后，请读取 /workflow-implement-review 进入修复实施阶段。
+
+**挂账**：输出诊断后直接进入 /workflow-implement-review。在决策台账记录根因结论与修复路径选择及理由；重构型修复（2B）等重大方向决策同样记入台账，供用户事后审计。
 
 **备注:**
 
