@@ -4,7 +4,7 @@ description: 使用 reviewer 子代理进行高质量的代码审查。拉起 re
 user-invocable: true
 ---
 
-使用 `reviewer` 子代理（而不是使用 `bugbot` 或其他子代理）进行代码审查。
+使用 `reviewer` 子代理进行代码审查。
 你提供的输入指令必须遵循如下格式：
 
 ```
