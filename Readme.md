@@ -125,7 +125,6 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 | 文件                 | 事件           | 说明                                        |
 | -------------------- | -------------- | ------------------------------------------- |
-| `agents-md-loader`   | `SessionStart` / `PreToolUse` | 让 Claude Code 读取 AGENTS.md：会话启动注入 git root→cwd 链，进入子目录按需注入，压缩后重注入 |
 | `long-file-reminder` | `PostToolUse`  | 长文件提醒：超过行数阈值时提示拆分          |
 
 > Hooks 通过 APM 部署：claude 目标合并进 `.claude/settings.json`，脚本 bundle 部署到 `.claude/hooks/rabbit-skills/`。
@@ -147,7 +146,9 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 ### 项目指引写在 AGENTS.md 里，能兼容 Claude Code 吗？
 
-能。虽然 CC 不会自动注入 AGENTS.md，但文档规范中明确要求了：「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」。AGENTS.md 没有自动注入的情况下，Agent 会在工作前自主阅读，效果等价。
+能。Claude Code 默认不会自动读取 AGENTS.md，但文档规范中已要求「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」——无自动注入时 Agent 会在工作前自主阅读，效果等价。
+
+若希望自动注入（会话启动、进入子目录、压缩后重注入），可自行安装一个 Claude Code hook：在 `SessionStart`、`UserPromptSubmit`、`PreCompact` 三个事件上注册一个脚本，从当前工作目录向上走到 git root，将路径上的 AGENTS.md 按序拼接注入。这属于 Claude Code 本地配置，与 Agent 工具无关，故 rabbit-skills 不附带。
 
 ### 计划和实施是否应该在分开的会话中进行？
 
