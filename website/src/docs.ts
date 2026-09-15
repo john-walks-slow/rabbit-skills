@@ -124,24 +124,30 @@ dsh-mnemon 报 "mnemon did not respond within 10000ms"，
   },
   e2e: {
     path: 'docs/features/260915-memory/260915-memory.e2e.md',
-    purpose: '端到端测试报告。由 /spawn-e2e-tester 派发的子代理产出，覆盖核心真实场景。',
-    records: '测试步骤、预期、实际、状态、证据',
+    purpose: '端到端测试报告。由 /spawn-e2e-tester 派发的子代理产出，含功能类与体验类。',
+    records: '功能类：步骤/预期/实际/状态；体验类：场景/观察/建议',
     not: '单元测试、覆盖率数据',
     body: `<span class="md-cm"># 260915 · Agent 记忆 E2E 测试</span>
 
 <span class="md-h">## 测试环境</span>
 - 环境：本机容器，claude code + mnemon
 
-<span class="md-h">## 测试项</span>
+<span class="md-h">## 功能类测试项</span>
 
 | # | 步骤 | 预期 | 实际 | 状态 |
 |---|------|------|------|------|
 | 1 | 说偏好后开新会话 | 记得并应用 | 记得 | 通过 |
 | 2 | recall 一周前决策 | 命中相关 | 命中 | 通过 |
-| 3 | 容量满触发归档 | 不阻塞 | 不阻塞 | 通过 |
+
+<span class="md-h">## 体验类测试项</span>
+
+| # | 体验场景 | 观察 | 建议/问题 |
+|---|----------|------|-----------|
+| 1 | 归档触发时的体感 | 归档期间 recall 慢约 3s | 建议加进度提示 |
 
 <span class="md-h">## 结论</span>
-- 通过：3 · 不通过：0 · 受阻：0
+- 功能：通过 2 · 不通过 0 · 受阻 0
+- 体验：1 项观察，关键问题 0
 - 总体：通过`,
   },
 };
