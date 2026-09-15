@@ -141,7 +141,7 @@ export function initTroubleshootScene() {
     defaults: { ease: 'power2.inOut' },
     scrollTrigger: prefersReduced()
       ? undefined
-      : { trigger: host, start: 'top 88%', end: 'bottom 52%', scrub: 0.7 },
+      : { trigger: host, start: 'top 88%', end: 'bottom 52%', scrub: 1.3 },
   });
 
   // 日志读入
@@ -166,7 +166,7 @@ export function initTroubleshootScene() {
   // 诊断卡 + hairlines
   tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
   cardLines.forEach((l, i) => {
-    tl.to(l.r, { attr: { width: l.w }, duration: 0.05 }, 0.78 + i * 0.02);
+    tl.to(l.r, { attr: { width: l.w }, duration: 0.1, ease: 'none' }, 0.78 + i * 0.06);
   });
 
   if (prefersReduced()) {
