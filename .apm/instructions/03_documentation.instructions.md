@@ -44,9 +44,9 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 不归属于特定模块和需求的领域级规范（例：设计规范、测试规范），可以被模块和项目级指引引用。
 更新规则见 `/update-references`。
 
-## docs/lessons/{topic}.lesson.md
+## docs/lessons
 
-围绕当前需求、设计或问题，为项目负责人准备的核心知识课程。用于同步关键设计、权衡和风险认知，并提供少量高质量学习资料。创建规则见 `/teach-me`。
+围绕当前需求、设计或问题，为用户准备的核心知识课程。用于同步关键设计、权衡和风险认知，并提供少量高质量学习资料。创建规则见相关 skill。
 
 ## docs/freeform/yymmdd-{topic}.md
 
