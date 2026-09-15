@@ -185,9 +185,6 @@ code, kbd, pre { font-family: var(--mono); }
   font-size: clamp(15.5px, 1.8vw, 18px); color: var(--dim); line-height: 1.9;
   margin-bottom: 40px;
 }
-.hero-epigraph { font-style: normal; display: block; font-size: clamp(16px, 2vw, 20px); line-height: 1.75; color: var(--text); }
-.hero-epigraph-src { display: block; margin-top: 14px; font-size: 13px; color: var(--dim); font-style: normal; text-decoration: none; border-bottom: 1px solid transparent; transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out); }
-.hero-epigraph-src:hover { color: var(--carrot); border-bottom-color: var(--carrot); }
 
 .hero-cta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
 
@@ -286,6 +283,8 @@ code, kbd, pre { font-family: var(--mono); }
 .philosophy-quote p { font-size: clamp(18px, 2.4vw, 23px); line-height: 1.65; font-weight: 400; }
 .philosophy-quote em { font-style: normal; color: var(--carrot); }
 .quote-src { display: block; margin-top: 10px; color: var(--faint); font-size: 11px; }
+.quote-readmore { display: inline-block; margin-top: 14px; font-size: 13px; color: var(--carrot); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--dur-2) var(--ease-out); }
+.quote-readmore:hover { border-bottom-color: var(--carrot); }
 
 .phil-cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
 .phil-card {
