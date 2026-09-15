@@ -150,7 +150,7 @@ export function initImplementScene() {
   });
 
   // 终点：burst + 芯片
-  tl.fromTo(burstG, { opacity: 0, scale: 0.5, transformOrigin: '442px 148px' }, { opacity: 1, scale: 1, duration: 0.05, ease: 'power3.out' }, T1 + 0.02)
+  tl.fromTo(burstG, { opacity: 0, scale: 0.5, transformOrigin: '442px 148px' }, { opacity: 1, scale: 1.15, duration: 0.05, ease: 'power3.out' }, T1 + 0.02)
     .to(burstG, { opacity: 0, duration: 0.08 }, T1 + 0.1)
     .fromTo(chipG, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.09, ease: 'power2.out' }, T1 + 0.06);
 
