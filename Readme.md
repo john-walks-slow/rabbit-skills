@@ -1,6 +1,6 @@
 # rabbit-skills
 
-轻量、松弛、不过时的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发。
+轻量、松弛、有效的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发，随模型能力变强也不过时。
 
 > 控制的目标不是剥夺系统的自由度，而是界定安全的可行域，让系统在可行域内释放最大化的调节能力。
 > -- Ashby's Law of Requisite Variety
