@@ -12,6 +12,7 @@ import { initTroubleshootScene } from './scenes/troubleshoot';
 import { initImplementScene } from './scenes/implement';
 import { initBrowser } from './browser';
 import { initCopy } from './copy';
+import { initDocsTabs } from './docs';
 import { drawRabbit } from './rabbit';
 
 /* ---------- 入口编排（每步隔离，失败不拖垮全局） ---------- */
@@ -23,6 +24,7 @@ const steps: Array<[string, () => void]> = [
   ['scene-troubleshoot', () => initTroubleshootScene()],
   ['scene-implement', () => initImplementScene()],
   ['browser', () => initBrowser()],
+  ['docs-tabs', () => initDocsTabs()],
   ['copy', () => initCopy()],
 ];
 

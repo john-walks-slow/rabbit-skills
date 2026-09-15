@@ -233,6 +233,43 @@
         </div>
       </section>
 
+      <!-- ================= DOCUMENTS ================= -->
+      <section class="section section-alt" id="documents">
+        <div class="section-inner">
+          <p class="section-tag mono" data-reveal-text>DOCUMENTS · 文档</p>
+          <h2 class="section-title" data-split-lines>留档，而非重述代码。</h2>
+          <p class="section-lead" data-reveal>
+            rabbit-skills 产出几类轻量文档：记录决策、证据、经验——那些代码自身说不清的事。
+            它们不为重述代码存在，而为留档：让下一个 Agent（或人）接手时不从零开始。
+          </p>
+
+          <div class="docs-tabs" id="docs-tabs" role="tablist">
+            <button class="docs-tab is-active" data-doc="plan" role="tab">PLAN · 计划</button>
+            <button class="docs-tab" data-doc="validation" role="tab">VALIDATION · 验证</button>
+            <button class="docs-tab" data-doc="diagnosis" role="tab">DIAGNOSIS · 诊断</button>
+            <button class="docs-tab" data-doc="tasks" role="tab">TASKS · 任务</button>
+            <button class="docs-tab" data-doc="agents" role="tab">AGENTS · 指引</button>
+            <button class="docs-tab" data-doc="lesson" role="tab">LESSON · 经验</button>
+          </div>
+
+          <div class="docs-panel" id="docs-panel">
+            <aside class="docs-meta">
+              <p class="docs-path mono" id="docs-path"></p>
+              <p class="docs-purpose" id="docs-purpose"></p>
+              <div class="docs-record">
+                <p class="docs-record-label mono">RECORDS · 记录</p>
+                <p id="docs-records"></p>
+              </div>
+              <div class="docs-record docs-record-no">
+                <p class="docs-record-label mono">NOT · 不记录</p>
+                <p id="docs-not"></p>
+              </div>
+            </aside>
+            <div class="docs-preview" id="docs-preview" role="tabpanel"></div>
+          </div>
+        </div>
+      </section>
+
       <!-- ================= CONTENTS ================= -->
       <section class="section" id="contents">
         <div class="section-inner">
