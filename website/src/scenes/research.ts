@@ -1,22 +1,14 @@
 /**
- * scene-research.ts — 浏览海量信息 → 产出最佳计划（Research → Plan → Align）
+ * scene-research.ts — 浏览海量文档 → 产出最佳计划（Research → Plan → Align）
  *
- * 叙事：R/P/A 三相骨架（调研→规划→对齐）在上；散落的信息粒子
- * 经一段较长的漂浮收集 → 合流到垂直居中的「最佳计划」——
- * 浏览了海量资料，产出最佳计划。
+ * 叙事：R/P/A 三相骨架在上；散落的文档卡 + 信息粒子经一段较长的
+ * 漂浮收集 → 合流到垂直居中的「最佳计划」——浏览了海量资料，产出最佳计划。
  * scrub 驱动 + 进入视口后的 idle 微循环。
  */
 import { gsap, ScrollTrigger, prefersReduced } from '../motion';
 import { el, svgRoot, seeded } from '../svg';
 
 const CYAN = '#62D8E6';
-
-interface Dot {
-  node: SVGCircleElement;
-  mid: [number, number];
-  plan: [number, number];
-  r0: number;
-}
 
 export function initResearchScene() {
   const host = document.getElementById('scene-research');
@@ -25,11 +17,11 @@ export function initResearchScene() {
   const svg = svgRoot('0 0 500 400', host);
   const rnd = seeded(20260908);
 
-  /* ---------- R / P / A 骨架（中英文） ---------- */
-  const anchors: Array<{ x: number; y: number; en: string; zh: string }> = [
-    { x: 138, y: 118, en: 'RESEARCH', zh: '调研' },
-    { x: 250, y: 82, en: 'PLAN', zh: '规划' },
-    { x: 362, y: 118, en: 'ALIGN', zh: '对齐' },
+  /* ---------- R / P / A 骨架（中文在上、英文在下，仿根因） ---------- */
+  const anchors: Array<{ x: number; y: number; zh: string; en: string }> = [
+    { x: 138, y: 118, zh: '调研', en: 'RESEARCH' },
+    { x: 250, y: 82, zh: '规划', en: 'PLAN' },
+    { x: 362, y: 118, zh: '对齐', en: 'ALIGN' },
   ];
   const nodeGroup = el('g', {}, svg);
   const nodes = anchors.map((a) => {
@@ -38,13 +30,12 @@ export function initResearchScene() {
     const core = el('circle', { cx: a.x, cy: a.y, r: 3.2, fill: CYAN }, g);
     el('text', {
       x: a.x, y: a.y - 20, 'text-anchor': 'middle',
-      class: 'scene-label', fill: '#A4A89D',
-    }, g, a.en);
-    el('text', {
-      x: a.x, y: a.y - 9, 'text-anchor': 'middle',
-      'font-size': 9.5, fill: 'rgba(164,168,157,0.85)',
-      'font-family': 'Space Grotesk, PingFang SC, sans-serif',
+      fill: '#E9EAE3', 'font-size': 12, 'font-weight': 500, 'font-family': 'Space Grotesk, PingFang SC, sans-serif',
     }, g, a.zh);
+    el('text', {
+      x: a.x, y: a.y + 26, 'text-anchor': 'middle',
+      class: 'scene-label', fill: '#6B7069',
+    }, g, a.en);
     return { g, core, a };
   });
   const flow = el('path', {
@@ -65,20 +56,28 @@ export function initResearchScene() {
     class: 'scene-label', fill: '#6B7069',
   }, planG, 'PLAN · 最佳计划');
 
-  /* ---------- 信息粒子（漂浮收集 → 合流到计划） ---------- */
-  const dotGroup = el('g', {}, svg);
-  const dots: Dot[] = [];
-  for (let i = 0; i < 26; i++) {
+  /* ---------- 文档卡 + 信息粒子（漂浮收集 → 合流） ---------- */
+  const fieldG = el('g', {}, svg);
+  const docs: Array<{ g: SVGGElement; mid: [number, number]; plan: [number, number] }> = [];
+  for (let i = 0; i < 8; i++) {
+    const x = 56 + rnd() * 388;
+    const y = 180 + rnd() * 120;
+    const rot = (rnd() - 0.5) * 14;
+    const g = el('g', { opacity: 0 }, fieldG);
+    el('rect', { x: -12, y: -8.5, width: 24, height: 17, rx: 2.5, fill: '#121514', stroke: CYAN, 'stroke-width': 1, 'stroke-opacity': 0.45 }, g);
+    [[-8, -4, 14], [-8, 0, 11], [-8, 4, 12]].forEach(([dx, dy, w]) =>
+      el('rect', { x: dx, y: dy, width: w, height: 1.5, rx: 0.75, fill: CYAN, opacity: 0.5 }, g)
+    );
+    gsap.set(g, { x, y, rotation: rot, transformOrigin: '50% 50%' });
+    docs.push({ g, mid: [x + (rnd() - 0.5) * 36, y + (rnd() - 0.5) * 20], plan: [planC.x + (rnd() - 0.5) * 6, planC.y] });
+  }
+  const dots: Array<{ node: SVGCircleElement; mid: [number, number]; plan: [number, number]; r0: number }> = [];
+  for (let i = 0; i < 22; i++) {
     const x = 44 + rnd() * 412;
-    const y = 165 + rnd() * 140;
+    const y = 165 + rnd() * 145;
     const r0 = 1.1 + rnd() * 1.4;
-    const node = el('circle', { cx: x, cy: y, r: r0, fill: CYAN, opacity: 0 }, dotGroup);
-    dots.push({
-      node,
-      mid: [x + (rnd() - 0.5) * 40, y + (rnd() - 0.5) * 26],
-      plan: [planC.x + (rnd() - 0.5) * 6, planC.y],
-      r0,
-    });
+    const node = el('circle', { cx: x, cy: y, r: r0, fill: CYAN, opacity: 0 }, fieldG);
+    dots.push({ node, mid: [x + (rnd() - 0.5) * 40, y + (rnd() - 0.5) * 26], plan: [planC.x + (rnd() - 0.5) * 6, planC.y], r0 });
   }
 
   /* ---------- scrub 主时间线 ---------- */
@@ -94,21 +93,21 @@ export function initResearchScene() {
   nodes.forEach((n, i) => {
     tl.fromTo(n.g, { opacity: 0, scale: 0.4, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.1, ease: 'back.out(2)' }, 0.06 + i * 0.05);
   });
-  // ② 粒子浮现 + 漂浮收集（停留更久：长漂移）
-  dots.forEach((d, i) => {
-    tl.to(d.node, { opacity: 0.75, duration: 0.1 }, 0.14 + (i % 9) * 0.02);
-    tl.to(d.node, {
-      attr: { cx: d.mid[0], cy: d.mid[1] },
-      duration: 0.34, ease: 'sine.inOut',
-    }, 0.2 + (i % 9) * 0.02);
+  // ② 文档卡 + 粒子浮现 + 漂浮收集（停留更久）
+  docs.forEach((d, i) => {
+    tl.to(d.g, { opacity: 0.8, duration: 0.12 }, 0.14 + (i % 8) * 0.03);
+    tl.to(d.g, { x: d.mid[0], y: d.mid[1], duration: 0.34, ease: 'sine.inOut' }, 0.2 + (i % 8) * 0.03);
   });
-  // ③ 粒子合流到计划（淡入消失）
   dots.forEach((d, i) => {
-    tl.to(d.node, {
-      attr: { cx: d.plan[0], cy: d.plan[1] },
-      opacity: 0,
-      duration: 0.24, ease: 'power2.in',
-    }, 0.58 + (i % 9) * 0.02);
+    tl.to(d.node, { opacity: 0.75, duration: 0.1 }, 0.16 + (i % 11) * 0.02);
+    tl.to(d.node, { attr: { cx: d.mid[0], cy: d.mid[1] }, duration: 0.34, ease: 'sine.inOut' }, 0.22 + (i % 11) * 0.02);
+  });
+  // ③ 合流到计划（淡入消失）
+  docs.forEach((d, i) => {
+    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.24, ease: 'power2.in' }, 0.56 + (i % 8) * 0.02);
+  });
+  dots.forEach((d, i) => {
+    tl.to(d.node, { attr: { cx: d.plan[0], cy: d.plan[1] }, opacity: 0, duration: 0.24, ease: 'power2.in' }, 0.58 + (i % 11) * 0.02);
   });
   // ④ 最佳计划浮现
   tl.to(planG, { opacity: 1, duration: 0.1 }, 0.82)
@@ -126,6 +125,9 @@ export function initResearchScene() {
   const idle = gsap.timeline({ repeat: -1, paused: true });
   nodes.forEach((n) => {
     idle.to(n.core, { attr: { r: 4.4 }, duration: 0.8, yoyo: true, repeat: -1, ease: 'sine.inOut' }, 0.2);
+  });
+  docs.forEach((d) => {
+    idle.to(d.g, { opacity: 0.5, duration: 1.2 + rnd(), yoyo: true, repeat: -1, ease: 'sine.inOut' }, rnd() * 2);
   });
   dots.forEach((d) => {
     idle.to(d.node, { attr: { r: d.r0 * 0.45 }, duration: 0.9 + rnd(), yoyo: true, repeat: -1, ease: 'sine.inOut' }, rnd() * 2);

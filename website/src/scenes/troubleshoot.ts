@@ -63,13 +63,13 @@ export function initTroubleshootScene() {
 
   /* ---------- 因果链：复现 → 根因 → 诊断 ---------- */
   const chain: Array<{ x: number; y: number; label: string; sub: string }> = [
-    { x: 120, y: 212, label: '复现', sub: 'REPRODUCE' },
-    { x: 250, y: 238, label: '根因', sub: 'ROOT CAUSE' },
-    { x: 380, y: 212, label: '诊断', sub: 'DIAGNOSE' },
+    { x: 120, y: 244, label: '复现', sub: 'REPRODUCE' },
+    { x: 250, y: 270, label: '根因', sub: 'ROOT CAUSE' },
+    { x: 380, y: 244, label: '诊断', sub: 'DIAGNOSE' },
   ];
   const connectors = [
-    `M 140 218 C 180 236 210 238 230 238`,
-    `M 270 238 C 300 238 330 236 360 218`,
+    `M 140 250 C 180 268 210 270 230 270`,
+    `M 270 270 C 300 270 330 268 360 250`,
   ].map((d) =>
     el('path', { d, fill: 'none', stroke: CORAL, 'stroke-width': 1.3, 'stroke-linecap': 'round' }, svg)
   );
@@ -90,7 +90,7 @@ export function initTroubleshootScene() {
   });
 
   // 根因锁定准星（4 tick，从大到小 snap-on；无虚线圆）
-  const lockC = { x: 250, y: 238 };
+  const lockC = { x: 250, y: 270 };
   const lockG = el('g', { opacity: 0 }, svg);
   const reticleTicks = [
     [lockC.x, lockC.y - 26, lockC.x, lockC.y - 14],
@@ -104,25 +104,25 @@ export function initTroubleshootScene() {
   /* ---------- 诊断报告卡 ---------- */
   const report = el('g', { opacity: 0 }, svg);
   el('rect', {
-    x: 300, y: 280, width: 168, height: 72, rx: 10,
+    x: 195, y: 312, width: 168, height: 72, rx: 10,
     fill: '#121514', stroke: 'rgba(233,234,227,0.16)', 'stroke-width': 1,
   }, report);
   el('text', {
-    x: 318, y: 290,
+    x: 213, y: 322,
     class: 'scene-label', fill: '#6B7069',
   }, report, 'DIAGNOSIS');
   // 打字机字段行（x, y, 终宽）
   const fields: Array<[number, number, number]> = [
-    [318, 304, 96],
-    [318, 320, 130],
-    [318, 336, 74],
+    [213, 336, 96],
+    [213, 352, 130],
+    [213, 368, 74],
   ];
   const fieldRects: SVGRectElement[] = fields.map(([x, y]) =>
     el('rect', { x, y, width: 0, height: 4, rx: 2, fill: 'rgba(233,234,227,0.22)' }, report)
   );
 
   /* ---------- 85% 置信仪表 ---------- */
-  const dialC = { x: 108, y: 318, r: 25 };
+  const dialC = { x: 150, y: 350, r: 25 };
   const dial = el('g', { opacity: 0 }, svg);
   el('path', {
     d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
@@ -162,9 +162,9 @@ export function initTroubleshootScene() {
     tl.fromTo(n.g, { opacity: 0, scale: 0.5, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.09, ease: 'back.out(2.2)' }, 0.4 + i * 0.09);
     if (i > 0) tl.fromTo(connectors[i - 1], { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.08, ease: 'power2.out' }, 0.4 + i * 0.09 - 0.02);
   });
-  // 根因锁定准星 snap（晚入场，从大到小，更明显）
-  tl.to(lockG, { opacity: 1, duration: 0.04 }, 0.72)
-    .fromTo(lockG, { scale: 2.6, transformOrigin: '250px 270px' }, { scale: 1, duration: 0.14, ease: 'power4.out' }, 0.72);
+  // 根因锁定准星（从左下角滑入，慢）
+  tl.to(lockG, { opacity: 1, duration: 0.05 }, 0.7)
+    .fromTo(lockG, { x: -70, y: 45, scale: 1.4, transformOrigin: '250px 270px' }, { x: 0, y: 0, scale: 1, duration: 0.24, ease: 'power3.out' }, 0.7);
   // 报告卡 + 字段行
   tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
   fieldRects.forEach((r, i) => {
