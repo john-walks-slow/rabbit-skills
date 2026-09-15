@@ -85,7 +85,7 @@ export function initResearchScene() {
     defaults: { ease: 'power2.inOut' },
     scrollTrigger: prefersReduced()
       ? undefined
-      : { trigger: host, start: 'top 88%', end: 'bottom 52%', scrub: 1.1 },
+      : { trigger: host, start: 'top 88%', end: 'bottom 52%', scrub: 1.6 },
   });
 
   // ① 骨架（延后到 0.2，放慢）
@@ -96,20 +96,21 @@ export function initResearchScene() {
   // ② 粒子浮现 + 漂浮收集（前半段只有 dot）
   dots.forEach((d, i) => {
     tl.to(d.node, { opacity: 0.75, duration: 0.14 }, 0.32 + (i % 11) * 0.025);
-    tl.to(d.node, { attr: { cx: d.mid[0], cy: d.mid[1] }, duration: 0.34, ease: 'sine.inOut' }, 0.38 + (i % 11) * 0.025);
+    tl.to(d.node, { attr: { cx: d.mid[0], cy: d.mid[1] }, duration: 0.2, ease: 'sine.inOut' }, 0.38 + (i % 11) * 0.025);
   });
   // ③ 文档卡浮现（汇聚时才出现）+ 合流到计划
   docs.forEach((d, i) => {
-    tl.to(d.g, { opacity: 0.8, duration: 0.14 }, 0.62 + (i % 8) * 0.02);
-    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.7 + (i % 8) * 0.022);
+    tl.to(d.g, { opacity: 0.8, duration: 0.14 }, 0.54 + (i % 8) * 0.02);
+    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.18, ease: 'power2.in' }, 0.6 + (i % 8) * 0.018);
   });
   dots.forEach((d, i) => {
-    tl.to(d.node, { attr: { cx: d.plan[0], cy: d.plan[1] }, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.68 + (i % 11) * 0.022);
+    tl.to(d.node, { attr: { cx: d.plan[0], cy: d.plan[1] }, opacity: 0, duration: 0.16, ease: 'power2.in' }, 0.58 + (i % 11) * 0.018);
   });
   // ④ 最终计划从下往上入场
-  tl.fromTo(planG, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.16, ease: 'power2.out' }, 0.88);
+  tl.fromTo(planG, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.1, ease: 'power2.out' }, 0.74);
+  // ⑤ 计划 hairlines 逐行书写（慢、顺序）
   planLines.forEach((l, i) => {
-    tl.to(l.r, { attr: { width: l.w }, duration: 0.07, ease: 'power1.out' }, 0.92 + i * 0.022);
+    tl.to(l.r, { attr: { width: l.w }, duration: 0.1, ease: 'none' }, 0.8 + i * 0.06);
   });
 
   if (prefersReduced()) {
