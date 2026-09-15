@@ -73,7 +73,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 按需激活，提升 Agent 自主工作的深度：
 
-- `/deep-auto` —— 极致自动模式。以最少消耗用户精力为目标，瞄准极致质量反复迭代，交付前完成端到端自测。
+- `/max-effort` —— 极致自动模式。以最少消耗用户精力为目标，瞄准极致质量反复迭代，交付前完成端到端自测。
 - `/delay-validation` —— 延迟验证模式。适合用户不在线、希望后台长跑一次性交付的场景。所有用户对齐项目改为 Agent 按最佳判断自主通过，交付时输出决策历史供事后审计。
 
 ## 内容物
@@ -107,6 +107,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `workflow-leader`                | 仅用户    | 项目领导工作流：给出愿景 → 构思 idea → 向 manager 派发 → 等待汇报并继续推进   |
 | `spawn-deep-researcher`          | 用户或 AI | 启动网络调研子代理                                                            |
 | `spawn-reviewer`                 | 用户或 AI | 启动代码检视子代理                                                            |
+| `spawn-e2e-tester`               | 用户或 AI | 启动端到端测试子代理（提示词内置）                                            |
 | `commit-own-changes`             | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
 | `code-deep-dive`                | 仅用户    | 为项目编写中文深度学习长文，碎片时间补齐代码知识                              |
 | `grilling`                       | 用户或 AI | 向用户盘问设计方案                                                            |
@@ -116,8 +117,8 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `try`                            | 用户或 AI | 修改前先备份便于回滚                                                          |
 | `bad-smell`                      | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
 | `unstuck`                        | 用户或 AI | 连续修改未达预期时强制退一步重新分析                                          |
-| `full-auto`                      | 仅用户    | ⚠️ 半废弃，推荐改用 `deep-auto`                                              |
-| `deep-auto`                      | 仅用户    | 极致自动模式：最少消耗用户精力，极致质量 + 端到端测试交付                      |
+| `full-auto`                      | 仅用户    | ⚠️ 半废弃，推荐改用 `max-effort`                                              |
+| `max-effort`                     | 仅用户    | 极致自动模式：最少消耗用户精力，极致质量 + 端到端测试交付                      |
 | `delay-validation`               | 仅用户    | 延迟验证模式：对齐闸门挂账结算 + 决策台账 + 审计包                             |
 | `update-project-instruction`     | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
 | `update-module-instruction`      | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |

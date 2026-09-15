@@ -25,19 +25,21 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 |- yymmdd-{topic}.research.md
 |- yymmdd-{feature_name}.plan.md
 |- yymmdd-{feature_name}.validation.md
+|- yymmdd-{feature_name}.e2e.md
 |- yymmdd-{feature_name}.review.md
 |- yymmdd-{feature_name}.summary.md
 
-需求计划和实施状态记录。在计划、开发、验证、检视阶段完成时及时更新。当需要回顾特定需求的策略和进展时查看。
+需求计划和实施状态记录。在计划、开发、验证、检视阶段完成时及时更新。当需要回顾特定需求的策略和进展时查看。`.e2e.md` 为端到端测试报告，由 `/spawn-e2e-tester` 派发的子代理产出。
 
 ## docs/issues/yymmdd-{issue_name}/
 
 |- yymmdd-{issue_name}.troubleshoot.md
 |- yymmdd-{issue_name}.validation.md
+|- yymmdd-{issue_name}.e2e.md
 |- yymmdd-{issue_name}.review.md
 |- yymmdd-{issue_name}.summary.md
 
-问题修复记录。`.validation.md` 用于用户实机确认问题已解决及关键回归场景，创建规则见 `/update-validation-requirements`。
+问题修复记录。`.validation.md` 用于用户实机确认问题已解决及关键回归场景，创建规则见 `/update-validation-requirements`。`.e2e.md` 为端到端测试报告，由 `/spawn-e2e-tester` 派发的子代理产出。
 
 ## docs/references/yymmdd-{topic}.md
 
