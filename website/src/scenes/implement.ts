@@ -101,15 +101,15 @@ export function initImplementScene() {
     fill: '#E9EAE3', 'font-family': 'JetBrains Mono, monospace', 'font-size': 11,
   }, chipG, 'committed · 6 files');
 
-  // 盖章 burst
+  // commit 节点爆出的小火花（从节点中心向外飞，attr 动画避免 transform-origin 坑）
   const burstG = el('g', { opacity: 0 }, svg);
-  [0, 45, 90, 135, 180, 225, 270, 315].forEach((deg) => {
+  const sparks = [0, 45, 90, 135, 180, 225, 270, 315].map((deg) => {
     const rad = (deg * Math.PI) / 180;
-    el('line', {
-      x1: 442 + Math.cos(rad) * 12, y1: TRACK_Y + Math.sin(rad) * 12,
-      x2: 442 + Math.cos(rad) * 18, y2: TRACK_Y + Math.sin(rad) * 18,
-      stroke: GREEN, 'stroke-width': 1.4, 'stroke-linecap': 'round',
-    }, burstG);
+    const c = Math.cos(rad), s = Math.sin(rad);
+    return {
+      line: el('line', { x1: 442 + c * 7, y1: TRACK_Y + s * 7, x2: 442 + c * 10, y2: TRACK_Y + s * 10, stroke: GREEN, 'stroke-width': 1.4, 'stroke-linecap': 'round' }, burstG),
+      c, s,
+    };
   });
 
   /* ---------- 验证徽标（VALIDATE 站上方） ---------- */
@@ -149,10 +149,15 @@ export function initImplementScene() {
     }
   });
 
-  // 终点：burst + 芯片
-  tl.fromTo(burstG, { opacity: 0, scale: 0, transformOrigin: '442px 148px' }, { opacity: 1, scale: 1.15, duration: 0.05, ease: 'power3.out' }, T1 + 0.02)
-    .to(burstG, { opacity: 0, duration: 0.08 }, T1 + 0.1)
-    .fromTo(chipG, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.09, ease: 'power2.out' }, T1 + 0.06);
+  // 终点：火花从 commit 节点爆出 + 芯片
+  tl.to(burstG, { opacity: 1, duration: 0.02 }, T1 + 0.02);
+  sparks.forEach((sp) => {
+    tl.fromTo(sp.line,
+      { attr: { x1: 442 + sp.c * 7, y1: TRACK_Y + sp.s * 7, x2: 442 + sp.c * 10, y2: TRACK_Y + sp.s * 10 } },
+      { attr: { x1: 442 + sp.c * 13, y1: TRACK_Y + sp.s * 13, x2: 442 + sp.c * 19, y2: TRACK_Y + sp.s * 19 }, duration: 0.12, ease: 'power2.out' }, T1 + 0.02)
+      .to(sp.line, { opacity: 0, duration: 0.1, ease: 'none' }, T1 + 0.12);
+  });
+  tl.fromTo(chipG, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.09, ease: 'power2.out' }, T1 + 0.06);
 
   if (reduced) {
     tl.progress(1);
