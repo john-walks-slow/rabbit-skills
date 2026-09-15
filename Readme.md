@@ -2,9 +2,7 @@
 
 轻量、松弛、不过时的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发。
 
-> 控制的目标不是剥夺系统的自由度，而是界定安全的可行域，让系统在可行域内释放最大化的调节能力。
-> 
->                                     —— Ashby's Law of Requisite Variety（必要多样性定律）
+> 控制的目标不是剥夺系统的自由度，而是界定安全的可行域，让系统在可行域内释放最大化的调节能力。（-- Ashby's Law of Requisite Variety）
 
 > Official Website：<https://john-walks-slow.github.io/rabbit-skills/>
 
