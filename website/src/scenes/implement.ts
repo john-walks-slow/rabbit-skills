@@ -107,7 +107,7 @@ export function initImplementScene() {
     const rad = (deg * Math.PI) / 180;
     const c = Math.cos(rad), s = Math.sin(rad);
     return {
-      line: el('line', { x1: 442 + c * 7, y1: TRACK_Y + s * 7, x2: 442 + c * 10, y2: TRACK_Y + s * 10, stroke: GREEN, 'stroke-width': 1.4, 'stroke-linecap': 'round' }, burstG),
+      line: el('line', { x1: 442 + c * 16, y1: TRACK_Y + s * 16, x2: 442 + c * 22, y2: TRACK_Y + s * 22, stroke: GREEN, 'stroke-width': 1.4, 'stroke-linecap': 'round' }, burstG),
       c, s,
     };
   });
@@ -149,13 +149,13 @@ export function initImplementScene() {
     }
   });
 
-  // 终点：火花从 commit 节点爆出 + 芯片
-  tl.to(burstG, { opacity: 1, duration: 0.02 }, T1 + 0.02);
+  // 终点：火花从 commit 节点爆出（刚碰到即炸）+ 芯片
+  tl.to(burstG, { opacity: 1, duration: 0.02 }, T1);
   sparks.forEach((sp) => {
     tl.fromTo(sp.line,
-      { attr: { x1: 442 + sp.c * 7, y1: TRACK_Y + sp.s * 7, x2: 442 + sp.c * 10, y2: TRACK_Y + sp.s * 10 } },
-      { attr: { x1: 442 + sp.c * 13, y1: TRACK_Y + sp.s * 13, x2: 442 + sp.c * 19, y2: TRACK_Y + sp.s * 19 }, duration: 0.12, ease: 'power2.out' }, T1 + 0.02)
-      .to(sp.line, { opacity: 0, duration: 0.1, ease: 'none' }, T1 + 0.12);
+      { attr: { x1: 442 + sp.c * 16, y1: TRACK_Y + sp.s * 16, x2: 442 + sp.c * 22, y2: TRACK_Y + sp.s * 22 } },
+      { attr: { x1: 442 + sp.c * 28, y1: TRACK_Y + sp.s * 28, x2: 442 + sp.c * 38, y2: TRACK_Y + sp.s * 38 }, duration: 0.12, ease: 'power2.out' }, T1)
+      .to(sp.line, { opacity: 0, duration: 0.1, ease: 'none' }, T1 + 0.1);
   });
   tl.fromTo(chipG, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.09, ease: 'power2.out' }, T1 + 0.06);
 
