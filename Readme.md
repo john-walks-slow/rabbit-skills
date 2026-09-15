@@ -10,8 +10,8 @@
 ## 原则
 
 - 简单清晰，相对松弛的约束，不为模型捆手捆脚。
-- 三条通用工作流，仅包含核心约束，随着模型能力变强也不会过时。调研规划 Research → Plan → Align; 根因排障 Research → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Validate → Doc → Commit。
-- 不绑定特定开发范式，零迁移成本（TDD 等可在项目级按需引入）。
+- 三条通用工作流。调研规划 Research → Plan → Align; 根因排障 Research → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Validate → Doc → Commit。
+- 不绑定特定开发范式，零学习成本（TDD 等可在项目级按需引入）。
 - 基于子代理的检视、复核、调研，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无 worktree 情况下的安全并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
 - 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
