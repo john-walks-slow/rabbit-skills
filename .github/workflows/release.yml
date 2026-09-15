@@ -10,7 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install APM CLI
-        run: curl -sSL https://aka.ms/apm-unix | sudo sh
+        run: |
+          curl -sSL https://aka.ms/apm-unix | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Build release
         run: apm run build-release
       - name: Package per-tool archives
