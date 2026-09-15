@@ -106,7 +106,7 @@ apm compile -g
 | `workflow-leader`                | 仅用户    | 项目领导工作流：给出愿景 → 构思 idea → 向 manager 派发 → 等待汇报并继续推进   |
 | `spawn-deep-researcher`          | 用户或 AI | 启动网络调研子代理                                                            |
 | `spawn-reviewer`                 | 用户或 AI | 启动代码检视子代理                                                            |
-| `spawn-e2e-tester`               | 用户或 AI | 启动端到端测试子代理（提示词内置）                                            |
+| `spawn-e2e-tester`               | 用户或 AI | 启动端到端测试子代理                                                          |
 | `commit-own-changes`             | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
 | `code-deep-dive`                | 仅用户    | 为项目编写中文深度学习长文，碎片时间补齐代码知识                              |
 | `grilling`                       | 用户或 AI | 向用户盘问设计方案                                                            |
