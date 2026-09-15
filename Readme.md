@@ -105,7 +105,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `spawn-deep-researcher`          | 用户或 AI | 启动网络调研子代理                                                            |
 | `spawn-reviewer`                 | 用户或 AI | 启动代码检视子代理                                                            |
 | `commit-own-changes`             | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
-| `teach-me`                       | 仅用户    | 教授当前项目负责人必须掌握的关键设计、核心知识、权衡与风险信号                |
+| `code-deep-dive`                | 仅用户    | 为项目编写中文深度学习长文，碎片时间补齐代码知识                              |
 | `grilling`                       | 用户或 AI | 向用户盘问设计方案                                                            |
 | `cross-check`                    | 用户或 AI | 使用独立子代理复核关键结论                                                    |
 | `tidy`                           | 仅用户    | 清理当前会话中的无效修改                                                      |
@@ -148,7 +148,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 能。Claude Code 默认不会自动读取 AGENTS.md，但文档规范中已要求「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」——无自动注入时 Agent 会在工作前自主阅读，效果等价。
 
-若希望自动注入（会话启动、进入子目录、压缩后重注入），可自行安装一个 Claude Code hook。推荐 [GeiserX/cc-agents-md](https://github.com/GeiserX/cc-agents-md)：在 `SessionStart` / `UserPromptSubmit` / `PreCompact` 三事件上注册脚本，从当前工作目录向上走到 git root，将路径上的 AGENTS.md 按序拼接注入。这属于 Claude Code 本地配置，与 Agent 工具无关，故 rabbit-skills 不附带。
+若希望自动注入，推荐自行安装 Claude Code hook [GeiserX/cc-agents-md](https://github.com/GeiserX/cc-agents-md)（属 Claude Code 本地配置，与 Agent 工具无关，故 rabbit-skills 不附带）。
 
 ### 计划和实施是否应该在分开的会话中进行？
 
