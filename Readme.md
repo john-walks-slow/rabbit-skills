@@ -94,6 +94,7 @@ Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，�
 | ----------------- | -------- | ---------------------------------------------------------------------------- |
 | `deep-researcher` | subagent | 网络调研                                                                     |
 | `reviewer`        | subagent | 代码检视                                                                     |
+| `e2e-tester`      | subagent | 端到端测试                                                                   |
 | `expert`          | subagent | 通用困难任务                                                                 |
 | `auto-human`      | subagent | 自动决策（用于 full-auto 模式）                                              |
 
