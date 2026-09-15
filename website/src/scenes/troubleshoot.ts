@@ -61,13 +61,7 @@ export function initTroubleshootScene() {
   el('rect', { x: 40, y: ROW_Y[4] - 2, width: 3, height: 9, rx: 1.5, fill: CORAL }, anomalyMark);
   el('rect', { x: 44, y: ROW_Y[4] - 3, width: 404, height: 11, rx: 4, fill: CORAL, opacity: 0.08 }, anomalyMark);
 
-  // 从异常行落下的引导线 → 复现节点（曲向左）
-  const dropLine = el('path', {
-    d: `M 250 ${ROW_Y[4] + 8} Q 230 206 135 232`,
-    fill: 'none', stroke: CORAL, 'stroke-width': 1, 'stroke-dasharray': '2 3', opacity: 0.5,
-  }, svg);
-
-  /* ---------- 因果链：现象 → 日志 → 根因 ---------- */
+  /* ---------- 因果链：复现 → 根因 → 诊断 ---------- */
   const chain: Array<{ x: number; y: number; label: string; sub: string }> = [
     { x: 120, y: 244, label: '复现', sub: 'REPRODUCE' },
     { x: 250, y: 270, label: '根因', sub: 'ROOT CAUSE' },
@@ -95,18 +89,17 @@ export function initTroubleshootScene() {
     return { g, c };
   });
 
-  // 根因锁定准星（4 tick + 单圈，替代原双虚线环——莫尔伪影、意味不明）
+  // 根因锁定准星（4 tick，从大到小 snap-on；无虚线圆）
   const lockC = { x: 250, y: 270 };
   const lockG = el('g', { opacity: 0 }, svg);
   const reticleTicks = [
-    [lockC.x, lockC.y - 22, lockC.x, lockC.y - 12],
-    [lockC.x, lockC.y + 12, lockC.x, lockC.y + 22],
-    [lockC.x - 22, lockC.y, lockC.x - 12, lockC.y],
-    [lockC.x + 12, lockC.y, lockC.x + 22, lockC.y],
+    [lockC.x, lockC.y - 26, lockC.x, lockC.y - 14],
+    [lockC.x, lockC.y + 14, lockC.x, lockC.y + 26],
+    [lockC.x - 26, lockC.y, lockC.x - 14, lockC.y],
+    [lockC.x + 14, lockC.y, lockC.x + 26, lockC.y],
   ].map(([x1, y1, x2, y2]) =>
-    el('line', { x1, y1, x2, y2, stroke: CORAL, 'stroke-width': 1.4, 'stroke-linecap': 'round' }, lockG)
+    el('line', { x1, y1, x2, y2, stroke: CORAL, 'stroke-width': 1.7, 'stroke-linecap': 'round' }, lockG)
   );
-  const reticleRing = el('circle', { cx: lockC.x, cy: lockC.y, r: 20, fill: 'none', stroke: CORAL, 'stroke-width': 0.8, 'stroke-dasharray': '1 4', opacity: 0.55 }, lockG);
 
   /* ---------- 诊断报告卡 ---------- */
   const report = el('g', { opacity: 0 }, svg);
@@ -127,18 +120,6 @@ export function initTroubleshootScene() {
   const fieldRects: SVGRectElement[] = fields.map(([x, y]) =>
     el('rect', { x, y, width: 0, height: 4, rx: 2, fill: 'rgba(233,234,227,0.22)' }, report)
   );
-
-  // 盖章
-  const stamp = el('g', { opacity: 0 }, svg);
-  el('rect', {
-    x: 336, y: 330, width: 108, height: 34, rx: 6,
-    fill: 'none', stroke: CORAL, 'stroke-width': 1.6,
-  }, stamp);
-  el('text', {
-    x: 390, y: 352, 'text-anchor': 'middle',
-    fill: CORAL, 'font-size': 13.5, 'font-weight': 500,
-    'font-family': 'Space Grotesk, PingFang SC, sans-serif', 'letter-spacing': 2,
-  }, stamp, '诊断结论');
 
   /* ---------- 85% 置信仪表 ---------- */
   const dialC = { x: 108, y: 350, r: 22 };
@@ -180,23 +161,19 @@ export function initTroubleshootScene() {
   // 异常标记 + 闪烁
   tl.to(anomalyMark, { opacity: 1, duration: 0.04 }, 0.3)
     .fromTo(anomalyMark, { opacity: 0.3 }, { opacity: 1, duration: 0.05, repeat: 2, yoyo: true, ease: 'none' }, 0.32);
-  // 引导线落下
-  tl.fromTo(dropLine, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.08, ease: 'power1.inOut' }, 0.36);
   // 因果链
   chainNodes.forEach((n, i) => {
     tl.fromTo(n.g, { opacity: 0, scale: 0.5, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.09, ease: 'back.out(2.2)' }, 0.4 + i * 0.09);
     if (i > 0) tl.fromTo(connectors[i - 1], { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.08, ease: 'power2.out' }, 0.4 + i * 0.09 - 0.02);
   });
-  // 根因锁定准星 snap
-  tl.to(lockG, { opacity: 1, duration: 0.04 }, 0.64)
-    .fromTo(lockG, { scale: 1.7, transformOrigin: '250px 270px' }, { scale: 1, duration: 0.12, ease: 'power3.out' }, 0.64);
+  // 根因锁定准星 snap（晚入场，从大到小，更明显）
+  tl.to(lockG, { opacity: 1, duration: 0.04 }, 0.72)
+    .fromTo(lockG, { scale: 2.6, transformOrigin: '250px 270px' }, { scale: 1, duration: 0.14, ease: 'power4.out' }, 0.72);
   // 报告卡 + 字段行
   tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
   fieldRects.forEach((r, i) => {
     tl.to(r, { attr: { width: fields[i][2] }, duration: 0.05 }, 0.78 + i * 0.02);
   });
-  // 盖章
-  tl.fromTo(stamp, { opacity: 0, scale: 1.7, rotation: -14, transformOrigin: '390px 347px' }, { opacity: 1, scale: 1, rotation: -6, duration: 0.07, ease: 'power4.in' }, 0.86);
   // 仪表
   tl.to(dial, { opacity: 1, duration: 0.05 }, 0.8)
     .fromTo(dialArc, { drawSVG: '0%' }, { drawSVG: '85%', duration: 0.14, ease: 'power2.out' }, 0.82)
@@ -209,8 +186,7 @@ export function initTroubleshootScene() {
 
   /* ---------- idle 微循环 ---------- */
   const idle = gsap.timeline({ paused: true });
-  // 准星单圈缓慢旋转 + tick 脉冲（替代双环反向旋转的莫尔伪影）
-  idle.to(reticleRing, { rotation: 360, transformOrigin: '250px 270px', duration: 30, repeat: -1, ease: 'none' }, 0);
+  // 准星 tick 脉冲（保持锁定感，无飘移虚线圆）
   reticleTicks.forEach((t) => {
     idle.fromTo(t, { opacity: 0.5 }, { opacity: 1, duration: 0.8, yoyo: true, repeat: -1, ease: 'sine.inOut' }, 0.1);
   });
