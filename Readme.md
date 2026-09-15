@@ -150,7 +150,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 ### 项目指引写在 AGENTS.md 里，能兼容 Claude Code 吗？
 
-、Claude Code 默认不会自动读取 AGENTS.md，但文档规范中已要求「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」——无自动注入时 Agent 会在工作前自主阅读，效果等价。
+Claude Code 默认不会自动读取 AGENTS.md，但文档规范中已要求「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」——无自动注入时 Agent 会在工作前自主阅读，效果等价。
 
 若希望自动注入，推荐自行安装 Claude Code hook [GeiserX/cc-agents-md](https://github.com/GeiserX/cc-agents-md)。
 
