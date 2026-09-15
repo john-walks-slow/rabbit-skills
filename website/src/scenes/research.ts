@@ -19,9 +19,9 @@ export function initResearchScene() {
 
   /* ---------- R / P / A 骨架（居中；中文在上、英文在下） ---------- */
   const anchors: Array<{ x: number; y: number; zh: string; en: string }> = [
-    { x: 138, y: 215, zh: '调研', en: 'RESEARCH' },
-    { x: 250, y: 185, zh: '规划', en: 'PLAN' },
-    { x: 362, y: 215, zh: '对齐', en: 'ALIGN' },
+    { x: 138, y: 187, zh: '调研', en: 'RESEARCH' },
+    { x: 250, y: 157, zh: '规划', en: 'PLAN' },
+    { x: 362, y: 187, zh: '对齐', en: 'ALIGN' },
   ];
   const nodeGroup = el('g', {}, svg);
   const nodes = anchors.map((a) => {
@@ -39,7 +39,7 @@ export function initResearchScene() {
     return { g, core, a };
   });
   const flow = el('path', {
-    d: `M 138 215 C 172 185 214 185 250 185 C 286 185 328 185 362 215`,
+    d: `M 138 187 C 172 157 214 157 250 157 C 286 157 328 157 362 187`,
     fill: 'none', stroke: CYAN, 'stroke-width': 1.3, 'stroke-linecap': 'round', opacity: 0.7,
   }, svg);
 

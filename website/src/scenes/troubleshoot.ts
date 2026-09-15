@@ -101,32 +101,28 @@ export function initTroubleshootScene() {
     el('line', { x1, y1, x2, y2, stroke: CORAL, 'stroke-width': 1.7, 'stroke-linecap': 'round' }, lockG)
   );
 
-  /* ---------- 诊断报告卡（右下角，accent 色） ---------- */
+  /* ---------- 诊断产物卡（右侧，仿 plan 样式） ---------- */
+  const cardC = { x: 370, y: 340 };
   const report = el('g', { opacity: 0 }, svg);
   el('rect', {
-    x: 296, y: 298, width: 168, height: 84, rx: 10,
-    fill: '#121514', stroke: CORAL, 'stroke-width': 1.2, 'stroke-opacity': 0.7,
+    x: cardC.x - 46, y: cardC.y - 27, width: 92, height: 54, rx: 7,
+    fill: '#121514', stroke: CORAL, 'stroke-width': 1.3,
   }, report);
+  const cardLines = [[-34, -15, 52], [-34, -6, 40], [-34, 3, 46], [-34, 12, 28]].map(([dx, dy, w]) => {
+    const r = el('rect', { x: cardC.x + dx, y: cardC.y + dy, width: 0, height: 2, rx: 1, fill: CORAL, opacity: 0.6 }, report);
+    return { r, w };
+  });
   el('text', {
-    x: 310, y: 312,
-    class: 'scene-label', fill: CORAL,
+    x: cardC.x, y: cardC.y + 42, 'text-anchor': 'middle',
+    class: 'scene-label', fill: '#6B7069',
   }, report, '*.troubleshoot.md');
-  // 打字机字段行（x, y, 终宽）
-  const fields: Array<[number, number, number]> = [
-    [310, 326, 90],
-    [310, 342, 95],
-    [310, 358, 68],
-  ];
-  const fieldRects: SVGRectElement[] = fields.map(([x, y]) =>
-    el('rect', { x, y, width: 0, height: 4, rx: 2, fill: 'rgba(255,138,101,0.32)' }, report)
-  );
 
-  /* ---------- 85% 置信度（覆盖报告卡右下角） ---------- */
-  const dialC = { x: 430, y: 354, r: 22 };
+  /* ---------- 85% 置信仪表（左侧） ---------- */
+  const dialC = { x: 130, y: 340, r: 22 };
   const dial = el('g', { opacity: 0 }, svg);
   el('path', {
     d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
-    fill: '#0A0C0B', stroke: 'rgba(233,234,227,0.18)', 'stroke-width': 3,
+    fill: 'none', stroke: 'rgba(233,234,227,0.14)', 'stroke-width': 3,
   }, dial);
   const dialArc = el('path', {
     d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
@@ -136,6 +132,10 @@ export function initTroubleshootScene() {
     x: dialC.x, y: dialC.y + 6, 'text-anchor': 'middle',
     fill: '#E9EAE3', 'font-family': 'JetBrains Mono, monospace', 'font-size': 16, 'font-weight': 500,
   }, dial, '0%');
+  el('text', {
+    x: dialC.x, y: dialC.y + 40, 'text-anchor': 'middle',
+    class: 'scene-label', fill: '#6B7069',
+  }, dial, 'BELIEF · 置信度');
 
   /* ---------- scrub 时间线 ---------- */
   const counter = { v: 0 };
@@ -161,10 +161,10 @@ export function initTroubleshootScene() {
   // 根因锁定准星（从左下角滑入，慢）
   tl.to(lockG, { opacity: 1, duration: 0.05 }, 0.7)
     .fromTo(lockG, { x: -70, y: 45, scale: 1.4, transformOrigin: '250px 252px' }, { x: 0, y: 0, scale: 1, duration: 0.24, ease: 'power3.out' }, 0.7);
-  // 报告卡 + 字段行
+  // 诊断卡 + hairlines
   tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
-  fieldRects.forEach((r, i) => {
-    tl.to(r, { attr: { width: fields[i][2] }, duration: 0.05 }, 0.78 + i * 0.02);
+  cardLines.forEach((l, i) => {
+    tl.to(l.r, { attr: { width: l.w }, duration: 0.05 }, 0.78 + i * 0.02);
   });
   // 仪表
   tl.to(dial, { opacity: 1, duration: 0.05 }, 0.8)
