@@ -2,12 +2,15 @@
 
 轻量、松弛、有效的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发。
 
-> <https://john-walks-slow.github.io/rabbit-skills/>
+> 控制的目标不是剥夺系统的自由度，而是界定安全的可行域，让系统在可行域内释放最大化的调节能力。
+>   —— Ashby's Law of Requisite Variety（必要多样性定律）
+
+> 官网：<https://john-walks-slow.github.io/rabbit-skills/>
 
 ## 原则
 
-- 简单清晰，相对松弛的约束，不为模型捆手捆脚。松弛的约束只守护委托关系的边界（调研先于动手、交付必须经过检视），不捆模型的微动作——模型基础能力越强，这些规则越站得住，不会随模型进化而过时。
-- 三条通用工作流：调研规划 Research → Plan → Align; 根因排障 Research → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Validate → Doc → Commit。
+- 简单清晰，相对松弛的约束，不为模型捆手捆脚。
+- 三条通用工作流，仅包含核心约束，随着模型能力变强也不会过时：调研规划 Research → Plan → Align; 根因排障 Research → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Validate → Doc → Commit。
 - 不绑定特定开发范式（TDD 等可在项目级按需引入）。
 - 基于子代理的检视、复核、调研，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无需 worktree 的安全并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
