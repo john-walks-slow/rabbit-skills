@@ -106,8 +106,8 @@ export function initImplementScene() {
   [0, 45, 90, 135, 180, 225, 270, 315].forEach((deg) => {
     const rad = (deg * Math.PI) / 180;
     el('line', {
-      x1: 442 + Math.cos(rad) * 16, y1: TRACK_Y + Math.sin(rad) * 16,
-      x2: 442 + Math.cos(rad) * 24, y2: TRACK_Y + Math.sin(rad) * 24,
+      x1: 442 + Math.cos(rad) * 16, y1: TRACK_Y - 32 + Math.sin(rad) * 16,
+      x2: 442 + Math.cos(rad) * 24, y2: TRACK_Y - 32 + Math.sin(rad) * 24,
       stroke: GREEN, 'stroke-width': 1.4, 'stroke-linecap': 'round',
     }, burstG);
   });
@@ -149,10 +149,10 @@ export function initImplementScene() {
     }
   });
 
-  // 终点：burst + 芯片
-  tl.fromTo(burstG, { opacity: 0, scale: 0.5, transformOrigin: '442px 148px' }, { opacity: 1, scale: 1.15, duration: 0.05, ease: 'power3.out' }, T1 + 0.02)
-    .to(burstG, { opacity: 0, duration: 0.08 }, T1 + 0.1)
-    .fromTo(chipG, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.09, ease: 'power2.out' }, T1 + 0.06);
+  // 终点：burst（commit node 上方，淡入+zoom，停留更久）+ 芯片
+  tl.fromTo(burstG, { opacity: 0, scale: 0.5, transformOrigin: '442px 116px' }, { opacity: 1, scale: 1.15, duration: 0.08, ease: 'power3.out' }, T1 + 0.02)
+    .to(burstG, { opacity: 0, duration: 0.1 }, T1 + 0.35)
+    .fromTo(chipG, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.09, ease: 'power2.out' }, T1 + 0.12);
 
   if (reduced) {
     tl.progress(1);
