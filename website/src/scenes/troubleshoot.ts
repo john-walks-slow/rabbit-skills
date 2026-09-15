@@ -67,23 +67,21 @@ export function initTroubleshootScene() {
     { x: 250, y: 252, label: '根因', sub: 'ROOT CAUSE' },
     { x: 380, y: 226, label: '诊断', sub: 'DIAGNOSE' },
   ];
-  const connectors = [
-    `M 140 232 C 180 250 210 252 230 252`,
-    `M 270 252 C 300 252 330 250 360 232`,
-  ].map((d) =>
-    el('path', { d, fill: 'none', stroke: CORAL, 'stroke-width': 1.3, 'stroke-linecap': 'round' }, svg)
-  );
+  const connector = el('path', {
+    d: `M 120 226 C 200 261 300 261 380 226`,
+    fill: 'none', stroke: CORAL, 'stroke-width': 1.3, 'stroke-linecap': 'round', opacity: 0.7,
+  }, svg);
 
   const chainNodes = chain.map((c) => {
     const g = el('g', { opacity: 0 }, svg);
-    el('circle', { cx: c.x, cy: c.y, r: 15, fill: '#121514', stroke: CORAL, 'stroke-width': 1.2 }, g);
-    el('circle', { cx: c.x, cy: c.y, r: 4.5, fill: CORAL }, g);
+    el('circle', { cx: c.x, cy: c.y, r: 9, fill: '#121514', stroke: CORAL, 'stroke-width': 1.2 }, g);
+    el('circle', { cx: c.x, cy: c.y, r: 3.2, fill: CORAL }, g);
     el('text', {
-      x: c.x, y: c.y - 26, 'text-anchor': 'middle',
+      x: c.x, y: c.y - 20, 'text-anchor': 'middle',
       fill: '#E9EAE3', 'font-size': 12, 'font-weight': 500, 'font-family': 'Space Grotesk, PingFang SC, sans-serif',
     }, g, c.label);
     el('text', {
-      x: c.x, y: c.y + 34, 'text-anchor': 'middle',
+      x: c.x, y: c.y + 26, 'text-anchor': 'middle',
       class: 'scene-label', fill: '#6B7069',
     }, g, c.sub);
     return { g, c };
@@ -117,7 +115,7 @@ export function initTroubleshootScene() {
     class: 'scene-label', fill: '#6B7069',
   }, report, '*.troubleshoot.md');
 
-  /* ---------- 85% 置信仪表（左侧） ---------- */
+  /* ---------- 95% 置信仪表（左侧） ---------- */
   const dialC = { x: 100, y: 340, r: 22 };
   const dial = el('g', { opacity: 0 }, svg);
   el('path', {
@@ -153,18 +151,18 @@ export function initTroubleshootScene() {
   // 异常标记 + 闪烁
   tl.to(anomalyMark, { opacity: 1, duration: 0.04 }, 0.3)
     .fromTo(anomalyMark, { opacity: 0.3 }, { opacity: 1, duration: 0.05, repeat: 2, yoyo: true, ease: 'none' }, 0.32);
-  // 因果链
+  // 因果链（仿 R/P/A：单段 cubic arc + 节点 scale 入场）
+  tl.fromTo(connector, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.28, ease: 'power2.out' }, 0.4);
   chainNodes.forEach((n, i) => {
-    tl.fromTo(n.g, { opacity: 0, scale: 0.5, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.09, ease: 'back.out(2.2)' }, 0.4 + i * 0.09);
-    if (i > 0) tl.fromTo(connectors[i - 1], { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.08, ease: 'power2.out' }, 0.4 + i * 0.09 - 0.02);
+    tl.fromTo(n.g, { opacity: 0, scale: 0.4, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.2, ease: 'back.out(2)' }, 0.4 + i * 0.08);
   });
   // 根因锁定准星（从左下角滑入，慢）
   tl.to(lockG, { opacity: 1, duration: 0.05 }, 0.7)
     .fromTo(lockG, { x: -70, y: 45, scale: 1.4, transformOrigin: '250px 252px' }, { x: 0, y: 0, scale: 1, duration: 0.24, ease: 'power3.out' }, 0.7);
   // 置信仪表（随 rrd 开始即增加，持续更久）
   tl.to(dial, { opacity: 1, duration: 0.05 }, 0.4)
-    .fromTo(dialArc, { drawSVG: '0%' }, { drawSVG: '85%', duration: 0.5, ease: 'power1.out' }, 0.42)
-    .to(counter, { v: 85, duration: 0.5, ease: 'power1.out', onUpdate: () => (dialNum.textContent = String(Math.round(counter.v)) + '%') }, 0.42);
+    .fromTo(dialArc, { drawSVG: '0%' }, { drawSVG: '95%', duration: 0.5, ease: 'power1.out' }, 0.42)
+    .to(counter, { v: 95, duration: 0.5, ease: 'power1.out', onUpdate: () => (dialNum.textContent = String(Math.round(counter.v)) + '%') }, 0.42);
   // 诊断卡 + hairlines
   tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
   cardLines.forEach((l, i) => {

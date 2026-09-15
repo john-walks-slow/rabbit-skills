@@ -100,8 +100,8 @@ export function initResearchScene() {
   });
   // ③ 文档卡浮现（汇聚时才出现）+ 合流到计划
   docs.forEach((d, i) => {
-    tl.to(d.g, { opacity: 0.8, duration: 0.14 }, 0.56 + (i % 8) * 0.02);
-    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.66 + (i % 8) * 0.022);
+    tl.to(d.g, { opacity: 0.8, duration: 0.14 }, 0.62 + (i % 8) * 0.02);
+    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.7 + (i % 8) * 0.022);
   });
   dots.forEach((d, i) => {
     tl.to(d.node, { attr: { cx: d.plan[0], cy: d.plan[1] }, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.68 + (i % 11) * 0.022);
@@ -121,9 +121,6 @@ export function initResearchScene() {
   const idle = gsap.timeline({ repeat: -1, paused: true });
   nodes.forEach((n) => {
     idle.to(n.core, { attr: { r: 4.4 }, duration: 0.8, yoyo: true, repeat: -1, ease: 'sine.inOut' }, 0.2);
-  });
-  docs.forEach((d) => {
-    idle.to(d.g, { opacity: 0.5, duration: 1.2 + rnd(), yoyo: true, repeat: -1, ease: 'sine.inOut' }, rnd() * 2);
   });
   dots.forEach((d) => {
     idle.to(d.node, { attr: { r: d.r0 * 0.45 }, duration: 0.9 + rnd(), yoyo: true, repeat: -1, ease: 'sine.inOut' }, rnd() * 2);
