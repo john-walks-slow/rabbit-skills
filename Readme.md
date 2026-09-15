@@ -58,15 +58,7 @@ apm compile -g
 
 修复 Bug 时依次调用 `/workflow-troubleshoot` 和 `/workflow-implement-review`。
 
-### 方法 B. 通过切换 Agent
-
-如果你的 Agent 工具支持随时切换主 Agent（如 opencode 和 copilot），则更推荐使用此方式。工作流程与 Skill 一致，优点是可以为不同阶段设置不同模型。
-
-调研和设计新方案时切换到 `planner`。
-实施时切换到 `iterator`。
-排查修复疑难问题时切换到 `bugfixer`。
-
-### 方法 C. 通过任务分派
+### 方法 B. 通过任务分派
 
 如果你有许多略显杂乱的任务，可以使用任务分派工作流，由 AI 为你梳理和分配工作给对应的 subagent 实施。
 调用 `/workflow-manage-tasks`，然后描述任务。
@@ -95,10 +87,6 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `reviewer`        | subagent | 代码检视                                                                     |
 | `expert`          | subagent | 通用困难任务                                                                 |
 | `auto-human`      | subagent | 自动决策（用于 full-auto 模式）                                              |
-| `planner`         | both     | 调研和设计新方案，引用 /workflow-research-plan                               |
-| `iterator`        | both     | 实施并交付，引用 /workflow-implement-review                                  |
-| `bugfixer`        | both     | 定位和修复疑难问题，引用 /workflow-troubleshoot + /workflow-implement-review |
-| `leader`          | both     | 下达 idea 并向 manager 派发，自主推进项目演进，引用 /workflow-leader         |
 
 ### Skills & Commands（技能与命令）
 
@@ -121,6 +109,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `bad-smell`                      | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
 | `unstuck`                        | 用户或 AI | 连续修改未达预期时强制退一步重新分析                                          |
 | `full-auto`                      | 仅用户    | 全自动模式：所有需要用户决策的地方自动由 auto-human 代理                      |
+| `deep-auto`                      | 仅用户    | 极致自动模式：最少消耗用户精力，极致质量 + 端到端测试交付                      |
 | `update-project-instruction`     | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
 | `update-module-instruction`      | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |
 | `update-references`              | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                               |
@@ -137,7 +126,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 ## 自定义
 
-按需配置各个代理使用的模型，建议为 planner，reviewer，expert 选择高级模型。
+按需配置各个代理使用的模型，建议为 reviewer，expert 选择高级模型。
 
 本项目默认没有对 spec 格式和测试规范做任何约束。如果需要更强约束，请在项目级指令中添加。
 
