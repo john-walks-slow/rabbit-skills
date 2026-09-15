@@ -85,7 +85,7 @@ export function initResearchScene() {
     defaults: { ease: 'power2.inOut' },
     scrollTrigger: prefersReduced()
       ? undefined
-      : { trigger: host, start: 'top 88%', end: 'bottom 52%', scrub: 2.2 },
+      : { trigger: host, start: 'top 88%', end: 'bottom 52%', scrub: 1.6 },
   });
 
   // ① 骨架（延后到 0.2，放慢）
@@ -107,10 +107,10 @@ export function initResearchScene() {
     tl.to(d.node, { attr: { cx: d.plan[0], cy: d.plan[1] }, opacity: 0, duration: 0.16, ease: 'power2.in' }, 0.58 + (i % 11) * 0.018);
   });
   // ④ 最终计划从下往上入场
-  tl.fromTo(planG, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.7);
-  // ⑤ 计划 hairlines 逐行书写（慢、顺序、长）
+  tl.fromTo(planG, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.74);
+  // ⑤ 计划 hairlines 逐行书写（慢、顺序）
   planLines.forEach((l, i) => {
-    tl.to(l.r, { attr: { width: l.w }, duration: 0.12, ease: 'none' }, 0.76 + i * 0.06);
+    tl.to(l.r, { attr: { width: l.w }, duration: 0.1, ease: 'none' }, 0.8 + i * 0.06);
   });
 
   if (prefersReduced()) {
