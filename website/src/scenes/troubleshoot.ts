@@ -20,7 +20,7 @@ export function initTroubleshootScene() {
   /* ---------- 终端窗 ---------- */
   const term = el('g', {}, svg);
   el('rect', {
-    x: 36, y: 26, width: 428, height: 150, rx: 10,
+    x: 36, y: 26, width: 428, height: 134, rx: 10,
     fill: '#0A0C0B', stroke: 'rgba(233,234,227,0.14)', 'stroke-width': 1,
   }, term);
   // 标题栏
@@ -40,10 +40,10 @@ export function initTroubleshootScene() {
   interface Row { rect: SVGRectElement; w: number; anomaly: boolean; }
   const rowsGroup = el('g', { 'clip-path': 'url(#ts-clip)' }, term);
   const clip = el('clipPath', { id: 'ts-clip' }, svg);
-  el('rect', { x: 38, y: 60, width: 424, height: 114 }, clip);
+  el('rect', { x: 38, y: 60, width: 424, height: 98 }, clip);
 
   const rows: Row[] = [];
-  const ROW_Y = [74, 88, 102, 116, 130, 144, 158];
+  const ROW_Y = [72, 84, 96, 108, 120, 132, 144];
   ROW_Y.forEach((y, i) => {
     const anomaly = i === 4;
     const w = anomaly ? 262 : 96 + Math.floor(rnd() * 250);
@@ -63,13 +63,13 @@ export function initTroubleshootScene() {
 
   /* ---------- 因果链：复现 → 根因 → 诊断 ---------- */
   const chain: Array<{ x: number; y: number; label: string; sub: string }> = [
-    { x: 120, y: 244, label: '复现', sub: 'REPRODUCE' },
-    { x: 250, y: 270, label: '根因', sub: 'ROOT CAUSE' },
-    { x: 380, y: 244, label: '诊断', sub: 'DIAGNOSE' },
+    { x: 120, y: 226, label: '复现', sub: 'REPRODUCE' },
+    { x: 250, y: 252, label: '根因', sub: 'ROOT CAUSE' },
+    { x: 380, y: 226, label: '诊断', sub: 'DIAGNOSE' },
   ];
   const connectors = [
-    `M 140 250 C 180 268 210 270 230 270`,
-    `M 270 270 C 300 270 330 268 360 250`,
+    `M 140 232 C 180 250 210 252 230 252`,
+    `M 270 252 C 300 252 330 250 360 232`,
   ].map((d) =>
     el('path', { d, fill: 'none', stroke: CORAL, 'stroke-width': 1.3, 'stroke-linecap': 'round' }, svg)
   );
@@ -90,7 +90,7 @@ export function initTroubleshootScene() {
   });
 
   // 根因锁定准星（4 tick，从大到小 snap-on；无虚线圆）
-  const lockC = { x: 250, y: 270 };
+  const lockC = { x: 250, y: 252 };
   const lockG = el('g', { opacity: 0 }, svg);
   const reticleTicks = [
     [lockC.x, lockC.y - 26, lockC.x, lockC.y - 14],
@@ -101,32 +101,32 @@ export function initTroubleshootScene() {
     el('line', { x1, y1, x2, y2, stroke: CORAL, 'stroke-width': 1.7, 'stroke-linecap': 'round' }, lockG)
   );
 
-  /* ---------- 诊断报告卡 ---------- */
+  /* ---------- 诊断报告卡（右下角，accent 色） ---------- */
   const report = el('g', { opacity: 0 }, svg);
   el('rect', {
-    x: 195, y: 312, width: 168, height: 72, rx: 10,
-    fill: '#121514', stroke: 'rgba(233,234,227,0.16)', 'stroke-width': 1,
+    x: 296, y: 298, width: 168, height: 84, rx: 10,
+    fill: '#121514', stroke: CORAL, 'stroke-width': 1.2, 'stroke-opacity': 0.7,
   }, report);
   el('text', {
-    x: 213, y: 322,
-    class: 'scene-label', fill: '#6B7069',
-  }, report, 'DIAGNOSIS');
+    x: 310, y: 312,
+    class: 'scene-label', fill: CORAL,
+  }, report, '*.troubleshoot.md');
   // 打字机字段行（x, y, 终宽）
   const fields: Array<[number, number, number]> = [
-    [213, 336, 96],
-    [213, 352, 130],
-    [213, 368, 74],
+    [310, 326, 90],
+    [310, 342, 95],
+    [310, 358, 68],
   ];
   const fieldRects: SVGRectElement[] = fields.map(([x, y]) =>
-    el('rect', { x, y, width: 0, height: 4, rx: 2, fill: 'rgba(233,234,227,0.22)' }, report)
+    el('rect', { x, y, width: 0, height: 4, rx: 2, fill: 'rgba(255,138,101,0.32)' }, report)
   );
 
-  /* ---------- 85% 置信仪表 ---------- */
-  const dialC = { x: 150, y: 350, r: 25 };
+  /* ---------- 85% 置信度（覆盖报告卡右下角） ---------- */
+  const dialC = { x: 430, y: 354, r: 22 };
   const dial = el('g', { opacity: 0 }, svg);
   el('path', {
     d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
-    fill: 'none', stroke: 'rgba(233,234,227,0.14)', 'stroke-width': 3,
+    fill: '#0A0C0B', stroke: 'rgba(233,234,227,0.18)', 'stroke-width': 3,
   }, dial);
   const dialArc = el('path', {
     d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
@@ -134,12 +134,8 @@ export function initTroubleshootScene() {
   }, dial);
   const dialNum = el('text', {
     x: dialC.x, y: dialC.y + 6, 'text-anchor': 'middle',
-    fill: '#E9EAE3', 'font-family': 'JetBrains Mono, monospace', 'font-size': 19, 'font-weight': 500,
+    fill: '#E9EAE3', 'font-family': 'JetBrains Mono, monospace', 'font-size': 16, 'font-weight': 500,
   }, dial, '0%');
-  el('text', {
-    x: dialC.x, y: dialC.y + 44, 'text-anchor': 'middle',
-    class: 'scene-label', fill: '#6B7069',
-  }, dial, 'BELIEF · 置信度');
 
   /* ---------- scrub 时间线 ---------- */
   const counter = { v: 0 };
@@ -164,7 +160,7 @@ export function initTroubleshootScene() {
   });
   // 根因锁定准星（从左下角滑入，慢）
   tl.to(lockG, { opacity: 1, duration: 0.05 }, 0.7)
-    .fromTo(lockG, { x: -70, y: 45, scale: 1.4, transformOrigin: '250px 270px' }, { x: 0, y: 0, scale: 1, duration: 0.24, ease: 'power3.out' }, 0.7);
+    .fromTo(lockG, { x: -70, y: 45, scale: 1.4, transformOrigin: '250px 252px' }, { x: 0, y: 0, scale: 1, duration: 0.24, ease: 'power3.out' }, 0.7);
   // 报告卡 + 字段行
   tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
   fieldRects.forEach((r, i) => {
