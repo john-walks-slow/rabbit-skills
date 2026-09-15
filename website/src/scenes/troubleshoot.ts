@@ -61,17 +61,17 @@ export function initTroubleshootScene() {
   el('rect', { x: 40, y: ROW_Y[4] - 2, width: 3, height: 9, rx: 1.5, fill: CORAL }, anomalyMark);
   el('rect', { x: 44, y: ROW_Y[4] - 3, width: 404, height: 11, rx: 4, fill: CORAL, opacity: 0.08 }, anomalyMark);
 
-  // 从异常行落下的引导线 → 因果链首节点
+  // 从异常行落下的引导线 → 复现节点（曲向左）
   const dropLine = el('path', {
-    d: `M 250 ${ROW_Y[4] + 8} L 250 216`,
+    d: `M 250 ${ROW_Y[4] + 8} Q 230 206 135 232`,
     fill: 'none', stroke: CORAL, 'stroke-width': 1, 'stroke-dasharray': '2 3', opacity: 0.5,
   }, svg);
 
   /* ---------- 因果链：现象 → 日志 → 根因 ---------- */
   const chain: Array<{ x: number; y: number; label: string; sub: string }> = [
-    { x: 120, y: 244, label: '现象', sub: 'SYMPTOM' },
-    { x: 250, y: 270, label: '日志', sub: 'EVIDENCE' },
-    { x: 380, y: 244, label: '根因', sub: 'ROOT CAUSE' },
+    { x: 120, y: 244, label: '复现', sub: 'REPRODUCE' },
+    { x: 250, y: 270, label: '根因', sub: 'ROOT CAUSE' },
+    { x: 380, y: 244, label: '诊断', sub: 'DIAGNOSE' },
   ];
   const connectors = [
     `M 140 250 C 180 268 210 270 230 270`,
@@ -95,10 +95,18 @@ export function initTroubleshootScene() {
     return { g, c };
   });
 
-  // 根因锁定环（crosshair）
+  // 根因锁定准星（4 tick + 单圈，替代原双虚线环——莫尔伪影、意味不明）
+  const lockC = { x: 250, y: 270 };
   const lockG = el('g', { opacity: 0 }, svg);
-  const ring1 = el('circle', { cx: 380, cy: 244, r: 15, fill: 'none', stroke: CORAL, 'stroke-width': 1, 'stroke-dasharray': '4 4' }, lockG);
-  const ring2 = el('circle', { cx: 380, cy: 244, r: 23, fill: 'none', stroke: CORAL, 'stroke-width': 0.8, 'stroke-dasharray': '2 6' }, lockG);
+  const reticleTicks = [
+    [lockC.x, lockC.y - 22, lockC.x, lockC.y - 12],
+    [lockC.x, lockC.y + 12, lockC.x, lockC.y + 22],
+    [lockC.x - 22, lockC.y, lockC.x - 12, lockC.y],
+    [lockC.x + 12, lockC.y, lockC.x + 22, lockC.y],
+  ].map(([x1, y1, x2, y2]) =>
+    el('line', { x1, y1, x2, y2, stroke: CORAL, 'stroke-width': 1.4, 'stroke-linecap': 'round' }, lockG)
+  );
+  const reticleRing = el('circle', { cx: lockC.x, cy: lockC.y, r: 20, fill: 'none', stroke: CORAL, 'stroke-width': 0.8, 'stroke-dasharray': '1 4', opacity: 0.55 }, lockG);
 
   /* ---------- 诊断报告卡 ---------- */
   const report = el('g', { opacity: 0 }, svg);
@@ -179,10 +187,9 @@ export function initTroubleshootScene() {
     tl.fromTo(n.g, { opacity: 0, scale: 0.5, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.09, ease: 'back.out(2.2)' }, 0.4 + i * 0.09);
     if (i > 0) tl.fromTo(connectors[i - 1], { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.08, ease: 'power2.out' }, 0.4 + i * 0.09 - 0.02);
   });
-  // 根因锁定环
+  // 根因锁定准星 snap
   tl.to(lockG, { opacity: 1, duration: 0.04 }, 0.64)
-    .fromTo(ring1, { scale: 2.1, transformOrigin: '380px 244px' }, { scale: 1, duration: 0.1, ease: 'power3.out' }, 0.64)
-    .fromTo(ring2, { scale: 1.8, transformOrigin: '380px 244px' }, { scale: 1, duration: 0.12, ease: 'power3.out' }, 0.66);
+    .fromTo(lockG, { scale: 1.7, transformOrigin: '250px 270px' }, { scale: 1, duration: 0.12, ease: 'power3.out' }, 0.64);
   // 报告卡 + 字段行
   tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
   fieldRects.forEach((r, i) => {
@@ -202,8 +209,11 @@ export function initTroubleshootScene() {
 
   /* ---------- idle 微循环 ---------- */
   const idle = gsap.timeline({ paused: true });
-  idle.to(ring1, { rotation: 360, transformOrigin: '380px 244px', duration: 14, repeat: -1, ease: 'none' }, 0);
-  idle.to(ring2, { rotation: -360, transformOrigin: '380px 244px', duration: 22, repeat: -1, ease: 'none' }, 0);
+  // 准星单圈缓慢旋转 + tick 脉冲（替代双环反向旋转的莫尔伪影）
+  idle.to(reticleRing, { rotation: 360, transformOrigin: '250px 270px', duration: 30, repeat: -1, ease: 'none' }, 0);
+  reticleTicks.forEach((t) => {
+    idle.fromTo(t, { opacity: 0.5 }, { opacity: 1, duration: 0.8, yoyo: true, repeat: -1, ease: 'sine.inOut' }, 0.1);
+  });
 
   ScrollTrigger.create({
     trigger: host,

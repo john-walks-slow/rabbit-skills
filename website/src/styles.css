@@ -541,7 +541,54 @@ code, kbd, pre { font-family: var(--mono); }
   clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
+/* ---------- documents ---------- */
+.docs-tabs {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 24px;
+}
+.docs-tab {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px; letter-spacing: 0.02em;
+  padding: 8px 14px; border-radius: 8px;
+  background: var(--surface-1); border: 1px solid var(--line-2);
+  color: var(--dim); cursor: pointer;
+  transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out), background var(--dur-2) var(--ease-out);
+}
+.docs-tab:hover { color: var(--text); border-color: var(--line-3); }
+.docs-tab.is-active { color: var(--carrot); border-color: var(--carrot); background: rgba(255,163,107,0.06); }
+.docs-tab:focus-visible { outline: 2px solid var(--carrot); outline-offset: 2px; }
+
+.docs-panel {
+  display: grid; grid-template-columns: 240px 1fr; gap: 24px;
+  align-items: stretch;
+  transition: opacity 0.18s ease;
+}
+.docs-meta { display: flex; flex-direction: column; gap: 14px; }
+.docs-path {
+  font-size: 11px; color: var(--carrot); word-break: break-all;
+  padding: 8px 10px; background: var(--surface-1); border: 1px solid var(--line-2); border-radius: 6px;
+}
+.docs-purpose { font-size: 13.5px; line-height: 1.7; color: var(--text); }
+.docs-record-label { font-size: 10px; color: var(--faint); margin-bottom: 4px; }
+.docs-record p:last-child { font-size: 12.5px; color: var(--dim); line-height: 1.6; }
+.docs-record-no .docs-record-label { color: var(--faint); }
+
+.docs-preview {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px; line-height: 1.75; color: var(--dim);
+  background: var(--surface-0); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 18px 20px; overflow: auto; max-height: 340px;
+  white-space: pre-wrap; word-break: break-word;
+}
+.docs-preview .md-cm { color: var(--faint); }
+.docs-preview .md-h { display: block; color: var(--text); font-weight: 500; margin-top: 10px; }
+.docs-preview .md-h:first-child { margin-top: 0; }
+
 /* ---------- responsive ---------- */
+@media (max-width: 720px) {
+  .docs-panel { grid-template-columns: 1fr; }
+  .docs-preview { max-height: 280px; font-size: 11.5px; }
+}
 @media (max-width: 960px) {
   .workflow { grid-template-columns: 1fr; gap: 28px; }
   .wf-scene { aspect-ratio: 4 / 3; order: 2; }
