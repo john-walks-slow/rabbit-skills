@@ -185,6 +185,9 @@ code, kbd, pre { font-family: var(--mono); }
   font-size: clamp(15.5px, 1.8vw, 18px); color: var(--dim); line-height: 1.9;
   margin-bottom: 40px;
 }
+.hero-epigraph { font-style: normal; display: block; font-size: clamp(16px, 2vw, 20px); line-height: 1.75; color: var(--text); }
+.hero-epigraph-src { display: block; margin-top: 14px; font-size: 13px; color: var(--dim); font-style: normal; text-decoration: none; border-bottom: 1px solid transparent; transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out); }
+.hero-epigraph-src:hover { color: var(--carrot); border-bottom-color: var(--carrot); }
 
 .hero-cta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
 
