@@ -7,6 +7,18 @@ description: 基于 git-hunk 提交改动，防止带入其他无关的未提交
 
 基于 git-hunk 精准选择提交范围，防止带入其他无关的未提交修改。
 
+## 依赖
+
+本技能依赖 [git-hunk](https://github.com/wkentaro/git-hunk)（按 hunk 精选提交范围）。
+
+安装：
+
+```bash
+pip install git-hunk
+```
+
+安装后 `git-hunk` 命令可用（`git-hunk list` / `git-hunk show <id>` / `git-hunk stage <id>`）。详见 <https://github.com/wkentaro/git-hunk>。
+
 ## 工作流程
 
 1. **获取锁**
