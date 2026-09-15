@@ -102,7 +102,7 @@ export function initTroubleshootScene() {
   );
 
   /* ---------- 诊断产物卡（右侧，仿 plan 样式） ---------- */
-  const cardC = { x: 370, y: 340 };
+  const cardC = { x: 395, y: 340 };
   const report = el('g', { opacity: 0 }, svg);
   el('rect', {
     x: cardC.x - 46, y: cardC.y - 27, width: 92, height: 54, rx: 7,
@@ -118,7 +118,7 @@ export function initTroubleshootScene() {
   }, report, '*.troubleshoot.md');
 
   /* ---------- 85% 置信仪表（左侧） ---------- */
-  const dialC = { x: 130, y: 340, r: 22 };
+  const dialC = { x: 100, y: 340, r: 22 };
   const dial = el('g', { opacity: 0 }, svg);
   el('path', {
     d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
@@ -161,15 +161,15 @@ export function initTroubleshootScene() {
   // 根因锁定准星（从左下角滑入，慢）
   tl.to(lockG, { opacity: 1, duration: 0.05 }, 0.7)
     .fromTo(lockG, { x: -70, y: 45, scale: 1.4, transformOrigin: '250px 252px' }, { x: 0, y: 0, scale: 1, duration: 0.24, ease: 'power3.out' }, 0.7);
+  // 置信仪表（随 rrd 开始即增加，持续更久）
+  tl.to(dial, { opacity: 1, duration: 0.05 }, 0.4)
+    .fromTo(dialArc, { drawSVG: '0%' }, { drawSVG: '85%', duration: 0.5, ease: 'power1.out' }, 0.42)
+    .to(counter, { v: 85, duration: 0.5, ease: 'power1.out', onUpdate: () => (dialNum.textContent = String(Math.round(counter.v)) + '%') }, 0.42);
   // 诊断卡 + hairlines
   tl.fromTo(report, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.74);
   cardLines.forEach((l, i) => {
     tl.to(l.r, { attr: { width: l.w }, duration: 0.05 }, 0.78 + i * 0.02);
   });
-  // 仪表
-  tl.to(dial, { opacity: 1, duration: 0.05 }, 0.8)
-    .fromTo(dialArc, { drawSVG: '0%' }, { drawSVG: '85%', duration: 0.14, ease: 'power2.out' }, 0.82)
-    .to(counter, { v: 85, duration: 0.14, ease: 'power2.out', onUpdate: () => (dialNum.textContent = String(Math.round(counter.v)) + '%') }, 0.82);
 
   if (prefersReduced()) {
     tl.progress(1);

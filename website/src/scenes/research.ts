@@ -39,7 +39,7 @@ export function initResearchScene() {
     return { g, core, a };
   });
   const flow = el('path', {
-    d: `M 138 165 C 172 135 214 135 250 135 C 286 135 328 135 362 165`,
+    d: `M 138 165 C 200 125 300 125 362 165`,
     fill: 'none', stroke: CYAN, 'stroke-width': 1.3, 'stroke-linecap': 'round', opacity: 0.7,
   }, svg);
 
@@ -93,21 +93,18 @@ export function initResearchScene() {
   nodes.forEach((n, i) => {
     tl.fromTo(n.g, { opacity: 0, scale: 0.4, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.2, ease: 'back.out(2)' }, 0.2 + i * 0.08);
   });
-  // ② 文档卡 + 粒子浮现 + 漂浮收集（放慢：长漂移）
-  docs.forEach((d, i) => {
-    tl.to(d.g, { opacity: 0.8, duration: 0.16 }, 0.3 + (i % 8) * 0.035);
-    tl.to(d.g, { x: d.mid[0], y: d.mid[1], duration: 0.46, ease: 'sine.inOut' }, 0.36 + (i % 8) * 0.035);
-  });
+  // ② 粒子浮现 + 漂浮收集（前半段只有 dot）
   dots.forEach((d, i) => {
     tl.to(d.node, { opacity: 0.75, duration: 0.14 }, 0.32 + (i % 11) * 0.025);
-    tl.to(d.node, { attr: { cx: d.mid[0], cy: d.mid[1] }, duration: 0.46, ease: 'sine.inOut' }, 0.38 + (i % 11) * 0.025);
+    tl.to(d.node, { attr: { cx: d.mid[0], cy: d.mid[1] }, duration: 0.34, ease: 'sine.inOut' }, 0.38 + (i % 11) * 0.025);
   });
-  // ③ 合流到计划（淡入消失）
+  // ③ 文档卡浮现（汇聚时才出现）+ 合流到计划
   docs.forEach((d, i) => {
-    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.28, ease: 'power2.in' }, 0.68 + (i % 8) * 0.022);
+    tl.to(d.g, { opacity: 0.8, duration: 0.14 }, 0.56 + (i % 8) * 0.02);
+    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.66 + (i % 8) * 0.022);
   });
   dots.forEach((d, i) => {
-    tl.to(d.node, { attr: { cx: d.plan[0], cy: d.plan[1] }, opacity: 0, duration: 0.28, ease: 'power2.in' }, 0.7 + (i % 11) * 0.022);
+    tl.to(d.node, { attr: { cx: d.plan[0], cy: d.plan[1] }, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.68 + (i % 11) * 0.022);
   });
   // ④ 最终计划从下往上入场
   tl.fromTo(planG, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.16, ease: 'power2.out' }, 0.88);
