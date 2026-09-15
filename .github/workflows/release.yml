@@ -13,6 +13,8 @@ jobs:
         run: |
           curl -sSL https://aka.ms/apm-unix | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build release
         run: apm run build-release
       - name: Package per-tool archives
