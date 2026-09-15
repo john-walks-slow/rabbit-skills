@@ -1,21 +1,20 @@
 /**
- * scene-research.ts — 信息收敛与最佳判断（Research → Plan → Align）
+ * scene-research.ts — 浏览海量文档 → 产出最佳计划（Research → Plan → Align）
  *
- * 叙事：散落的信息点先漂浮收集 → 汇聚到 R/P/A 三锚点 →
- * 粒子从锚点合流到底部「最佳判断」节点。
- * scrub 驱动 + 进入视口后的 idle 微循环（轨道旋转 / 星点呼吸 / 判断点脉冲）。
+ * 叙事：R/P/A 三相骨架（调研→规划→对齐）在上；下方散落许多文档卡，
+ * 经一段较长的浏览/扫描 → 文档汇聚到底部「最佳计划」——
+ * 浏览了海量文档，产出最佳计划。
+ * scrub 驱动 + 进入视口后的 idle 微循环。
  */
 import { gsap, ScrollTrigger, prefersReduced } from '../motion';
 import { el, svgRoot, seeded } from '../svg';
 
 const CYAN = '#62D8E6';
 
-interface Dot {
-  node: SVGCircleElement;
-  from: [number, number];
+interface Doc {
+  g: SVGGElement;
   mid: [number, number];
-  to: [number, number];
-  judge: [number, number];
+  plan: [number, number];
 }
 
 export function initResearchScene() {
@@ -25,138 +24,111 @@ export function initResearchScene() {
   const svg = svgRoot('0 0 500 400', host);
   const rnd = seeded(20260908);
 
-  /* ---------- 轨道（装饰层，idle 旋转） ---------- */
-  const orbitGroup = el('g', { opacity: 0.35 }, svg);
-  const orbits = [
-    { rx: 172, ry: 72 },
-    { rx: 132, ry: 54 },
-    { rx: 92, ry: 36 },
-  ].map(({ rx, ry }) =>
-    el('ellipse', {
-      cx: 250, cy: 158, rx, ry,
-      fill: 'none',
-      stroke: CYAN,
-      'stroke-opacity': 0.14,
-      'stroke-width': 1,
-      'stroke-dasharray': '1 5',
-    }, orbitGroup)
-  );
-
-  /* ---------- 三个锚点：R / P / A ---------- */
+  /* ---------- R / P / A 骨架 ---------- */
   const anchors: Array<{ x: number; y: number; label: string }> = [
-    { x: 138, y: 152, label: 'RESEARCH' },
-    { x: 250, y: 112, label: 'PLAN' },
-    { x: 362, y: 152, label: 'ALIGN' },
+    { x: 138, y: 132, label: 'RESEARCH' },
+    { x: 250, y: 96, label: 'PLAN' },
+    { x: 362, y: 132, label: 'ALIGN' },
   ];
-
   const nodeGroup = el('g', {}, svg);
   const nodes = anchors.map((a) => {
     const g = el('g', { opacity: 0 }, nodeGroup);
-    el('circle', { cx: a.x, cy: a.y, r: 10, fill: '#121514', stroke: CYAN, 'stroke-width': 1.2 }, g);
-    const core = el('circle', { cx: a.x, cy: a.y, r: 3.4, fill: CYAN }, g);
+    el('circle', { cx: a.x, cy: a.y, r: 9, fill: '#121514', stroke: CYAN, 'stroke-width': 1.2 }, g);
+    const core = el('circle', { cx: a.x, cy: a.y, r: 3.2, fill: CYAN }, g);
     el('text', {
-      x: a.x, y: a.y + 30, 'text-anchor': 'middle',
+      x: a.x, y: a.y - 20, 'text-anchor': 'middle',
       class: 'scene-label', fill: '#A4A89D',
     }, g, a.label);
     return { g, core, a };
   });
-
-  /* ---------- 流线 R → P → A ---------- */
   const flow = el('path', {
-    d: `M 138 152 C 172 118 214 112 250 112 C 286 112 328 118 362 152`,
-    fill: 'none', stroke: CYAN, 'stroke-width': 1.4, 'stroke-linecap': 'round',
+    d: `M 138 132 C 172 100 214 96 250 96 C 286 96 328 100 362 132`,
+    fill: 'none', stroke: CYAN, 'stroke-width': 1.3, 'stroke-linecap': 'round', opacity: 0.7,
   }, svg);
 
-  /* ---------- 判断节点 ---------- */
-  const judgeC = { x: 250, y: 338 };
-  const judgeG = el('g', { opacity: 0 }, svg);
-  el('circle', { cx: judgeC.x, cy: judgeC.y, r: 9, fill: '#121514', stroke: CYAN, 'stroke-width': 1.3 }, judgeG);
-  const judgeCore = el('circle', { cx: judgeC.x, cy: judgeC.y, r: 3.4, fill: CYAN }, judgeG);
-  el('text', {
-    x: judgeC.x, y: judgeC.y + 26, 'text-anchor': 'middle',
-    class: 'scene-label', fill: '#6B7069',
-  }, judgeG, 'JUDGMENT · 最佳判断');
+  /* ---------- 扫描线（浏览感） ---------- */
+  const scan = el('rect', {
+    x: 30, y: 205, width: 440, height: 1.5, rx: 0.75,
+    fill: CYAN, opacity: 0,
+  }, svg);
 
-  /* ---------- 散点（信息星图）：漂浮收集 → 汇聚锚点 → 合流判断 ---------- */
-  const dotGroup = el('g', {}, svg);
-  const dots: Dot[] = [];
-  for (let i = 0; i < 26; i++) {
-    const x = 58 + rnd() * 384;
-    const y = 38 + rnd() * 196;
-    const nearest = anchors.reduce((best, a) => {
-      const d = (a.x - x) ** 2 + (a.y - y) ** 2;
-      return d < best.d ? { a, d } : best;
-    }, { a: anchors[0], d: Infinity }).a;
-    const mid: [number, number] = [x + (rnd() - 0.5) * 36, y + (rnd() - 0.5) * 24];
-    const node = el('circle', { cx: x, cy: y, r: 1.1 + rnd() * 1.3, fill: CYAN, opacity: 0 }, dotGroup);
-    // 合流终点：判断节点附近小幅散布
-    const judge: [number, number] = [judgeC.x + (rnd() - 0.5) * 5, judgeC.y];
-    dots.push({ node, from: [x, y], mid, to: [nearest.x, nearest.y], judge });
+  /* ---------- 文档卡（海量调研材料） ---------- */
+  const docGroup = el('g', {}, svg);
+  const docs: Doc[] = [];
+  for (let i = 0; i < 15; i++) {
+    const x = 42 + rnd() * 416;
+    const y = 208 + rnd() * 86;
+    const rot = (rnd() - 0.5) * 16;
+    const g = el('g', { opacity: 0 }, docGroup);
+    el('rect', { x: -12, y: -8.5, width: 24, height: 17, rx: 2.5, fill: '#121514', stroke: CYAN, 'stroke-width': 1, 'stroke-opacity': 0.45 }, g);
+    [[-8, -4, 14], [-8, 0, 11], [-8, 4, 12]].forEach(([dx, dy, w]) =>
+      el('rect', { x: dx, y: dy, width: w, height: 1.5, rx: 0.75, fill: CYAN, opacity: 0.5 }, g)
+    );
+    gsap.set(g, { x, y, rotation: rot, transformOrigin: '50% 50%' });
+    docs.push({ g, mid: [x + (rnd() - 0.5) * 44, y + (rnd() - 0.5) * 22], plan: [250 + (rnd() - 0.5) * 8, 333] });
   }
+
+  /* ---------- 最佳计划卡（汇聚产物） ---------- */
+  const planC = { x: 250, y: 333 };
+  const planG = el('g', { opacity: 0 }, svg);
+  el('rect', { x: planC.x - 46, y: planC.y - 27, width: 92, height: 54, rx: 7, fill: '#121514', stroke: CYAN, 'stroke-width': 1.3 }, planG);
+  const planLines = [[-34, -15, 52], [-34, -6, 40], [-34, 3, 46], [-34, 12, 28]].map(([dx, dy, w]) => {
+    const r = el('rect', { x: planC.x + dx, y: planC.y + dy, width: 0, height: 2, rx: 1, fill: CYAN, opacity: 0.6 }, planG);
+    return { r, w };
+  });
+  el('text', {
+    x: planC.x, y: planC.y + 42, 'text-anchor': 'middle',
+    class: 'scene-label', fill: '#6B7069',
+  }, planG, 'PLAN · 最佳计划');
 
   /* ---------- scrub 主时间线 ---------- */
   const tl = gsap.timeline({
     defaults: { ease: 'power2.inOut' },
     scrollTrigger: prefersReduced()
       ? undefined
-      : {
-          trigger: host,
-          start: 'top 88%',
-          end: 'bottom 52%',
-          scrub: 0.7,
-        },
+      : { trigger: host, start: 'top 88%', end: 'bottom 52%', scrub: 0.7 },
   });
 
-  // ① 散点浮现 + 漂浮收集（停留更久：先游走再汇聚）
-  dots.forEach((d, i) => {
-    tl.to(d.node, { opacity: 0.75, duration: 0.1 }, 0.06 + (i % 9) * 0.02);
-    tl.to(d.node, {
-      attr: { cx: d.mid[0], cy: d.mid[1] },
-      duration: 0.22, ease: 'sine.inOut',
-    }, 0.16 + (i % 9) * 0.02);
-    // 汇聚到最近锚点
-    tl.to(d.node, {
-      attr: { cx: d.to[0], cy: d.to[1] },
-      opacity: 0.14,
-      duration: 0.2,
-    }, 0.42 + (i % 9) * 0.025);
-  });
-  // ② 流线
-  tl.fromTo(flow, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.22, ease: 'power2.out' }, 0.5);
-  // ③ 节点
+  // ① 骨架
+  tl.fromTo(flow, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.16, ease: 'power2.out' }, 0.06);
   nodes.forEach((n, i) => {
-    tl.fromTo(n.g, { opacity: 0, scale: 0.4, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.12, ease: 'back.out(2)' }, 0.54 + i * 0.06);
+    tl.fromTo(n.g, { opacity: 0, scale: 0.4, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.1, ease: 'back.out(2)' }, 0.06 + i * 0.05);
   });
-  // ④ 粒子合流到判断节点（淡入消失，融入判断）
-  dots.forEach((d, i) => {
-    tl.to(d.node, {
-      attr: { cx: d.judge[0], cy: d.judge[1] },
-      opacity: 0,
-      duration: 0.22, ease: 'power2.in',
-    }, 0.64 + (i % 9) * 0.02);
+  // ② 文档浮现 + 浏览（停留更久：长漂移 + 扫描线）
+  docs.forEach((d, i) => {
+    tl.to(d.g, { opacity: 0.85, duration: 0.12 }, 0.14 + (i % 8) * 0.03);
+    tl.to(d.g, { x: d.mid[0], y: d.mid[1], duration: 0.34, ease: 'sine.inOut' }, 0.2 + (i % 8) * 0.03);
   });
-  // ⑤ 最佳判断点亮
-  tl.to(judgeG, { opacity: 1, duration: 0.1, ease: 'power2.out' }, 0.86);
+  tl.to(scan, { opacity: 0.22, duration: 0.06 }, 0.22)
+    .to(scan, { attr: { y: 296 }, duration: 0.3, ease: 'none' }, 0.22)
+    .to(scan, { opacity: 0, duration: 0.06 }, 0.5);
+  // ③ 文档汇聚到最佳计划（淡入消失，融入计划）
+  docs.forEach((d, i) => {
+    tl.to(d.g, {
+      x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0,
+      duration: 0.24, ease: 'power2.in',
+    }, 0.56 + (i % 8) * 0.02);
+  });
+  // ④ 最佳计划浮现
+  tl.to(planG, { opacity: 1, duration: 0.1 }, 0.84)
+    .fromTo(planG, { scale: 0.7, transformOrigin: '250px 333px' }, { scale: 1, duration: 0.14, ease: 'power2.out' }, 0.84);
+  planLines.forEach((l, i) => {
+    tl.to(l.r, { attr: { width: l.w }, duration: 0.06, ease: 'power1.out' }, 0.88 + i * 0.02);
+  });
 
   if (prefersReduced()) {
     tl.progress(1);
     return;
   }
 
-  /* ---------- idle 微循环（进入视口才跑） ---------- */
+  /* ---------- idle 微循环 ---------- */
   const idle = gsap.timeline({ repeat: -1, paused: true });
-  orbits.forEach((o, i) => {
-    idle.to(o, { rotation: i % 2 ? -360 : 360, transformOrigin: '50% 50%', duration: 40 + i * 10, ease: 'none', repeat: -1 }, 0);
-  });
-  dots.forEach((d) => {
-    const r0 = Number(d.node.getAttribute('r'));
-    idle.to(d.node, { attr: { r: r0 * 0.45 }, duration: 0.9 + rnd(), yoyo: true, repeat: -1, ease: 'sine.inOut' }, rnd() * 2);
-  });
   nodes.forEach((n) => {
-    idle.to(n.core, { attr: { r: 4.6 }, duration: 0.8, yoyo: true, repeat: -1, ease: 'sine.inOut' }, 0.2);
+    idle.to(n.core, { attr: { r: 4.4 }, duration: 0.8, yoyo: true, repeat: -1, ease: 'sine.inOut' }, 0.2);
   });
-  // 判断点脉冲
-  idle.to(judgeCore, { attr: { r: 5 }, duration: 0.9, yoyo: true, repeat: -1, ease: 'sine.inOut' }, 0.3);
+  docs.forEach((d) => {
+    idle.to(d.g, { opacity: 0.55, duration: 1.2 + rnd(), yoyo: true, repeat: -1, ease: 'sine.inOut' }, rnd() * 2);
+  });
   idle.pause();
 
   ScrollTrigger.create({
