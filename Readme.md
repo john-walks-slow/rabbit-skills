@@ -1,6 +1,6 @@
 # rabbit-skills
 
-轻量、松弛、有效的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发，随模型能力变强也不过时。
+轻量、松弛、有效的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发。
 
 > 控制的目标不是剥夺系统的自由度，而是界定安全的可行域，让系统在可行域内释放最大化的调节能力。
 > -- Ashby's Law of Requisite Variety
@@ -9,7 +9,7 @@
 
 ## 原则
 
-- 简单清晰，相对松弛的约束，不为模型捆手捆脚。
+- 简单清晰，相对松弛的约束。不为模型捆手捆脚，随模型能力变强也不过时。
 - 三条通用工作流。调研规划 Research → Plan → Align; 根因排障 Research → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Validate → Doc → Commit。
 - 不绑定特定开发范式，零学习成本（TDD 等可在项目级按需引入）。
 - 基于子代理的检视、复核、调研，显著减少幻觉，提高交付质量。
