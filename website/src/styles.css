@@ -583,6 +583,14 @@ code, kbd, pre { font-family: var(--mono); }
 .docs-preview .md-cm { color: var(--faint); }
 .docs-preview .md-h { display: block; color: var(--text); font-weight: 500; margin-top: 10px; }
 .docs-preview .md-h:first-child { margin-top: 0; }
+/* modern scrollbar */
+.docs-preview { scrollbar-width: thin; scrollbar-color: transparent transparent; transition: scrollbar-color 0.2s; }
+.docs-preview:hover { scrollbar-color: var(--surface-3) transparent; }
+.docs-preview::-webkit-scrollbar { width: 6px; height: 6px; }
+.docs-preview::-webkit-scrollbar-track { background: transparent; }
+.docs-preview::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background 0.2s; }
+.docs-preview:hover::-webkit-scrollbar-thumb { background: var(--surface-3); }
+.docs-preview::-webkit-scrollbar-thumb:hover { background: var(--line-2); }
 
 /* ---------- responsive ---------- */
 @media (max-width: 720px) {
