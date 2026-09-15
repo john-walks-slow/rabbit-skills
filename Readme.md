@@ -113,7 +113,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 | `try`                            | 用户或 AI | 修改前先备份便于回滚                                                          |
 | `bad-smell`                      | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
 | `unstuck`                        | 用户或 AI | 连续修改未达预期时强制退一步重新分析                                          |
-| `full-auto`                      | 仅用户    | 全自动模式：所有需要用户决策的地方自动由 auto-human 代理                      |
+| `full-auto`                      | 仅用户    | ⚠️ 半废弃，推荐改用 `deep-auto`                                              |
 | `deep-auto`                      | 仅用户    | 极致自动模式：最少消耗用户精力，极致质量 + 端到端测试交付                      |
 | `delay-validation`               | 仅用户    | 延迟验证模式：对齐闸门挂账结算 + 决策台账 + 审计包                             |
 | `update-project-instruction`     | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
@@ -148,7 +148,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 能。Claude Code 默认不会自动读取 AGENTS.md，但文档规范中已要求「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」——无自动注入时 Agent 会在工作前自主阅读，效果等价。
 
-若希望自动注入（会话启动、进入子目录、压缩后重注入），可自行安装一个 Claude Code hook：在 `SessionStart`、`UserPromptSubmit`、`PreCompact` 三个事件上注册一个脚本，从当前工作目录向上走到 git root，将路径上的 AGENTS.md 按序拼接注入。这属于 Claude Code 本地配置，与 Agent 工具无关，故 rabbit-skills 不附带。
+若希望自动注入（会话启动、进入子目录、压缩后重注入），可自行安装一个 Claude Code hook。推荐 [GeiserX/cc-agents-md](https://github.com/GeiserX/cc-agents-md)：在 `SessionStart` / `UserPromptSubmit` / `PreCompact` 三事件上注册脚本，从当前工作目录向上走到 git root，将路径上的 AGENTS.md 按序拼接注入。这属于 Claude Code 本地配置，与 Agent 工具无关，故 rabbit-skills 不附带。
 
 ### 计划和实施是否应该在分开的会话中进行？
 
