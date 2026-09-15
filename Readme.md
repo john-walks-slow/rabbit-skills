@@ -6,13 +6,11 @@
 
 ## 原则
 
-- 简洁清晰，相对松弛的约束，不为模型捆手捆脚。
-- 零学习成本，不绑定特定开发范式（如 TDD 等，需要时再引入）。
-- 通用需求开发工作流。先调研设计：Research → Plan → Align。再迭代交付：Implement → Validate → Review → Documentation → Commit。
-- 通用 Bugfix 工作流。先定位再修改避免越改越错。
-- 任务分派工作流，跟踪问题、整理依赖关系、并行实施，并使用文档双向沟通。
-- 基于子代理的调研、检视、复核，显著减少幻觉，提高交付质量。
-- 日常实用 Skill：`commit-own-changes` 无需 worktree 实现安全的并行提交、`teach-me` 把当前项目的关键设计和风险教给负责人、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
+- 简单清晰，相对松弛的约束，不为模型捆手捆脚。
+- 三条通用工作流：调研规划 Research → Plan → Align; 根因排障 Research → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Validate → Doc → Commit。
+- 不绑定特定开发范式（TDD 等可在项目级按需引入）。
+- 基于子代理的检视、复核、调研，显著减少幻觉，提高交付质量。
+- 日常实用 Skill：`commit-own-changes` 无需 worktree 的安全并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
 - 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
 - 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
 
@@ -44,7 +42,7 @@ apm compile -g
 
 ## 使用
 
-### 方法 A. 通过调用 Workflow Skill
+### 计划与实施
 
 ```
 /workflow-research-plan 调研 Agent 记忆的 sota 方案，给我的 Agent 加上记忆功能。
@@ -58,24 +56,22 @@ apm compile -g
 
 修复 Bug 时依次调用 `/workflow-troubleshoot` 和 `/workflow-implement-review`。
 
-### 方法 B. 通过任务分派
-
-如果你有许多略显杂乱的任务，可以使用任务分派工作流，由 AI 为你梳理和分配工作给对应的 subagent 实施。
-调用 `/workflow-manage-tasks`，然后描述任务。
-AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始执行前与你对齐计划，并在子代理阶段性工作完成需要评估时与你沟通。
-
-> 注：`/workflow-manage-tasks` 仅推荐拥有后台运行 Subagent 以及 延续 Subagent 会话能力的 AI 工具使用。
-
 > 注：网络搜索能力对计划与实施质量有着最大的影响。请确保 Agent 具有完全的网络搜索和访问能力（例如：通过 exa，jina 等服务）。
 
-### 模式技能
+### 任务分派
 
-两个可选的模式技能，按需激活，与上述方法正交组合：
+如果你有许多略显杂乱的任务，可以使用任务分派工作流，由 AI 为你梳理和分配工作给对应的 subagent 实施。
+调用 `/workflow-manage-tasks`，然后罗列任务。
+AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始执行前与你对齐计划，并在子代理阶段性工作完成需要评估时与你沟通。
 
-- `/deep-auto` —— 极致自动模式。以最少消耗用户精力为目标，瞄准极致质量反复迭代，交付前完成端到端自测；繁复子任务（测试/调研/检视）派给子代理保持上下文整洁。
-- `/delay-validation` —— 延迟验证模式。所有工作流的对齐闸门改为挂账结算：Agent 按最佳判断自主通过，每笔决策记入台账，仅用户可验的项目累积留档，交付时输出审计包供事后审计。适合用户不在线、希望后台长跑一次性交付的场景。
+> 仅推荐拥有后台运行 Subagent 以及 延续 Subagent 会话能力的 AI 工具使用。
 
-两者可叠加：deep-auto 保质量与自测，delay-validation 保可审计性，构成后台长跑的最高强度组合。
+### 自主工作模式
+
+按需激活，提升 Agent 自主工作的深度：
+
+- `/deep-auto` —— 极致自动模式。以最少消耗用户精力为目标，瞄准极致质量反复迭代，交付前完成端到端自测。
+- `/delay-validation` —— 延迟验证模式。适合用户不在线、希望后台长跑一次性交付的场景。所有用户对齐项目改为 Agent 按最佳判断自主通过，交付时输出决策历史供事后审计。
 
 ## 内容物
 
@@ -138,7 +134,7 @@ AI 会为你整理待办事项、在 tasks.md 中跟踪进度、在任务开始�
 
 按需配置各个代理使用的模型，建议为 reviewer，expert 选择高级模型。
 
-本项目默认没有对 spec 格式和测试规范做任何约束。如果需要更强约束，请在项目级指令中添加。
+本项目默认没有对 spec 格式和测试规范做强约束。如果需要更强约束，请在项目级指令中添加。
 
 本项目的提示词都是 self-explanatory 的，你可以根据实际需要任意增改。
 
