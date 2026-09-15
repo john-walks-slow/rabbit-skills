@@ -122,7 +122,7 @@ export function initTroubleshootScene() {
   );
 
   /* ---------- 85% 置信仪表 ---------- */
-  const dialC = { x: 108, y: 350, r: 22 };
+  const dialC = { x: 108, y: 350, r: 25 };
   const dial = el('g', { opacity: 0 }, svg);
   el('path', {
     d: `M ${dialC.x} ${dialC.y - dialC.r} a ${dialC.r} ${dialC.r} 0 1 1 -0.01 0`,
@@ -133,15 +133,11 @@ export function initTroubleshootScene() {
     fill: 'none', stroke: CORAL, 'stroke-width': 3, 'stroke-linecap': 'round',
   }, dial);
   const dialNum = el('text', {
-    x: dialC.x, y: dialC.y + 1, 'text-anchor': 'middle',
-    fill: '#E9EAE3', 'font-family': 'JetBrains Mono, monospace', 'font-size': 13, 'font-weight': 500,
-  }, dial, '0');
+    x: dialC.x, y: dialC.y + 6, 'text-anchor': 'middle',
+    fill: '#E9EAE3', 'font-family': 'JetBrains Mono, monospace', 'font-size': 19, 'font-weight': 500,
+  }, dial, '0%');
   el('text', {
-    x: dialC.x, y: dialC.y + 14, 'text-anchor': 'middle',
-    fill: '#6B7069', 'font-family': 'JetBrains Mono, monospace', 'font-size': 6.5,
-  }, dial, 'PERCENT');
-  el('text', {
-    x: dialC.x, y: dialC.y + 42, 'text-anchor': 'middle',
+    x: dialC.x, y: dialC.y + 44, 'text-anchor': 'middle',
     class: 'scene-label', fill: '#6B7069',
   }, dial, 'BELIEF · 置信度');
 
@@ -177,7 +173,7 @@ export function initTroubleshootScene() {
   // 仪表
   tl.to(dial, { opacity: 1, duration: 0.05 }, 0.8)
     .fromTo(dialArc, { drawSVG: '0%' }, { drawSVG: '85%', duration: 0.14, ease: 'power2.out' }, 0.82)
-    .to(counter, { v: 85, duration: 0.14, ease: 'power2.out', onUpdate: () => (dialNum.textContent = String(Math.round(counter.v))) }, 0.82);
+    .to(counter, { v: 85, duration: 0.14, ease: 'power2.out', onUpdate: () => (dialNum.textContent = String(Math.round(counter.v)) + '%') }, 0.82);
 
   if (prefersReduced()) {
     tl.progress(1);

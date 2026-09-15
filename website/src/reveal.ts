@@ -32,7 +32,7 @@ export function initReveals() {
   });
 
   /* ---------- nav 高亮当前 section ---------- */
-  for (const id of ['philosophy', 'workflows', 'contents', 'install']) {
+  for (const id of ['philosophy', 'workflows', 'documents', 'contents', 'install']) {
     const section = document.getElementById(id);
     if (!section) continue;
     ScrollTrigger.create({
