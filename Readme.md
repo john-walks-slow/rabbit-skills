@@ -165,4 +165,4 @@ Claude Code 默认不会自动读取 AGENTS.md，但文档规范中已要求「�
 
 ## 友链
 
-linux.do
+[linux.do](linux.do)
