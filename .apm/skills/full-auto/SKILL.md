@@ -3,7 +3,7 @@ name: full-auto
 description: 进入 full auto 模式。所有需要向用户提问、决策、授权的地方，替换为询问 auto_human 子代理。
 user-invocable: true
 disable-model-invocation: true
-argument-hint: '[stopBefore: false] [autoplay: false]'
+argument-hint: '[stopBefore: null] [autoplay: false]'
 ---
 
 # full-auto
@@ -26,12 +26,14 @@ write file: xxx.plan.md
 spawn auto_human: 请扮演人类用户执行：检查 xxx.plan.md，指出是否存在阻塞问题，输出问题表格以及是否批准开始实施。
 ```
 
+对于所有需要用户验证的情况，_直接替换_ 为拉起 e2e-tester。
+
 ## 提前停止
 
-如果用户指定了 `stopBefore`，则在用户指定的阶段（如 commit）前停止工作。
+如果用户指定了 `stopBefore: stage_name`（或同等自然语言要求），则在用户指定的阶段（如 validation）前停止工作。
 
 ## 工作完成后的行为
 
-如果指定了 `autoplay: true`，则在全部任务收尾时，同时向 `auto_human` 询问下一步进行什么工作，然后根据 `auto_human` 的指示继续工作。
+如果用户指定了 `autoplay: true`（或同等自然语言要求），则在全部任务收尾时，同时向 `auto_human` 询问下一步进行什么工作，然后根据 `auto_human` 的指示继续工作。
 
-否则：在全部任务完成后输出简短总结。
+否则：输出工作总结并停止。
