@@ -3,12 +3,10 @@ name: full-auto
 description: 进入 full auto 模式。所有需要向用户提问、决策、授权的地方，替换为询问 auto_human 子代理。
 user-invocable: true
 disable-model-invocation: true
-argument-hint: '[autoplay: false]'
+argument-hint: '[stopBefore: false] [autoplay: false]'
 ---
 
 # full-auto
-
-> ⚠️ **半废弃**：推荐改用 [`/max-effort`](../max-effort/SKILL.md)——自主决策更彻底，且自带端到端自测与上下文整洁，不依赖 auto-human 守门。本技能仅在确实需要 `auto-human` 显式扮演用户做决策时使用。
 
 遵循原本的任务要求和工作流，但对于**所有**原本需要向用户提问、要求用户决策、需要用户书面授权的情况（如：方案选择、确认进入下一步、代码提交上库），_直接替换_ 为询问 `auto_human` 子代理。
 
@@ -27,6 +25,10 @@ DO NOT:
 write file: xxx.plan.md
 spawn auto_human: 请扮演人类用户执行：检查 xxx.plan.md，指出是否存在阻塞问题，输出问题表格以及是否批准开始实施。
 ```
+
+## 提前停止
+
+如果用户指定了 `stopBefore`，则在用户指定的阶段（如 commit）前停止工作。
 
 ## 工作完成后的行为
 
