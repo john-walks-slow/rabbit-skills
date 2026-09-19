@@ -70,12 +70,12 @@ Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，�
 
 > 仅推荐拥有后台运行 Subagent 以及 延续 Subagent 会话能力的 AI 工具使用。
 
-### 自主工作模式（可选）
+### 自主工作
 
 与上述工作流组合，提升 Agent 自主工作的深度：
 
+- `/full-auto` —— 启用自动工作模式。所有用户对齐阶段改为询问 auto_human 子代理。适合用户不在线、希望后台长跑场景。
 - `/max-effort` —— 启用最大交付质量。在对用户精力消耗最少的情况下，将简略 idea 转变为具有极致体验的完整可交付产物。
-- `/delay-validation` —— 启用延迟验证模式。适合用户不在线、希望后台长跑场景。所有用户对齐项目改为 Agent 按最佳判断自主通过，交付时输出决策历史供事后审计。
 
 ## 内容物
 
@@ -119,9 +119,8 @@ Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，�
 | `try`                            | 用户或 AI | 修改前先备份便于回滚                                                          |
 | `bad-smell`                      | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
 | `unstuck`                        | 用户或 AI | 连续修改未达预期时强制退一步重新分析                                          |
-| `full-auto`                      | 仅用户    | ⚠️ 半废弃，推荐改用 `max-effort`                                              |
-| `max-effort`                     | 仅用户    | 极致自动模式：最少消耗用户精力，极致质量 + 端到端测试交付                      |
-| `delay-validation`               | 仅用户    | 延迟验证模式：对齐闸门挂账结算 + 决策台账 + 审计包                             |
+| `full-auto`                      | 仅用户    | 自动工作模式。所有用户对齐阶段改为询问 auto_human 子代理                      |
+| `max-effort`                     | 仅用户    | 最大交付质量：最少消耗用户精力，极致质量 + 端到端测试交付                      |
 | `update-project-instruction`     | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
 | `update-module-instruction`      | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |
 | `update-references`              | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                               |
@@ -152,7 +151,7 @@ Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，�
 
 ### 项目指引写在 AGENTS.md 里，能兼容 Claude Code 吗？
 
-Claude Code 默认不会自动读取 AGENTS.md，但文档规范中已要求「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」——无自动注入时 Agent 会在工作前自主阅读，效果等价。
+Claude Code 默认不会自动读取 AGENTS.md，但文档规范中已要求「在任一项目/模块中工作前，确保已了解该项目/模块的 AGENTS.md」——无自动注入时 Agent 会在工作前自主阅读。
 
 若希望自动注入，推荐自行安装 Claude Code hook [GeiserX/cc-agents-md](https://github.com/GeiserX/cc-agents-md)。
 
