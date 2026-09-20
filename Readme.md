@@ -42,6 +42,7 @@ apm compile -g
 ```
 
 > 注：APM 不会覆盖你原先手写的指令（AGENTS.md 等）。如果希望覆盖，请在备份后删除原有指令文件，再次执行 compile -g。
+> `apm install -g` 完成后若输出 "Run 'apm compile -g' to update root context files for: ..."，即表示你的工具属于需要编译的 root-context 目标（当前为 claude / opencode / gemini / grok-build / codex），按提示执行即可。
 
 ## 使用
 
