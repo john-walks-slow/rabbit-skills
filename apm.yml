@@ -26,6 +26,16 @@ targets:
   - windsurf
   - kiro
   - antigravity
+  - copilot-app
+  - copilot-cowork
+  - grok-build
+  - grok-cloud
+  - hermes
+  - intellij
+  - openclaw
+  - vscode
+  - agents
+  - agent-skills
 
 includes: auto
 
