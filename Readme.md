@@ -15,7 +15,7 @@
 - 基于子代理的检视、复核、调研，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无 worktree 情况下的安全并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
 - 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
-- 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容主流 Agent。
+- 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容 19 个主流 Agent 工具（Copilot / Claude Code / Cursor / Codex / Gemini CLI / Windsurf / Kiro / Antigravity / OpenCode / Grok / Hermes / IntelliJ / VS Code 等）。
 
 ## 安装
 
