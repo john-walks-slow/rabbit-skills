@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+# acquire-port — 全局端口分配器（无状态）
+#
+# 语义：一次调用 = 一组端口，分配多少个都一样。
+# 放行以本机内存余量为准：固定预留一份内存预算，可用内存不足则拒绝。
+# 不留任何登记：没有租约文件、没有心跳、没有释放步骤。端口空不空由内核回答
+# （真的 bind 一次试试），服务起了就自然占着，死了就自然空出来。
+#
+# 用法：
+#   acquire-port                 取 1 个端口
+#   acquire-port 3               取 3 个端口
+#   acquire-port --wait          阻塞等资源（默认 300s），取 1 个端口
+#   acquire-port --wait=120 3    阻塞等资源（最多 120s），取 3 个端口
+#   acquire-port --list          看池子里当前哪些端口在被人用（只读，不登记）
+#   acquire-port --exec CMD...   取 1 端口，把 $PORT / $PORTS 注入后执行命令
+#   acquire-port --exec -- 3 CMD...  取 3 个端口并执行
+#
+# 输出：端口号（空格分隔）到 stdout，诊断信息到 stderr。
+# 用 $(acquire-port 3) 捕获；退出码 1=资源不足，2=端口不足。
+set -uo pipefail
+
+POOL_START=25000
+POOL_END=65000
+
+# 放行时要求预留的物理内存余量（MB），固定一份，与存续实例数、本次申请端口数都无关。
+# 存续实例的内存已经从 MemAvailable 里扣过了，再按实例数乘一遍等于重复收费。
+# 只统计物理内存可用量（MemAvailable），不含 swap。
+MEM_RESERVE_MB=512
+WAIT_DEFAULT=300
+
+# 分配过程本身要串行，否则两个进程可能同时认定同一个端口空闲。
+# 这是把手上的一把锁，不是登记——进程退出锁就没了，不需要谁去解。
+LOCK_FILE=/tmp/acquire-port.lock
+
+# 兜底保留端口。默认池 25000-65000 与它们无交集，仅在用
+# ACQUIRE_PORT_BASE/END 把池拉回 4000 段时才生效。
+RESERVED_PORTS="4175 4180 4325"
+
+die() { echo "acquire-port: $*" >&2; exit 1; }
+
+# 当前可用物理内存（MB）。用 MemAvailable 而非 MemFree：
+# cache/buffer 随时可回收，MemFree 在 Android 类系统上常年极低，会误杀一切。
+mem_available_mb() {
+  awk -F: '/^MemTotal:/{t=$2} /^MemAvailable:/{a=$2} END{print int(a/1024)}' /proc/meminfo
+}
+
+# 池子里当前真正在监听的端口（--list 用；只读系统状态，不留自己的痕迹）。
+listening_ports() { ss -Hltn 2>/dev/null | awk '{print $4}' | sed 's/.*://' | sort -un; }
+
+# 端口是否空闲：直接问内核 bind 一下。已监听的不给，TIME_WAIT 的也不给
+# （不设 SO_REUSEADDR，保守方向——宁可少给一个端口，也不要给出去一个起服务时才炸的）。
+port_free() {
+  python3 -c '
+import socket, sys
+s = socket.socket()
+try:
+    s.bind(("0.0.0.0", int(sys.argv[1])))
+except OSError:
+    sys.exit(1)
+finally:
+    s.close()
+' "$1" 2>/dev/null
+}
+
+usage() {
+  cat <<'EOF'
+acquire-port — 全局端口分配器（无状态）
+
+  acquire-port [N]              取 N 个端口（默认 1）
+  acquire-port --wait [N]       阻塞等待资源释放（默认 300s）后取 N 个端口
+  acquire-port --wait=SECS [N]  指定等待上限秒数
+  acquire-port --list           看池内当前在监听的端口
+  acquire-port --exec CMD...    取 1 端口，注入 $PORT/$PORTS 后执行
+  acquire-port --exec -- N CMD  取 N 端口，注入 $PORT/$PORTS 后执行
+
+放行规则：可用内存（MemAvailable）>= 固定余量(512MB) 时才放行，端口从池里挑内核
+确认 bind 得上的。没有登记、没有释放：服务起了端口自然占着，停了就空出来。
+不构成放行条件的返回退出码 1。
+
+退出码：0 成功 / 1 资源不足（内存不足，可等待）/ 2 端口不足
+
+环境变量：ACQUIRE_PORT_BASE、ACQUIRE_PORT_END
+EOF
+}
+
+WAIT_SECS=0
+COUNT=1
+DO_LIST=0
+DO_EXEC=0
+POOL_BEGIN=$POOL_START
+POOL_END_ACTUAL=$POOL_END
+EXEC_ARGS=()
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --wait)
+      WAIT_SECS=$WAIT_DEFAULT; shift
+      ;;
+    --wait=*)
+      WAIT_SECS=${1#--wait=}
+      [[ "$WAIT_SECS" =~ ^[0-9]+$ ]] || die "--wait 需要非负整数秒: $WAIT_SECS"
+      shift
+      ;;
+    --list|-l) DO_LIST=1; shift ;;
+    --exec)
+      DO_EXEC=1
+      shift
+      if [ "${1:-}" = "--" ]; then
+        shift
+        if [ $# -ge 1 ] && [[ "${1:-}" =~ ^[0-9]+$ ]]; then COUNT=$1; shift; fi
+      fi
+      EXEC_ARGS=("$@")
+      break
+      ;;
+    -h|--help) usage; exit 0 ;;
+    -*) die "未知参数: $1" ;;
+    *) COUNT=$1; shift ;;
+  esac
+done
+
+POOL_BEGIN=${ACQUIRE_PORT_BASE:-$POOL_BEGIN}
+POOL_END_ACTUAL=${ACQUIRE_PORT_END:-$POOL_END_ACTUAL}
+POOL_SIZE=$((POOL_END_ACTUAL - POOL_BEGIN + 1))
+
+[[ "$COUNT" =~ ^[0-9]+$ ]] && [ "$COUNT" -ge 1 ] || die "端口数量必须为正整数: $COUNT"
+[ "$COUNT" -le "$POOL_SIZE" ] || { echo "acquire-port: 申请 $COUNT 个端口超过池容量 $POOL_SIZE（$POOL_BEGIN-$POOL_END_ACTUAL）" >&2; exit 2; }
+if [ "$DO_EXEC" -eq 1 ] && [ ${#EXEC_ARGS[@]} -eq 0 ]; then
+  die "--exec 需要指定命令"
+fi
+
+if [ "$DO_LIST" -eq 1 ]; then
+  echo "端口池: $POOL_BEGIN-$POOL_END_ACTUAL"
+  used=$(listening_ports | awk -v b="$POOL_BEGIN" -v e="$POOL_END_ACTUAL" '$1>=b && $1<=e')
+  if [ -n "$used" ]; then
+    echo "$used" | sed 's/^/  占用: /'
+  else
+    echo "  （池内无人监听）"
+  fi
+  echo "可用内存: $(mem_available_mb) MB"
+  exit 0
+fi
+
+acquire_once() {
+  # 内存余量放行：固定留一份余量，不随本次申请端口数缩放
+  local avail_mb
+  avail_mb=$(mem_available_mb)
+  if [ "$avail_mb" -lt "$MEM_RESERVE_MB" ]; then
+    echo "acquire-port: 内存不足拒绝放行（可用 $avail_mb MB / 需 ${MEM_RESERVE_MB} MB 余量）。--wait 等待或先释放部分服务。" >&2
+    return 1          # 资源不足：可等待内存释放
+  fi
+
+  # 端口空不空由内核说了算：逐个 bind 试探，成的就是空的。
+  # 锁保证没有第二个分配者同时试同一个端口。
+  exec 8>"$LOCK_FILE"
+  flock 8
+
+  local granted=() p
+  mapfile -t shuffled < <(seq "$POOL_BEGIN" "$POOL_END_ACTUAL" | shuf)
+  for p in "${shuffled[@]}"; do
+    [ ${#granted[@]} -ge "$COUNT" ] && break
+    case " $RESERVED_PORTS " in *" $p "*) continue ;; esac
+    port_free "$p" && granted+=("$p")
+  done
+
+  flock -u 8
+  exec 8>&-
+
+  if [ ${#granted[@]} -lt "$COUNT" ]; then
+    echo "acquire-port: 端口池 $POOL_BEGIN-$POOL_END_ACTUAL 内空闲端口不足（需要 $COUNT，实得 ${#granted[@]}）" >&2
+    return 2          # 端口不足：等也没用，立即失败
+  fi
+
+  echo "${granted[*]}"
+  return 0
+}
+
+if [ "$WAIT_SECS" -gt 0 ]; then
+  deadline=$(( $(date +%s) + WAIT_SECS ))
+  last_err=$(mktemp)
+  while :; do
+    : > "$last_err"
+    out=$(acquire_once 2>>"$last_err"); rc=$?
+    [ "$rc" -eq 0 ] && { rm -f "$last_err"; [ "$DO_EXEC" -eq 1 ] || { echo "$out"; exit 0; }; break; }
+    [ "$rc" -eq 2 ] && { cat "$last_err" >&2; rm -f "$last_err"; exit 2; }
+    if [ "$(date +%s)" -ge "$deadline" ]; then
+      cat "$last_err" >&2
+      rm -f "$last_err"
+      echo "acquire-port: 等待资源超时 ${WAIT_SECS}s（上行为持续未解除的原因）" >&2
+      exit 1
+    fi
+    sleep 2
+  done
+else
+  out=$(acquire_once); rc=$?
+  [ "$rc" -eq 0 ] || exit "$rc"
+  [ "$DO_EXEC" -eq 1 ] || { echo "$out"; exit 0; }
+fi
+
+if [ "$DO_EXEC" -eq 1 ]; then
+  read -r -a _arr <<< "$out"
+  PORT=${_arr[0]:-}
+  PORTS="$out"
+  export PORT PORTS
+  exec "${EXEC_ARGS[@]}"
+fi

@@ -10,7 +10,7 @@
 ## 原则
 
 - 简单清晰，相对松弛的约束。不为模型捆手捆脚，随模型能力变强也不过时。
-- 三条通用工作流。调研规划 Research → Plan → Align; 根因排障 Reproduce → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Validate → Doc → Commit。
+- 三条通用工作流。调研规划 Research → Plan → Align; 根因排障 Reproduce → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Documentation → Validate → Commit。
 - 不绑定特定开发范式，零学习成本（TDD 等可在项目级按需引入）。
 - 基于子代理的检视、复核、调研，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无 worktree 情况下的安全并行提交、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
@@ -86,7 +86,7 @@ Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，�
 | `00_output_style`  | 输出风格 |
 | `01_coding_style`  | 编码规范 |
 | `03_documentation` | 文档规范 |
-| `09_custom`        | 其他惯例 |
+| `09_custom`        | 约定与通例（协作 / Shell / Git / 子代理 / 测试范围 / 安全） |
 
 ### Agents（代理和子代理）
 
@@ -111,8 +111,10 @@ Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，�
 | `spawn-reviewer`                 | 用户或 AI | 启动代码检视子代理                                                            |
 | `spawn-e2e-tester`               | 用户或 AI | 启动端到端测试子代理                                                          |
 | `commit-own-changes`             | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
+| `worktree-dev`                   | 用户或 AI | Git Worktree 隔离开发；worktree 内端口动态申请（自带 acquire-port，含 Windows 版）；多 worktree 无锁合并回主分支 |
 | `code-deep-dive`                | 仅用户    | 为项目编写中文深度学习长文，碎片时间补齐代码知识                              |
 | `grilling`                       | 用户或 AI | 向用户盘问设计方案                                                            |
+| `similar-idea`                   | 仅用户    | 找相似项目/既有产品，了解市场现状，防止重复造轮子                             |
 | `cross-check`                    | 用户或 AI | 使用独立子代理复核关键结论                                                    |
 | `tidy`                           | 仅用户    | 清理当前会话中的无效修改                                                      |
 | `handoff`                        | 仅用户    | 总结当前会话用于交接                                                          |
