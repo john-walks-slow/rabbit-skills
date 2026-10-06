@@ -64,9 +64,9 @@ export function initResearchScene() {
     const y = 55 + rnd() * 180;
     const rot = (rnd() - 0.5) * 14;
     const g = el('g', { opacity: 0 }, fieldG);
-    el('rect', { x: -12, y: -8.5, width: 24, height: 17, rx: 2.5, fill: '#121514', stroke: CYAN, 'stroke-width': 1, 'stroke-opacity': 0.45 }, g);
+    el('rect', { x: -12, y: -8.5, width: 24, height: 17, rx: 2.5, fill: '#121514', stroke: CYAN, 'stroke-width': 1, 'stroke-opacity': 0.7 }, g);
     [[-8, -4, 14], [-8, 0, 11], [-8, 4, 12]].forEach(([dx, dy, w]) =>
-      el('rect', { x: dx, y: dy, width: w, height: 1.5, rx: 0.75, fill: CYAN, opacity: 0.5 }, g)
+      el('rect', { x: dx, y: dy, width: w, height: 1.5, rx: 0.75, fill: CYAN, opacity: 0.75 }, g)
     );
     gsap.set(g, { x, y, rotation: rot, transformOrigin: '50% 50%' });
     docs.push({ g, mid: [x + (rnd() - 0.5) * 36, y + (rnd() - 0.5) * 20], plan: [planC.x + (rnd() - 0.5) * 6, planC.y] });
@@ -100,8 +100,8 @@ export function initResearchScene() {
   });
   // ③ 文档卡浮现（汇聚时才出现）+ 合流到计划
   docs.forEach((d, i) => {
-    tl.to(d.g, { opacity: 0.8, duration: 0.14 }, 0.54 + (i % 8) * 0.02);
-    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.18, ease: 'power2.in' }, 0.6 + (i % 8) * 0.018);
+    tl.fromTo(d.g, { opacity: 0 }, { opacity: 1, duration: 0.12 }, 0.54 + (i % 8) * 0.02);
+    tl.to(d.g, { x: d.plan[0], y: d.plan[1], rotation: 0, scale: 0.25, opacity: 0, duration: 0.16, ease: 'power2.in' }, 0.66 + (i % 8) * 0.018);
   });
   dots.forEach((d, i) => {
     tl.to(d.node, { attr: { cx: d.plan[0], cy: d.plan[1] }, opacity: 0, duration: 0.16, ease: 'power2.in' }, 0.58 + (i % 11) * 0.018);

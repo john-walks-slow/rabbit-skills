@@ -154,8 +154,8 @@ export function initImplementScene() {
   sparks.forEach((sp) => {
     tl.fromTo(sp.line,
       { attr: { x1: 442 + sp.c * 16, y1: TRACK_Y + sp.s * 16, x2: 442 + sp.c * 22, y2: TRACK_Y + sp.s * 22 } },
-      { attr: { x1: 442 + sp.c * 28, y1: TRACK_Y + sp.s * 28, x2: 442 + sp.c * 38, y2: TRACK_Y + sp.s * 38 }, duration: 0.12, ease: 'power2.out' }, T1)
-      .to(sp.line, { opacity: 0, duration: 0.1, ease: 'none' }, T1 + 0.1);
+      { attr: { x1: 442 + sp.c * 40, y1: TRACK_Y + sp.s * 40, x2: 442 + sp.c * 54, y2: TRACK_Y + sp.s * 54 }, duration: 0.22, ease: 'power2.out' }, T1)
+      .to(sp.line, { opacity: 0, duration: 0.1, ease: 'none' }, T1 + 0.14);
   });
   tl.fromTo(chipG, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.09, ease: 'power2.out' }, T1 + 0.06);
 
