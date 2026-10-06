@@ -53,3 +53,7 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 ## docs/freeform/yymmdd-{topic}.md
 
 不归属于特定模块和需求的其他记录。
+
+## README.md
+
+面向用户的说明入口。发布前需确保 README 已覆盖开始使用所需的全部配置说明。

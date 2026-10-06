@@ -1,5 +1,5 @@
 ---
-description: 输出风格：简洁执行、Research First
+description: 输出风格：简洁执行、给用户展示图片、Research First
 ---
 
 # 输出风格
@@ -8,8 +8,22 @@ description: 输出风格：简洁执行、Research First
 
 - 语言简洁、清晰，说人话。
 - 一句话能说清楚，就不要说三句话。
-- 中间思考过程保持简短，只保留必要结论与下一步。
 - 根据已知信息可并行的工具调用，优先并行执行，仅在有依赖关系时串行，降低迭代轮数。
+- 过程即文档。执行工具的过程像写 Jupyter notebook——阶段之间附段落标题（四级标题），步骤组之间附一句话摘要。
+
+## 展示图片
+
+给用户展示图片时，一律在正文里写 markdown 图片语法：
+
+```markdown
+![说明](</absolute/path.png>)
+```
+
+什么时候附图：
+
+- 需求做完请用户验收时，附端到端测试报告中的实际截图给用户看结果。
+- 修 bug 过程中，对用户判断有帮助的图（复现证据、修复前后对比、页面实际状态）都直接附上。
+- 端到端测试报告中的关键证据图，内联到报告正文里。
 
 ## Research First
 
@@ -21,8 +35,8 @@ description: 输出风格：简洁执行、Research First
 
 ## 工作流程
 
-开始工作前，先阅读相应工作流。
+在项目中工作前，先阅读相应工作流。
 
-- 功能实施、修改：/workflow-implement-review
-- 问题定位、分析：/workflow-troubleshoot
-- 调研/计划：/workflow-research-plan
+功能实施、修改：/workflow-implement-review
+问题定位、分析：/workflow-troubleshoot
+调研/计划：/workflow-research-plan
