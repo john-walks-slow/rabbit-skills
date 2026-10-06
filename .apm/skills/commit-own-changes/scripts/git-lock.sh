@@ -1,7 +1,20 @@
 #!/bin/sh
 # File-based agent lock (.git/agent.lock). Paired with git-lock.ps1 — same format.
+#
+# Usage: git-lock.sh {acquire|release} <task-id> [repo-dir]
+#   repo-dir: optional explicit repo path. When omitted, the caller's current
+#   directory is used — callers MUST be inside the target repo, otherwise the
+#   lock lands in the wrong location. Prefer passing repo-dir explicitly
+#   (cwd-independent). Failure to resolve a git dir exits loudly (exit 1),
+#   never writes a stray lock.
 
-LOCK_FILE="$(git rev-parse --git-dir)/agent.lock"
+REPO_DIR="${3:-.}"
+cd "$REPO_DIR" 2>/dev/null || { echo "git-lock: cannot cd to repo dir: $REPO_DIR" >&2; exit 1; }
+GIT_DIR_PATH="$(git rev-parse --git-dir 2>/dev/null)" || {
+    echo "git-lock: not a git repository: $REPO_DIR (cd into the repo or pass the repo path as \$3)" >&2
+    exit 1
+}
+LOCK_FILE="${GIT_DIR_PATH}/agent.lock"
 LOCK_AGE_LIMIT=300
 WRITE_GRACE=3
 
@@ -256,5 +269,5 @@ release() {
 case "${1:-}" in
     acquire) acquire "${2:-}" ;;
     release) release "${2:-}" ;;
-    *) echo "Usage: $0 {acquire|release} <task-id>" >&2; exit 1 ;;
+    *) echo "Usage: $0 {acquire|release} <task-id> [repo-dir]" >&2; exit 1 ;;
 esac

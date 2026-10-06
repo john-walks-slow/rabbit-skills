@@ -26,16 +26,17 @@ pip install git-hunk
 防止同一时间其他 Agent 进行 Git 操作：
 
 ```bash
-{skill_dir}/scripts/git-lock.sh acquire <task-id>   # Linux/macOS
+{skill_dir}/scripts/git-lock.sh acquire <task-id> /path/to/repo   # Linux/macOS：显式传仓库路径（或先 cd 进仓库）
 ```
 
 ```powershell
-{skill_dir}\scripts\git-lock.ps1 -Action acquire -TaskId <task-id>   # Windows
+{skill_dir}\scripts\git-lock.ps1 -Action acquire -TaskId <task-id> -RepoDir <repo>   # Windows
 ```
 
 `<task-id>` 建议用本次任务的极简英文 summary，如 `fix-login-crash`、`add-dark-mode`。获取锁和释放锁时必须使用同一 ID。
 
 **重要：** acquire 会自动等待直到上一个锁释放；请不要设置超时时间，耐心等待。禁止手动检查/删除锁文件。禁止跳过本步骤进行后续操作。
+**重要：** 必须在目标仓库内调用（或显式传仓库路径）——脚本按调用者 cwd 解析 `.git`，从非仓库目录调用会把锁写到错误位置（2026-09-25 实战：曾静默在文件系统根创建 `/agent.lock`，导致目标仓库互斥完全失效且遗留 5 分钟死锁）。
 若 acquire 执行失败（输出不包含 `acquired`），立即中止提交，向用户报告异常。
 
 2. **列举修改状态**
@@ -102,11 +103,11 @@ git apply --cached --check x.patch
 6. **释放锁**
 
 ```bash
-{skill_dir}/scripts/git-lock.sh release <task-id>   # Linux/macOS
+{skill_dir}/scripts/git-lock.sh release <task-id> /path/to/repo   # Linux/macOS：与 acquire 使用同一仓库路径
 ```
 
 ```powershell
-{skill_dir}\scripts\git-lock.ps1 -Action release -TaskId <task-id>   # Windows
+{skill_dir}\scripts\git-lock.ps1 -Action release -TaskId <task-id> -RepoDir <repo>   # Windows
 ```
 
 ## 原则

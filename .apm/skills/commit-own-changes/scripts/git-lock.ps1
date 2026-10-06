@@ -17,9 +17,15 @@ param(
     [string]$Action,
 
     [Parameter(Mandatory = $true, Position = 1)]
-    [string]$TaskId
+    [string]$TaskId,
+
+    [Parameter(Position = 2)]
+    [string]$RepoDir
 )
 
+if ($RepoDir) {
+    Set-Location -LiteralPath $RepoDir -ErrorAction Stop
+}
 $gitDir = git rev-parse --git-dir 2>$null
 if (-not $gitDir) {
     Write-Error "not in a git repository"
