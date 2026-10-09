@@ -33,7 +33,7 @@ worktree 内有两个约定脚本：
 | `scripts/init-worktree.sh` | 依赖安装/同步、环境初始化 |
 | `scripts/dev-worktree.sh`  | 用本 skill 的 `acquire-port` 取端口 → 跑服务 → 输出访问地址 |
 
-不存在时根据项目情况新建，不得跳过。
+请根据项目情况新建、提炼、更新，避免每次手写通用流程。
 
 ### dev-worktree.sh 典型结构
 
@@ -101,3 +101,11 @@ git rebase master                 # 重放冲突现场，git status 显示 UU �
 - 调用方 worktree 与目标 worktree 都必须没有未提交的**已跟踪**改动。
 - 并发合并是安全的：后到者被 CAS 挡下后自动重试（日志会打 `master moved, retry N/10`）。
 - 脚本只动本地分支，不 push、不删 worktree；推送与善后由用户决定。
+
+## 收尾
+
+当且仅当合并成功后，停止过程中启动的所有服务器和测试，并删除你创建的工作树。
+
+## 例外
+
+如果你的工作树是系统（如 Codeg，Kandev 等）为你创建的，则优先遵循系统给你的指令。
