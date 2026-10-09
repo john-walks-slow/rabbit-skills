@@ -1,5 +1,6 @@
 # Freeform docs (historical research notes, not project source)
 docs/freeform/
+docs/delayed-decisions.md
 
 # Dependencies / build output
 apm_modules/

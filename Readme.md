@@ -104,7 +104,7 @@ Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，�
 | -------------------------------- | --------- | ----------------------------------------------------------------------------- |
 | `workflow-research-plan`         | 用户或 AI | 调研设计工作流：Research → Plan → Align                                       |
 | `workflow-troubleshoot`          | 用户或 AI | 问题定位工作流：Reproduce → Root Cause → Diagnose                             |
-| `workflow-implement-review`      | 用户或 AI | 实施交付工作流：Implement → Validate → Review → Documentation → Commit       |
+| `workflow-implement-review`      | 用户或 AI | 实施交付工作流：Implement → Test → Review → Documentation → Validate          |
 | `workflow-manage-tasks`          | 用户或 AI | 任务分派工作流：理解梳理 → 分派子代理 → 跟踪推进                              |
 | `workflow-leader`                | 仅用户    | 项目领导工作流：给出愿景 → 构思 idea → 分派子代理 → 持续推进                 |
 | `spawn-deep-researcher`          | 用户或 AI | 启动网络调研子代理                                                            |
