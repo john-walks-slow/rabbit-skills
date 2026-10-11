@@ -29,11 +29,17 @@
 
 确保已安装 [APM CLI](https://microsoft.github.io/apm/getting-started/installation/)。
 
-全局安装到所有支持的工具：
+全局安装到所有支持用户级目录的工具（13 个 runtime）：
 
 ```bash
 apm install -g john-walks-slow/rabbit-skills
 ```
+
+> `agents`、`copilot-app`、`copilot-cowork`、`grok-cloud`、`intellij`、`openclaw` 没有用户级配置目录（部分还需 APM 的实验性开关），无法全局安装（APM 会报 `Unknown target`）。这些工具请在项目内安装并用 `-t` 指定：
+>
+> ```bash
+> apm install -t intellij john-walks-slow/rabbit-skills
+> ```
 
 如果你的工具原生不支持 Instructions / Rules（apm 提示：`Run 'apm compile -g' to update root context files for …`），需额外将 Instructions 编译为全局指令：
 

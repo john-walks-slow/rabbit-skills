@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import { mkdir, cp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, cp, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { RUNTIME_TARGETS } from './targets.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const RELEASE_DIR = `${ROOT}release`;
@@ -29,20 +29,9 @@ const TARGET_FILE = {
   'agent-skills': null,
 };
 
-const yml = readFileSync(`${ROOT}apm.yml`, 'utf8');
-const m = yml.match(/^targets:\s*\n((?:\s+-\s+\S+\s*\n)+)/m);
-const targets = m
-  ? [...m[1].matchAll(/-\s*(\S+)/g)].map(r => r[1])
-  : Object.keys(TARGET_FILE);
+console.log(`Building release for targets: ${RUNTIME_TARGETS.join(', ')}\n`);
 
-// APM 0.31 会校验 apm.yml 的 targets 列表，但其白名单落后于实际支持的
-// runtime（agents / copilot-app / intellij 等会被误拒）。拷入各 target 目录
-// 时剥掉 targets: 块，让 -t 标志完全接管 target 解析。
-const ymlForTarget = yml.replace(/^targets:\s*\n(?:\s+-\s+\S+\s*\n)+/m, '');
-
-console.log(`Building release for targets: ${targets.join(', ')}\n`);
-
-for (const target of targets) {
+for (const target of RUNTIME_TARGETS) {
   const outDir = `${RELEASE_DIR}/${target}`;
 
   console.log(`  [${target}] → ${outDir}/`);
@@ -53,7 +42,7 @@ for (const target of targets) {
   await mkdir(outDir, { recursive: true });
 
   await cp(`${ROOT}.apm`, `${outDir}/.apm`, { recursive: true });
-  await writeFile(`${outDir}/apm.yml`, ymlForTarget);
+  await cp(`${ROOT}apm.yml`, `${outDir}/apm.yml`);
 
   execSync(`apm install -t ${target}`, { cwd: outDir, stdio: 'pipe' });
   execSync(`apm compile -t ${target}`, { cwd: outDir, stdio: 'pipe' });

@@ -16,6 +16,9 @@ keywords:
 
 type: hybrid
 
+# 只能声明 APM 用户级安装支持的 runtime：声明没有用户级部署目录（或需要实验性
+# 开关）的 target 会让 `apm install -g` 整次失败（Unknown target）。
+# 完整 runtime 清单（release 产物与官网展示）见 scripts/targets.mjs。
 targets:
   - copilot
   - claude
@@ -26,15 +29,9 @@ targets:
   - windsurf
   - kiro
   - antigravity
-  - copilot-app
-  - copilot-cowork
   - grok-build
-  - grok-cloud
   - hermes
-  - intellij
-  - openclaw
   - vscode
-  - agents
   - agent-skills
 
 includes: auto
