@@ -11,9 +11,9 @@
 
 - 简单清晰，相对松弛的约束。不为模型捆手捆脚，随模型能力变强也不过时。
 - 三条通用工作流。调研规划 Research → Plan → Align; 根因排障 Reproduce → Root Cause → Diagnose; 迭代交付：Implement → Test → Review → Documentation → Validate。
-- 不绑定特定开发范式，零学习成本（TDD 等可在项目级按需引入）。
-- 基于子代理的检视、复核、调研，显著减少幻觉，提高交付质量。
-- 日常实用 Skill：`commit-own-changes` 无 worktree 情况下的安全并行提交、`code-deep-dive` 学习 vibecoding 项目代码、`tidy` 清理冗余修改、`cross-check` 审视既有结论、`handoff` 会话交接、`grilling` 盘问计划、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
+- 不绑定特定开发范式，零学习成本（SDD 等可在项目级按需引入）。
+- 基于子代理的检视、复核、调研、端到端测试，显著减少幻觉，提高交付质量。
+- 日常实用 Skill：`commit-own-changes` 无 worktree 情况下的安全并行提交、`worktree-dev` 在 worktree 中工作并保证端口隔离、`code-deep-dive` 为 vibecoding 项目编写深度代码导读、`cross-check` 审视既有结论、`tidy` 清理冗余修改、`try` 修改前备份、`bad-smell` 识别代码坏味道、`unstuck` 连续修改未达预期时强制退一步分析。
 - 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
 - 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容 19 个主流 Agent 工具（Copilot / Claude Code / Cursor / Codex / Gemini CLI / Windsurf / Kiro / Antigravity / OpenCode / Grok / Hermes / IntelliJ / VS Code 等）。
 
