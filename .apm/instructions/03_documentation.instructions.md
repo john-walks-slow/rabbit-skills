@@ -22,22 +22,22 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 
 ## docs/features/yymmdd-{feature_name}/
 
-|- yymmdd-{topic}.research.md
+|- yymmdd-{topic}.research.md (optional)
 |- yymmdd-{feature_name}.plan.md
-|- yymmdd-{feature_name}.validation.md
-|- yymmdd-{feature_name}.e2e.md
-|- yymmdd-{feature_name}.review.md
+|- yymmdd-{feature_name}.review.md (optional)
 |- yymmdd-{feature_name}.summary.md
+|- yymmdd-{feature_name}.validation.md (optional)
+|- e2e/yymmdd-{topic}/yymmdd-{topic}-e2e-report.md (optional)
 
 需求计划和实施状态记录。根据工作流中的要求，在计划、开发、验证、检视阶段完成时及时更新。当需要回顾特定需求的策略和进展时查看。
 
 ## docs/issues/yymmdd-{issue_name}/
 
 |- yymmdd-{issue_name}.troubleshoot.md
-|- yymmdd-{issue_name}.validation.md
-|- yymmdd-{issue_name}.e2e.md
-|- yymmdd-{issue_name}.review.md
+|- yymmdd-{issue_name}.review.md (optional)
 |- yymmdd-{issue_name}.summary.md
+|- yymmdd-{issue_name}.validation.md (optional)
+|- e2e/yymmdd-{topic}/yymmdd-{topic}-e2e-report.md (optional)
 
 问题修复记录。根据工作流中的要求，在问题复现、分析、修复、验证、检视阶段完成时及时更新。当需要回顾特定问题的分析和解决进展时查看。
 
@@ -45,10 +45,6 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 
 不归属于特定模块和需求的领域级规范（例：设计规范、测试规范），可以被模块和项目级指引引用。
 更新规则见 `/update-references`。
-
-## docs/lessons
-
-围绕当前需求、设计或问题，为用户准备的知识课程。用于同步关键设计、权衡和风险认知，并提供少量高质量学习资料。创建规则见相关 skill。
 
 ## docs/freeform/yymmdd-{topic}.md
 
