@@ -30,6 +30,8 @@ spawn auto_human: 请扮演人类用户执行：检查 xxx.plan.md，指出是�
 
 如果用户指定了 `stopBefore: stage_name`（或同等自然语言要求），则在用户指定的阶段（如 validation）前停止工作。
 
+当遇到无法绕过的阻塞点导致后续工作无法展开时，也允许提前停止。
+
 ## 工作完成后的行为
 
 如果用户指定了 `autoplay: true`（或同等自然语言要求），则在全部任务收尾时，同时向 `auto_human` 询问下一步进行什么工作，然后根据 `auto_human` 的指示继续工作。
