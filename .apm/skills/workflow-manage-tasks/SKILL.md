@@ -2,6 +2,7 @@
 name: workflow-manage-tasks
 description: 任务分派工作流。当用户一次提出多条任务、需要批量派发子代理并跟踪进展时使用。
 user-invocable: true
+disable-model-invocation: true
 ---
 
 # workflow-manage-tasks
