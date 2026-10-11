@@ -2,6 +2,7 @@
 name: workflow-leader
 description: 项目领导工作流。当用户给出愿景希望 AI 自主、持续推进项目方向时使用。
 user-invocable: true
+disable-model-invocation: true
 ---
 
 # workflow-leader
