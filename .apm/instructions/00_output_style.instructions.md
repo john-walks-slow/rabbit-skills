@@ -2,7 +2,6 @@
 description: 输出风格：简洁执行、展示图片与文件链接、Research First
 ---
 
-
 # 输出风格
 
 ## 简洁执行
