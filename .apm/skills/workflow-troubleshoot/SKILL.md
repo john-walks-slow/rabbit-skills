@@ -1,6 +1,6 @@
 ---
 name: workflow-troubleshoot
-description: 根因分析工作流。排查复杂问题时必须遵守此流程分析原因。
+description: 根因分析工作流。在软件工程类项目中，排查复杂问题时必须遵守此流程分析原因。
 user-invocable: true
 ---
 
