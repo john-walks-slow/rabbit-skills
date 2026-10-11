@@ -8,7 +8,7 @@ user-invocable: true
 
 ```markdown
 ---
-output_to_file: 报告写入路径或 false。无显式要求时建议给 false（由子代理按默认位置写入对应 feature/issue 目录）。
+output_to_file: 报告写入路径或 false。默认填写当前 feature/issue 下的 e2e/yymmdd-{topic}/yymmdd-{topic}-e2e-report.md）。
 solidify_tests: 是否提炼并固化核心用例至所属模块测试目录（true / false，默认 true）。
 ---
 
