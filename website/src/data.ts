@@ -4,7 +4,7 @@
  */
 import raw from './generated/content.json';
 
-export type ItemType = 'readme' | 'skill' | 'agent' | 'instruction' | 'hook';
+export type ItemType = 'readme' | 'skill' | 'agent' | 'instruction';
 
 export interface ContentItem {
   id: string;
@@ -39,5 +39,4 @@ export const TYPE_LABEL: Record<ItemType, string> = {
   skill: 'Skill',
   agent: 'Agent',
   instruction: 'Instruction',
-  hook: 'Hook',
 };

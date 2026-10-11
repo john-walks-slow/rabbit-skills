@@ -24,7 +24,7 @@ const DOCS: Record<string, DocType> = {
 轻量 Agent 配置套件，兼容主流 Agent 工具。
 
 <span class="md-h">## 地图</span>
-- .apm/ — skills / agents / hooks / instructions
+- .apm/ — skills / agents / instructions
 - website/ — 官网（Vite + GSAP）
 - scripts/ — 构建 / 发布
 

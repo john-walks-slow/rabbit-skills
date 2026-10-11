@@ -5,7 +5,7 @@
 ## 架构
 
 - **Vite + 原生 TypeScript**，无框架。动效由 GSAP（ScrollTrigger / SplitText / DrawSVG）驱动，Hero 背景为 Canvas 2D 粒子流场。
-- **内容物预览自动化**：`scripts/generate-content.mjs` 在构建期扫描仓库的 `.apm/`（skills / agents / instructions / hooks）与 `Readme.md`、`apm.yml`，生成 `src/generated/content.json`。CI 每次 push 自动重建，官网内容与仓库文件始终一致。
+- **内容物预览自动化**：`scripts/generate-content.mjs` 在构建期扫描仓库的 `.apm/`（skills / agents / instructions）与 `Readme.md`、`apm.yml`，生成 `src/generated/content.json`。CI 每次 push 自动重建，官网内容与仓库文件始终一致。
 - 深链支持 `?motion=reduced` 强制关闭动效（无障碍）。
 
 ## 开发

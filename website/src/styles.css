@@ -409,7 +409,6 @@ code, kbd, pre { font-family: var(--mono); }
 .type-skill { color: var(--cyan); background: rgba(98, 216, 230, 0.08); }
 .type-agent { color: var(--coral); background: rgba(255, 128, 117, 0.08); }
 .type-instruction { color: var(--green); background: rgba(130, 223, 141, 0.08); }
-.type-hook { color: var(--carrot); background: rgba(255, 163, 107, 0.08); }
 .type-readme { color: var(--dim); background: var(--surface-2); }
 .item-lines { font-size: 10.5px; color: var(--faint); font-family: var(--mono); margin-left: auto; }
 

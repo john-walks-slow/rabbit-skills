@@ -2,7 +2,7 @@
 /**
  * generate-content.mjs — 从项目文件自动生成官网内容数据。
  *
- * 扫描 .apm/（skills / agents / instructions / hooks）+ Readme.md + apm.yml，
+ * 扫描 .apm/（skills / agents / instructions）+ Readme.md + apm.yml，
  * 输出 src/generated/content.json 供官网构建时打包。
  * 官网 CI 在每次 push 时重新执行本脚本，实现「内容物预览自动化从项目文件生成」。
  */
@@ -10,6 +10,7 @@ import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { RUNTIME_TARGETS } from '../../scripts/targets.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'generated', 'content.json');
@@ -69,17 +70,14 @@ async function main() {
   const readme = await safeRead(join(ROOT, 'Readme.md'));
 
   const version = (apmYml.match(/^version:\s*(.+)$/m) || [])[1]?.trim() || '';
-  const tm = apmYml.match(/^targets:\s*\n((?:\s+-\s+\S+\s*\n)+)/m);
-  const targets = tm ? [...tm[1].matchAll(/-\s*(\S+)/g)].map((r) => r[1]) : [];
+  const targets = RUNTIME_TARGETS;
 
   // Readme 表格索引
   const skillTable = parseMdTable(readme, /^技能$/);
   const agentTable = parseMdTable(readme, /^名称$/);
-  const hookTable = parseMdTable(readme, /^文件$/);
 
   const readmeSkill = new Map(skillTable.map((c) => [clean(c[0]), { activation: clean(c[1]) }]));
   const readmeAgent = new Map(agentTable.map((c) => [clean(c[0]), { kind: clean(c[1]), desc: clean(c[2]) }]));
-  const readmeHook = new Map(hookTable.map((c) => [clean(c[0]).replace(/\.mjs$/, ''), { event: clean(c[1]), desc: clean(c[2]) }]));
 
   const items = [];
 
@@ -144,35 +142,6 @@ async function main() {
     });
   }
 
-  // ---- Hooks ----
-  const hookFiles = (await readdir(join(ROOT, '.apm', 'hooks'))).filter((f) => f.endsWith('.json')).sort();
-  for (const f of hookFiles) {
-    const p = join(ROOT, '.apm', 'hooks', f);
-    const raw = await safeRead(p);
-    const id = f.replace('.json', '');
-    const info = readmeHook.get(id) || {};
-    const events = [...raw.matchAll(/"(SessionStart|PreToolUse|PostToolUse|Stop|UserPromptSubmit|Notification)"/g)].map((m) => m[1]);
-    const mjsPath = join(ROOT, '.apm', 'hooks', `${id}.mjs`);
-    const src = existsSync(mjsPath) ? await safeRead(mjsPath) : '';
-    const fence = '```';
-    items.push({
-      id,
-      type: 'hook',
-      name: id,
-      description: info.desc || '',
-      events: [...new Set(events)],
-      path: relative(ROOT, p),
-      url: `${GITHUB_BASE}/blob/${BRANCH}/${relative(ROOT, p)}`,
-      lines: countLines(src || raw),
-      content: [
-        info.event ? `**触发事件**：${info.event}\n` : '',
-        src
-          ? `**脚本源码**（\`${id}.mjs\`）：\n\n` + fence + 'javascript\n' + src.trim() + '\n' + fence
-          : fence + 'json\n' + raw.trim() + '\n' + fence,
-      ].filter(Boolean).join('\n\n'),
-    });
-  }
-
   // ---- Readme 本体（作为一项内容物） ----
   items.unshift({
     id: 'readme',
@@ -202,7 +171,6 @@ async function main() {
     skill: ordered.filter((i) => i.type === 'skill').length,
     agent: ordered.filter((i) => i.type === 'agent').length,
     instruction: ordered.filter((i) => i.type === 'instruction').length,
-    hook: ordered.filter((i) => i.type === 'hook').length,
   };
 
   const data = {
@@ -218,7 +186,7 @@ async function main() {
   await mkdir(dirname(OUT), { recursive: true }); // fresh checkout 时目录不存在
   await writeFile(OUT, JSON.stringify(data) + '\n', 'utf8');
   console.log(
-    `[content] v${version} · ${counts.skill} skills · ${counts.agent} agents · ${counts.instruction} instructions · ${counts.hook} hooks · ${totalLines} lines → ${relative(ROOT, OUT)}`
+    `[content] v${version} · ${counts.skill} skills · ${counts.agent} agents · ${counts.instruction} instructions · ${totalLines} lines → ${relative(ROOT, OUT)}`
   );
 }
 
