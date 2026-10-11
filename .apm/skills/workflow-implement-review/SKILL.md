@@ -1,6 +1,6 @@
 ---
 name: workflow-implement-review
-description: 实施交付工作流。在软件工程类项目中实施任何修改前，都必须遵守此流程完成实施、测试、检视与提交。
+description: 实施交付工作流。在软件工程类项目中实施任何修改前必须阅读，遵守此流程完成实施、测试、检视与提交。
 user-invocable: true
 ---
 
