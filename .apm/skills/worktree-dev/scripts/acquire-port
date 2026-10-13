@@ -8,12 +8,13 @@
 #
 # 用法：
 #   acquire-port                 取 1 个端口
-#   acquire-port 3               取 3 个端口
+#   acquire-port 3               取 3 个端口（或 --count 3）
 #   acquire-port --wait          阻塞等资源（默认 300s），取 1 个端口
 #   acquire-port --wait=120 3    阻塞等资源（最多 120s），取 3 个端口
 #   acquire-port --list          看池子里当前哪些端口在被人用（只读，不登记）
 #   acquire-port --exec CMD...   取 1 端口，把 $PORT / $PORTS 注入后执行命令
-#   acquire-port --exec -- 3 CMD...  取 3 个端口并执行
+#   acquire-port --count 3 --exec CMD...  取 3 个端口并执行
+#   acquire-port --exec -- 3 CMD...       取 3 个端口并执行（兼容用法）
 #
 # 输出：端口号（空格分隔）到 stdout，诊断信息到 stderr。
 # 用 $(acquire-port 3) 捕获；退出码 1=资源不足，2=端口不足。
@@ -66,12 +67,14 @@ usage() {
   cat <<'EOF'
 acquire-port — 全局端口分配器（无状态）
 
-  acquire-port [N]              取 N 个端口（默认 1）
-  acquire-port --wait [N]       阻塞等待资源释放（默认 300s）后取 N 个端口
-  acquire-port --wait=SECS [N]  指定等待上限秒数
-  acquire-port --list           看池内当前在监听的端口
-  acquire-port --exec CMD...    取 1 端口，注入 $PORT/$PORTS 后执行
-  acquire-port --exec -- N CMD  取 N 端口，注入 $PORT/$PORTS 后执行
+  acquire-port [N]               取 N 个端口（默认 1）
+  acquire-port --count N         取 N 个端口（显式指定数量，或 -c N）
+  acquire-port --wait [N]        阻塞等待资源释放（默认 300s）后取 N 个端口
+  acquire-port --wait=SECS [N]   指定等待上限秒数后取 N 个端口
+  acquire-port --list            看池内当前在监听的端口
+  acquire-port --exec CMD...     取 1 端口，注入 $PORT/$PORTS 后执行
+  acquire-port --count N --exec CMD... 取 N 端口，注入 $PORT/$PORTS 后执行
+  acquire-port --exec -- N CMD   取 N 端口，注入 $PORT/$PORTS 后执行（兼容用法）
 
 放行规则：可用内存（MemAvailable）>= 固定余量(512MB) 时才放行，端口从池里挑内核
 确认 bind 得上的。没有登记、没有释放：服务起了端口自然占着，停了就空出来。
@@ -102,6 +105,15 @@ while [ $# -gt 0 ]; do
       shift
       ;;
     --list|-l) DO_LIST=1; shift ;;
+    --count|-c)
+      shift
+      [ $# -ge 1 ] || die "--count 需要指定正整数数量"
+      COUNT=$1; shift
+      ;;
+    --count=*)
+      COUNT=${1#--count=}
+      shift
+      ;;
     --exec)
       DO_EXEC=1
       shift

@@ -18,6 +18,8 @@ acquire-port.ps1 — worktree-dev 配套的端口分配器（Windows / PowerShel
 #>
 [CmdletBinding(PositionalBinding = $false)]
 param(
+    [Parameter(Position = 0)]
+    [Alias('c')]
     [int]$Count = 1,
     [switch]$Wait,
     [int]$WaitSeconds = 300,
