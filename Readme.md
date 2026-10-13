@@ -10,7 +10,7 @@
 ## 原则
 
 - 简单清晰，相对松弛的约束。不为模型捆手捆脚，随模型能力变强也不过时。
-- 三条通用工作流。[调研规划](.apm/skills/workflow-research-plan/SKILL,md); [根因排障](.apm/skills/workflow-troubleshoot/SKILL,md); [迭代交付](.apm/skills/workflow-implement-review/SKILL,md)。
+- 三条通用工作流。[调研规划](.apm/skills/workflow-research-plan/SKILL.md); [根因排障](.apm/skills/workflow-troubleshoot/SKILL.md); [迭代交付](.apm/skills/workflow-implement-review/SKILL.md)。
 - 不绑定特定开发范式，零迁移成本（SDD 等可在项目级按需引入）。
 - 基于子代理的检视、复核、调研、端到端测试，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无 worktree 情况下的安全并行提交、`worktree-dev` 在 worktree 中工作并保证端口隔离、`code-deep-dive` 为 vibecoding 项目编写深度代码导读、`cross-check` 审视既有结论等。
