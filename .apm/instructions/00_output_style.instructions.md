@@ -24,7 +24,7 @@ description: 输出风格：简洁执行、展示图片与文件链接、Researc
 使用 markdown 图片语法向用户展示图片，路径必须为当前工作区的相对路径：
 
 ```markdown
-![evidence](<relative/path.png>)
+![evidence](relative/path.png)
 ```
 
 以下场景请附图：
