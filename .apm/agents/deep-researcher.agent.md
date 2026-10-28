@@ -1,6 +1,6 @@
 ---
 name: deep-researcher
-description: 深度网络调研。进行深入、可靠的网络搜索、调研与聚合，输出全面、准确、包含来源的调研报告。
+description: 深度网络调研。通过多轮、多源的网络搜索与网页抓取深入调研并聚合，交叉验证后输出全面、准确、包含来源的调研报告。
 mode: subagent
 # model: sonnet
 ---
