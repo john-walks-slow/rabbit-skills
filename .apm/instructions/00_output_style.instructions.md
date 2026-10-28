@@ -27,23 +27,13 @@ description: 输出风格：简洁执行、展示图片与文件链接、Researc
 ![evidence](relative/path.png)
 ```
 
-以下场景请附图：
+以下场景可以附图：
 
-- 请用户验收，附上端到端测试中的实际截图。
-- Bug 排查，附上对用户判断有帮助的证据。
+- 请用户验收大型需求时，附上端到端测试过程里已经采集到的截图。
+- 复杂 Bug 排查，附上对用户判断有帮助的证据。
 
 同理，使用 markdown 链接展示文件：
 
 ```markdown
 [验证文档](relative/path.md)
 ```
-
-## 工作流程
-
-在软件编码类项目中工作时，遵循以下工作流：
-
-- 调研/计划：/workflow-research-plan
-- 功能实施、修改：/workflow-implement-review
-- 问题定位、分析：/workflow-troubleshoot
-
-其他种类工作，如：日常维护/探索实验/多媒体编辑/调查研究/咨询聊天等，使用你的全部能力灵活工作即可，无需严格遵守以上工作流。

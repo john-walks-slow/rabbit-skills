@@ -1,6 +1,6 @@
 ---
 name: workflow-implement-review
-description: 实施交付工作流。在软件工程类项目中实施任何修改前必须阅读，遵守此流程完成实施、测试、检视与提交。
+description: 实施交付工作流。在软件工程类项目中实施中等规模以上的修改前必须阅读，遵守此流程完成实施、测试、检视与提交。
 user-invocable: true
 ---
 
@@ -48,6 +48,7 @@ user-invocable: true
 
 - 需求开发：`/docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.summary.md`
 - 问题修复：`/docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.summary.md`
+- 临时小范围修改：文档可省略。
 
 遵循规范按需更新模块级和项目级 AGENTS.md。当且仅当有对后续开发有明确收益的通用经验时，记录到模块 pitfalls 部分。
 
