@@ -37,11 +37,3 @@ description: 输出风格：简洁执行、展示图片与文件链接、Researc
 ```markdown
 [验证文档](relative/path.md)
 ```
-
-## 工作流程
-
-在软件编码类项目中工作时，遵循以下工作流：
-
-- 调研/计划：/workflow-research-plan
-- 功能实施、修改：/workflow-implement-review
-- 问题定位、分析：/workflow-troubleshoot
