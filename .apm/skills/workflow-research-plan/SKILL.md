@@ -13,7 +13,7 @@ user-invocable: true
 ## 1. Research
 
 正确理解用户意图；全面理解既有代码；调研对体验设计和架构选型有帮助的背景信息和外部资料（优先选用现代、主流设计）。
-使用 explore 子代理探索代码库。若有必要，使用 /spawn-deep-researcher 进行网络调研（指定输出文件: /docs/features/yymmdd-{feature_name}/yymmdd-{topic}.research.md）。
+使用 explore 子代理探索代码库。必要时，使用 /spawn-deep-researcher 进行深度调研（指定输出文件: /docs/features/yymmdd-{feature_name}/yymmdd-{topic}.research.md）。
 
 **当你掌握了充足的背景信息和网络资料后才进入下一步。**
 
@@ -23,7 +23,6 @@ user-invocable: true
 必须涵盖：从用户视角出发的使用路径整理；深入思考和知情下得出的架构设计；全面、完整的实现方案。
 以最高的优先级关注设计的适切性、用户体验的现代性和项目可维护性。
 计划文档输出到 /docs/features/yymmdd-{feature_name}/yymmdd-{feature_name}.plan.md。
-若你对于自己的选型有所犹豫，或当该工作事关重大时，请对计划额外执行一次 /cross-check。
 
 **确保你理清了所有疑惑点，对自己的设计感到十分清晰后，进入下一步。**
 
