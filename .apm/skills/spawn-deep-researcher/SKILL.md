@@ -1,10 +1,8 @@
 ---
 name: spawn-deep-researcher
-description: 仅在需要穷尽式、多角度交叉验证的重度全景调研时，使用 deep-researcher 子代理。常规查询、简单事实验证或基础搜索直接在当前会话完成，切勿拉起本代理。拉起前必须阅读。
+description: 使用 deep-researcher 子代理进行深度调研。常规查询、简单事实验证或基础搜索直接在当前会话完成，无需使用。拉起 deep-researcher 前必须阅读。
 user-invocable: true
 ---
-
-基础信息检索、单点事实确认或常规查阅资料直接在当前会话使用搜索工具；仅在需要对未知/复杂主题进行全面、深度、多源交叉验证的穷尽式重度调研时才调用 `deep-researcher`。
 
 使用 `deep-researcher` 子代理进行深度网络调研。
 你提供的输入指令必须遵循如下格式：
