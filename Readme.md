@@ -2,11 +2,6 @@
 
 轻量、松弛、有效的 Coding Agent 配置套件。适合中等规模的 AI 原生项目开发。
 
-> 控制的目标不是剥夺系统的自由度，而是界定安全的可行域，让系统在可行域内释放最大化的调节能力。
-> -- Ashby's Law of Requisite Variety
-
-> 浏览官网：<https://john-walks-slow.github.io/rabbit-skills/>
-
 ## 0.20.0 更新说明
 
 从 0.20.0 开始，移除了所有 workflow 技能，并将更多的 Skill 调整为 `disable-model-invocation`。
@@ -28,16 +23,6 @@
 一套写得不错的基础提示词；一套文档格式约定；一些能够强化工作深度的子代理和修饰器技能；一些通用工具技能。
 
 而不再提供工作流。
-
-## 原则
-
-- 简单清晰，相对松弛的约束。不为模型捆手捆脚，随模型能力变强也不过时。
-- 不再提供工作流：三条旧工作流已简化为输出风格中的提示词，额外的工作深度通过修饰器技能按需叠加。
-- 不绑定特定开发范式，零迁移成本（SDD 等可在项目级按需引入）。
-- 基于子代理的检视、复核、调研、端到端测试，显著减少幻觉，提高交付质量。
-- 日常实用 Skill：`commit-own-changes` 无 worktree 情况下的安全并行提交、`worktree-dev` 在 worktree 中工作并保证端口隔离、`code-deep-dive` 为 vibecoding 项目编写深度代码导读、`cross-check` 审视既有结论等。
-- 化繁为简的文档规范，留存记录的同时避免历史文档-代码双向同步问题。
-- 基于 [APM (Agent Package Manager)](https://microsoft.github.io/apm/) 规范，兼容 19 个主流 Agent 工具（Copilot / Claude Code / Cursor / Codex / Gemini CLI / Windsurf / Kiro / Antigravity / OpenCode / Grok / Hermes / IntelliJ / VS Code 等）。
 
 ## 安装
 
@@ -70,24 +55,6 @@ apm compile -g
 ```
 
 > 注：compile 不会覆盖你原先手写的指令（AGENTS.md 等）。如果希望覆盖，请在备份后删除原有指令文件，再次执行 compile -g。
-
-## 使用
-
-### 计划与实施
-
-默认由模型自主判断直接开展工作。需要额外步骤时，用修饰器按需叠加：
-
-- 涉及核心模块修改时，queue：`/spawn-reviewer`
-- 交付前需要端到端验证时，queue：`/spawn-e2e-tester`
-- 希望计划前深度调研时，要求：`/spawn-deep-researcher`
-- 希望使用上述全部能力最大深度工作时，要求：`/max-effort`
-
-### 修饰器（实验性）
-
-- `/spawn-reviewer` —— 涉及核心模块修改时，queue 检视子代理。
-- `/spawn-e2e-tester` —— 交付前需要端到端验证时，queue 端到端测试子代理。
-- `/spawn-deep-researcher` —— 希望计划前深度调研时，要求深度调研子代理。
-- `/max-effort` —— 启用最大交付质量。要求在对用户精力消耗最少的情况下，以最高质量交付。
 
 ## 内容物
 
