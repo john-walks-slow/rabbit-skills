@@ -64,6 +64,7 @@ apm compile -g
 | ------------------ | -------- |
 | `00_output_style`  | 输出风格 |
 | `01_coding_style`  | 编码规范 |
+| `02_design_principle`| 设计规范 |
 | `03_documentation` | 文档规范 |
 | `09_custom`        | 约定与通例（协作 / Shell / Git / 子代理 / 测试范围 / 安全） |
 
