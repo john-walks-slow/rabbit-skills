@@ -4,7 +4,9 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 
 # 文档规范
 
-采取极简文档策略：文档的目标是给新加入开发的成员一个 Quick Start、并将关键历史留作记录，而不是把代码逻辑在文档中重述一遍。
+为软件开发项目编写简洁、直接的文档。
+
+文档的目标是给新加入开发的成员一个 Quick Start、并将关键历史留作记录，而不是把代码逻辑在文档中重述一遍。
 
 当文档内容与实际代码不一致，请以实际代码为准，主动更新文档。
 
@@ -33,21 +35,21 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 |- yymmdd-{topic}.research.md (optional)
 |- yymmdd-{feature_name}.plan.md
 |- yymmdd-{feature_name}.review.md (optional)
-|- yymmdd-{feature_name}.summary.md
+|- yymmdd-{feature_name}.summary.md (optional)
 |- yymmdd-{feature_name}.validation.md (optional)
 |- e2e/yymmdd-{topic}/yymmdd-{topic}-e2e-report.md (optional)
 
-需求计划和实施状态记录。根据工作流中的要求，在计划、开发、验证、检视阶段完成时及时更新。当需要回顾特定需求的策略和进展时查看。
+需求计划和实施状态记录。在计划、开发、验证、检视阶段完成时及时更新。当需要回顾特定需求的策略和进展时查看。简单修改可省略。
 
 ## docs/issues/yymmdd-{issue_name}/
 
 |- yymmdd-{issue_name}.troubleshoot.md
 |- yymmdd-{issue_name}.review.md (optional)
-|- yymmdd-{issue_name}.summary.md
+|- yymmdd-{issue_name}.summary.md (optional)
 |- yymmdd-{issue_name}.validation.md (optional)
 |- e2e/yymmdd-{topic}/yymmdd-{topic}-e2e-report.md (optional)
 
-问题修复记录。根据工作流中的要求，在问题复现、分析、修复、验证、检视阶段完成时及时更新。当需要回顾特定问题的分析和解决进展时查看。
+问题的修复记录。在问题复现、分析、修复、验证、检视阶段完成时及时更新。当需要回顾特定问题的分析和解决进展时查看。简单问题可省略。
 
 ## docs/references/yymmdd-{topic}.md
 
@@ -64,5 +66,6 @@ description: 文档规范：AGENTS.md 项目/模块指引、特性与问题记�
 
 ## {skill_dir}/SKILL.md
 
-技能是可召回、可复用的领域知识。遇到今后需要掌握的本领和知识时，主动提炼和更新。
+可召回、可复用的领域知识。遇到今后需要掌握的本领和知识时，主动提炼和更新。
 技能描述必须简短直接，在几句话内说明技能召回标准。技能正文必须清晰易读，切忌堆砌式、补丁式修改。
+更新规则见 /update-skill。

@@ -1,6 +1,7 @@
 ---
 name: code-deep-dive
-description: "为 vibe coding 项目编写中文深度 markdown 长文，帮助用户在碎片时间（通勤、午休、睡前，手机观看）补齐代码知识。每次由用户明确指定主题（如某个框架机制、某段核心逻辑、某个技术概念），输出一篇完全自包含（代码完整内嵌、无需电脑即可学习）、附带充分外部链接与资料、单篇学习时长约 1.5 小时的深度长文，保存到项目的 docs/learning/ 目录。用户可要求 format=html 生成带目录、交互测验、代码高亮的单文件网页版。当用户说'帮我写一篇学习 XX 的文章'、'把这个项目的 XX 讲透'、'我想深入理解 XX 原理'、'碎片时间想学一下 XX'、'写一篇 XX 的深度笔记'，或任何 vibe coding 后想系统补齐代码知识的请求时，务必使用本技能，即使没有明确提到'文章'或'笔记'字样。"
+description: 为 vibe coding 项目编写中文深度 markdown 长文。
+disable-model-invocation: true
 ---
 
 # Code Deep-Dive

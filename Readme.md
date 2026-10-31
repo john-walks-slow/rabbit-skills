@@ -7,10 +7,32 @@
 
 > 浏览官网：<https://john-walks-slow.github.io/rabbit-skills/>
 
+## 0.20.0 更新说明
+
+从 0.20.0 开始，移除了所有 workflow 技能，并将更多的 Skill 调整为 `disable-model-invocation`。
+
+工作流的概念对于目前的模型已经没有收益了，三条工作流已经被简化为输出风格中的三句提示词。
+
+在模型自主判断的基础上，你可以通过“修饰”的方式来要求需要的额外步骤。
+
+例如：涉及核心模块修改时，queue：`/spawn-reviewer`
+
+交付前需要端到端验证时，queue：`/spawn-e2e-tester`
+
+希望计划前深度调研时，要求：`/spawn-deep-researcher`
+
+希望使用上述全部能力最大深度工作时，要求：`/max-effort`
+
+目前，本套件的主要意义在于提供：
+
+一套写得不错的基础提示词；一套文档格式约定；一些能够强化工作深度的子代理和修饰器技能；一些通用工具技能。
+
+而不再提供工作流。
+
 ## 原则
 
 - 简单清晰，相对松弛的约束。不为模型捆手捆脚，随模型能力变强也不过时。
-- 三条通用工作流。[调研规划](.apm/skills/workflow-research-plan/SKILL.md); [根因排障](.apm/skills/workflow-troubleshoot/SKILL.md); [迭代交付](.apm/skills/workflow-implement-review/SKILL.md)。
+- 不再提供工作流：三条旧工作流已简化为输出风格中的提示词，额外的工作深度通过修饰器技能按需叠加。
 - 不绑定特定开发范式，零迁移成本（SDD 等可在项目级按需引入）。
 - 基于子代理的检视、复核、调研、端到端测试，显著减少幻觉，提高交付质量。
 - 日常实用 Skill：`commit-own-changes` 无 worktree 情况下的安全并行提交、`worktree-dev` 在 worktree 中工作并保证端口隔离、`code-deep-dive` 为 vibecoding 项目编写深度代码导读、`cross-check` 审视既有结论等。
@@ -53,38 +75,19 @@ apm compile -g
 
 ### 计划与实施
 
-计划需求：
+默认由模型自主判断直接开展工作。需要额外步骤时，用修饰器按需叠加：
 
-```
-/workflow-research-plan 调研 Agent 记忆的 sota 方案，给我的 Agent 加上记忆功能。
-```
-
-分析问题：
-
-```
-/workflow-troubleshoot 聚焦输入框时界面跳动。`
-```
-
-确认计划后：
-
-```
-/workflow-implement-review go
-```
+- 涉及核心模块修改时，queue：`/spawn-reviewer`
+- 交付前需要端到端验证时，queue：`/spawn-e2e-tester`
+- 希望计划前深度调研时，要求：`/spawn-deep-researcher`
+- 希望使用上述全部能力最大深度工作时，要求：`/max-effort`
 
 ### 修饰器（实验性）
 
-- `/full-auto` —— 启用自动继续模式。所有用户对齐阶段改为询问 auto_human 子代理。可与 /goal 搭配使用，用于用户不在线、希望后台长跑场景。
+- `/spawn-reviewer` —— 涉及核心模块修改时，queue 检视子代理。
+- `/spawn-e2e-tester` —— 交付前需要端到端验证时，queue 端到端测试子代理。
+- `/spawn-deep-researcher` —— 希望计划前深度调研时，要求深度调研子代理。
 - `/max-effort` —— 启用最大交付质量。要求在对用户精力消耗最少的情况下，以最高质量交付。
-- `/max-efficiency` —— 启用最大交付效率。跳过可选步骤以最高效率交付。
-
-### 任务管理（实验性）
-
-如果你有许多略显杂乱的任务，可以使用任务管理工作流  `/workflow-manage-tasks`。
-Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，并在子代理阶段性工作完成需要评估时与你沟通。
-
-如果你希望 Agent 全自主推动项目开发，可以使用项目领导工作流 `/workflow-leader`。
-
-> 仅推荐拥有后台运行 Subagent 以及 延续 Subagent 会话能力的 AI 工具使用。
 
 ## 内容物
 
@@ -105,37 +108,27 @@ Agent 会为你整理待办事项、跟踪进度、分配任务给子代理，�
 | `reviewer`        | subagent | 代码检视                                                                     |
 | `e2e-tester`      | subagent | 端到端测试                                                                   |
 | `expert`          | subagent | 通用困难任务                                                                 |
-| `auto-human`      | subagent | 自动决策（用于 full-auto 模式）                                              |
 
 ### Skills & Commands（技能与命令）
 
 | 技能                             | 激活方式  | 说明                                                                          |
 | -------------------------------- | --------- | ----------------------------------------------------------------------------- |
-| `workflow-research-plan`         | 用户或 AI | 调研设计工作流：Research → Plan → Align                                       |
-| `workflow-troubleshoot`          | 用户或 AI | 问题定位工作流：Reproduce → Root Cause → Diagnose                             |
-| `workflow-implement-review`      | 用户或 AI | 实施交付工作流：Implement → Test → Review → Documentation → Validate          |
-| `workflow-manage-tasks`          | 仅用户    | （实验性）任务分派工作流：理解梳理 → 分派子代理 → 跟踪推进                     |
-| `workflow-leader`                | 仅用户    | （实验性）项目领导工作流：给出愿景 → 构思 idea → 分派子代理 → 持续推进         |
 | `spawn-deep-researcher`          | 用户或 AI | 启动网络调研子代理                                                            |
 | `spawn-reviewer`                 | 用户或 AI | 启动代码检视子代理                                                            |
 | `spawn-e2e-tester`               | 用户或 AI | 启动端到端测试子代理                                                          |
 | `commit-own-changes`             | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
 | `worktree-dev`                   | 用户或 AI | Git Worktree 隔离开发；worktree 内端口动态申请                               |
 | `code-deep-dive`                | 仅用户    | 为项目编写中文深度学习长文，碎片时间补齐代码知识                              |
-| `grilling`                       | 用户或 AI | 向用户盘问设计方案                                                            |
-| `similar-idea`                   | 仅用户    | 找相似项目/既有产品，了解市场现状，防止重复造轮子                             |
-| `cross-check`                    | 用户或 AI | 使用独立子代理复核关键结论                                                    |
+| `grilling`                       | 仅用户    | 向用户盘问设计方案                                                            |
+| `similar-idea`                   | 用户或 AI | 找相似项目/既有产品，了解市场现状，防止重复造轮子                             |
+| `cross-check`                    | 仅用户    | 使用独立子代理复核关键结论                                                    |
 | `tidy`                           | 仅用户    | 清理当前会话中的无效修改                                                      |
 | `handoff`                        | 仅用户    | 总结当前会话用于交接                                                          |
-| `try`                            | 用户或 AI | 修改前先备份便于回滚                                                          |
 | `bad-smell`                      | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
-| `unstuck`                        | 用户或 AI | 连续修改未达预期时强制退一步重新分析                                          |
-| `full-auto`                      | 仅用户    | 自动工作模式。所有用户对齐阶段改为询问 auto_human 子代理                      |
 | `max-effort`                     | 仅用户    | 最大交付质量：最少消耗用户精力，极致质量 + 端到端测试交付                      |
-| `max-efficiency`                 | 仅用户    | 启用最大交付效率。跳过可选步骤以最高效率交付。                                |
 | `update-project-instruction`     | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
 | `update-module-instruction`      | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |
-| `update-references`              | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                               |
+| `update-skill`                   | 用户或 AI | 编写新技能、编辑已有技能，或询问 SKILL.md 结构                                |
 | `update-validation-requirements` | 用户或 AI | 创建/更新用户验证表，记录核心场景和必须实机验证的场景                         |
 
 ## 自定义

@@ -1,7 +1,6 @@
 ---
 name: similar-idea
 description: 寻找相似项目/点子，让用户了解市场现状，防止重复造轮子
-disable-model-invocation: true
 user-invocable: true
 ---
 
