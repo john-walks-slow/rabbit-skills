@@ -1,6 +1,7 @@
 ---
 name: troubleshoot
 description: 根因分析。在软件工程类项目中，排查复杂、难解问题时必须遵守此流程分析原因。
+disable-model-invocation: true
 user-invocable: true
 ---
 
@@ -43,10 +44,6 @@ user-invocable: true
 向用户提出你的重构建议！询问用户是否进行重构型修复。
 
 诊断结论及修复方向输出到 `/docs/issues/yymmdd-{issue_name}/yymmdd-{issue_name}.troubleshoot.md`。
-
-## Next Step
-
-用户书面确认诊断结果后，进入修复实施阶段。
 
 **备注:**
 

@@ -1,6 +1,7 @@
 ---
 name: research-plan
 description: 需求调研设计。在软件工程类项目中，进行中等以上规模需求开发、架构设计和重构前必须遵守此流程制定计划。
+disable-model-invocation: true
 user-invocable: true
 ---
 
@@ -35,7 +36,3 @@ user-invocable: true
 调整计划时，**不要** 在 .plan.md 中包含 “与上一版的差异” 章节。计划文档只应该包含改进完成的最终计划内容。
 
 持续改进计划，直到你的计划与用户期望完全对齐为止。
-
-## Next Step
-
-若用户表示 “Go ahead”，“实施”，“开工”等，立刻使用 /implement-review 技能，基于当前计划进入实施阶段。

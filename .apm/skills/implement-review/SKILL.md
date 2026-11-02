@@ -1,6 +1,7 @@
 ---
 name: implement-review
 description: 实施与检视循环。在软件工程类项目中实施中等规模以上的修改时，实施代码修改并通过检视循环打磨到准入。
+disable-model-invocation: true
 user-invocable: true
 ---
 
@@ -35,7 +36,5 @@ user-invocable: true
 若前次检视结果低于条件准入，则在修改后**再次**将本次实施的全部代码提交检视。
 
 直到拥有准入或条件准入结论，循环结束。
-
-> 若实际现象与预期明显不符，撤销无效、可疑的修改，用 /troubleshoot 重新定位问题。
 
 > 本技能到检视准入为止。文档记录、用户验证、提交合并等后续步骤不在此技能内，按需另行处理。
