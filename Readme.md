@@ -94,8 +94,10 @@ apm compile -g
 | `handoff`                        | 仅用户    | 总结当前会话用于交接                                                          |
 | `bad-smell`                      | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
 | `max-effort`                     | 仅用户    | 最大交付质量：最少消耗用户精力，极致质量 + 端到端测试交付                      |
+| `troubleshoot`                   | 用户或 AI | 根因分析：排查复杂、难解问题，输出诊断结论与修复路径                          |
 | `update-project-instruction`     | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
 | `update-module-instruction`      | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |
+| `update-references`              | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                               |
 | `update-skill`                   | 用户或 AI | 编写新技能、编辑已有技能，或询问 SKILL.md 结构                                |
 | `update-validation-requirements` | 用户或 AI | 创建/更新用户验证表，记录核心场景和必须实机验证的场景                         |
 
