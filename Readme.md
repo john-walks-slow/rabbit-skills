@@ -84,17 +84,18 @@ apm compile -g
 | `spawn-e2e-tester`               | 用户或 AI | 启动端到端测试子代理                                                          |
 | `commit-own-changes`             | 用户或 AI | 多 agent 并发时只提交自己改动的文件/行，不带走别人的修改                      |
 | `worktree-dev`                   | 用户或 AI | Git Worktree 隔离开发；worktree 内端口动态申请                               |
-| `code-deep-dive`                | 仅用户    | 为项目编写中文深度学习长文，碎片时间补齐代码知识                              |
 | `grilling`                       | 仅用户    | 向用户盘问设计方案                                                            |
 | `similar-idea`                   | 用户或 AI | 找相似项目/既有产品，了解市场现状，防止重复造轮子                             |
 | `cross-check`                    | 用户或 AI | 使用独立子代理复核关键结论                                                    |
 | `tidy`                           | 仅用户    | 清理当前会话中的无效修改                                                      |
 | `handoff`                        | 仅用户    | 总结当前会话用于交接                                                          |
 | `bad-smell`                      | 用户或 AI | 识别代码坏味道，小范围随手优化，大范围记录后回到原任务                        |
-| `max-effort`                     | 仅用户    | 最大交付质量：最少消耗用户精力，全部能力最大深度工作                      |
+| `web-search`                     | 用户或 AI | 网络搜索最佳实践                      |
 | `research-plan`                  | 仅用户    | 调研设计：调研背景、设计方案、输出计划并与用户对齐                            |
 | `implement-review`               | 仅用户    | 实施与检视循环：实施修改、按需测试、检视并按意见修改直到准入                  |
 | `troubleshoot`                   | 仅用户    | 根因分析：排查复杂、难解问题，输出诊断结论与修复路径                          |
+| `code-deep-dive`                | 仅用户    | 为项目编写中文深度学习长文，碎片时间补齐代码知识                              |
+| `max-effort`                     | 仅用户    | 最大交付质量：最少消耗用户精力，全部能力最大深度工作                      |
 | `update-project-instruction`     | 用户或 AI | 创建/更新项目根 AGENTS.md（目标/地图/开发与测试）                             |
 | `update-module-instruction`      | 用户或 AI | 创建/更新子模块 AGENTS.md（职责/地图/核心设计/Pitfalls）                      |
 | `update-references`              | 用户或 AI | 创建/更新通用规范文档（测试规范/设计规范 etc.）                               |
