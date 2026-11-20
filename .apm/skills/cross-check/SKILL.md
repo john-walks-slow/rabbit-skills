@@ -1,8 +1,7 @@
 ---
 name: cross-check
-description: 使用子代理对当前的想法、结论、计划或决策进行批判性检查和核实。当你对计划感到不踏实；感觉某个结论"可能有问题但说不清"；决策证据不充足；决策判断失误代价高、希望二次确保准确性时主动使用。
+description: 使用子代理对当前的想法、结论、计划或决策进行批判性检查和核实。
 user-invocable: true
-disable-model-invocation: true
 ---
 
 # cross-check
