@@ -2,6 +2,7 @@
 name: web-search
 description: 网络搜索的方法论和最佳实践。
 user-invocable: true
+disable-model-invocation: true
 ---
 
 # Web Search
